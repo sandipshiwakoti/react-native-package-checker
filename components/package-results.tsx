@@ -3,7 +3,6 @@
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import {
-  Filter,
   CheckCircle,
   XCircle,
   AlertCircle,
@@ -16,18 +15,16 @@ import {
   GitFork,
   Eye,
   AlertOctagon,
-  X,
   ArrowUpDown,
   ChevronLeft,
   ChevronRight,
 } from 'lucide-react';
 import { Button } from './ui/button';
-import { ScrollArea } from './ui/scroll-area';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Alert, AlertDescription } from './ui/alert';
 import { PackageFilter, NewArchSupportStatus, PackageInfo } from '@/types';
-import { cn } from '@/lib/utils';
-import { IGNORED_PACKAGES } from '@/constants/packages';
+import { MessageCircle } from 'lucide-react';
+import { IGNORED_PACKAGES, NEW_ARCH_ISSUE_QUERY } from '../constants';
 
 interface PackageResultsProps {
   packages: string[];
@@ -74,6 +71,13 @@ export function PackageResults({ packages, activeFilter }: PackageResultsProps) 
     const paginatedResults = sortedResults.slice(start, start + itemsPerPage);
 
     return { paginatedResults, totalPages };
+  };
+
+  const getIssueSearchUrl = (repoUrl: string) => {
+    const searchParams = new URLSearchParams({
+      q: NEW_ARCH_ISSUE_QUERY,
+    }).toString();
+    return `${repoUrl}/issues?${searchParams}`;
   };
 
   useEffect(() => {
@@ -183,13 +187,39 @@ export function PackageResults({ packages, activeFilter }: PackageResultsProps) 
       <div className="flex items-center gap-2">
         <div className="flex items-center gap-1">
           {icons[status.newArchitecture || NewArchSupportStatus.Untested]}
-          <span className="text-sm">
-            {status.newArchitecture === NewArchSupportStatus.Supported
-              ? 'Supported New Architecture'
-              : status.newArchitecture === NewArchSupportStatus.Unsupported
-                ? 'Unsupported New Architecture'
-                : 'Untested'}
-          </span>
+          {status.newArchitecture === NewArchSupportStatus.Unsupported ? (
+            <div className="flex items-center gap-1">
+              <span className="text-sm">Unsupported New Architecture</span>
+              {status.githubUrl && (
+                <a
+                  href={getIssueSearchUrl(status.githubUrl)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-red-500 hover:text-red-600 transition-colors"
+                  title="View New Architecture related issues on GitHub"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                </a>
+              )}
+            </div>
+          ) : status.newArchitecture === NewArchSupportStatus.Untested ? (
+            <div className="flex items-center gap-1">
+              <span className="text-sm">Untested New Architecture</span>
+              {status.githubUrl && (
+                <a
+                  href={getIssueSearchUrl(status.githubUrl)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-yellow-500 hover:text-yellow-600 transition-colors"
+                  title="View New Architecture related issues on GitHub"
+                >
+                  <MessageCircle className="h-4 w-4" />
+                </a>
+              )}
+            </div>
+          ) : (
+            <span className="text-sm">Supported New Architecture</span>
+          )}
         </div>
 
         {status.unmaintained && (

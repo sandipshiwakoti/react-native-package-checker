@@ -108,7 +108,7 @@ export default function CheckPage() {
                   <SelectItem value="untested">
                     <span className="flex items-center gap-2">
                       <AlertCircle className="h-4 w-4 text-yellow-500" />
-                      <span>Untested</span>
+                      <span>Untested New Architecture</span>
                     </span>
                   </SelectItem>
                   <SelectItem value="unmaintained">
