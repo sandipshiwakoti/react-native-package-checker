@@ -1,0 +1,474 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import {
+  Filter,
+  CheckCircle,
+  XCircle,
+  AlertCircle,
+  Archive,
+  AlertTriangle,
+  Github,
+  Package2,
+  Calendar,
+  Star,
+  GitFork,
+  Eye,
+  AlertOctagon,
+  X,
+  ArrowUpDown,
+  ChevronLeft,
+  ChevronRight,
+} from 'lucide-react';
+import { Button } from './ui/button';
+import { ScrollArea } from './ui/scroll-area';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Alert, AlertDescription } from './ui/alert';
+import { PackageFilter, NewArchSupportStatus, PackageInfo } from '@/types';
+import { cn } from '@/lib/utils';
+import { IGNORED_PACKAGES } from '@/constants/packages';
+
+interface PackageResultsProps {
+  packages: string[];
+  activeFilter: PackageFilter;
+}
+
+export function PackageResults({ packages, activeFilter }: PackageResultsProps) {
+  const [results, setResults] = useState<Record<string, PackageInfo>>({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(1);
+  const [sortBy, setSortBy] = useState<'name' | 'stars' | 'updated'>('name');
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
+  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const ITEMS_PER_PAGE = 10;
+
+  const getSortedAndPaginatedResults = () => {
+    const filteredResults = getFilteredResults().filter(([_, status]) => !status.notInDirectory);
+
+    const sortedResults = [...filteredResults].sort(([aName, aStatus], [bName, bStatus]) => {
+      switch (sortBy) {
+        case 'stars':
+          return sortOrder === 'asc'
+            ? (aStatus.github?.stargazers_count || 0) - (bStatus.github?.stargazers_count || 0)
+            : (bStatus.github?.stargazers_count || 0) - (aStatus.github?.stargazers_count || 0);
+        case 'updated':
+          return sortOrder === 'asc'
+            ? new Date(aStatus.github?.updated_at || 0).getTime() -
+                new Date(bStatus.github?.updated_at || 0).getTime()
+            : new Date(bStatus.github?.updated_at || 0).getTime() -
+                new Date(aStatus.github?.updated_at || 0).getTime();
+        default:
+          return sortOrder === 'asc' ? aName.localeCompare(bName) : bName.localeCompare(aName);
+      }
+    });
+
+    if (itemsPerPage === -1) {
+      return { paginatedResults: sortedResults, totalPages: 1 };
+    }
+
+    const totalPages = Math.ceil(sortedResults.length / itemsPerPage);
+    const start = (currentPage - 1) * itemsPerPage;
+    const paginatedResults = sortedResults.slice(start, start + itemsPerPage);
+
+    return { paginatedResults, totalPages };
+  };
+
+  useEffect(() => {
+    const checkPackages = async () => {
+      try {
+        const archResponse = await fetch('/api/libraries/check', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+          body: JSON.stringify({ packages }),
+        });
+
+        if (!archResponse.ok) {
+          throw new Error('Failed to check new architecture support');
+        }
+
+        const archData = await archResponse.json();
+
+        const infoResponse = await fetch('/api/package-info', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ packages }),
+        });
+
+        if (!infoResponse.ok) {
+          throw new Error('Failed to fetch package information');
+        }
+
+        const infoData = await infoResponse.json();
+
+        const mergedResults = packages.reduce<Record<string, PackageInfo>>((acc, pkg) => {
+          const isIgnoredPackage = IGNORED_PACKAGES.some(
+            ignored => pkg === ignored || pkg.startsWith(`${ignored}/`)
+          );
+
+          if (infoData[pkg] || !isIgnoredPackage) {
+            acc[pkg] = {
+              ...(infoData[pkg] || {
+                npmUrl: `https://www.npmjs.com/package/${pkg}`,
+                notInDirectory: true,
+                error: 'Package not found in React Native Directory',
+              }),
+              newArchitecture: archData[pkg]?.newArchitecture,
+              unmaintained: archData[pkg]?.unmaintained,
+              error: archData[pkg]?.error,
+            };
+          }
+          return acc;
+        }, {});
+
+        setResults(mergedResults);
+      } catch (e) {
+        console.error('API Error:', e);
+        setError(
+          e instanceof Error
+            ? `Failed to check packages: ${e.message}`
+            : 'Connection failed. Please try again.'
+        );
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (packages.length > 0) {
+      checkPackages();
+    }
+  }, [packages]);
+
+  const getFilteredResults = () => {
+    return Object.entries(results).filter(([name, status]) => {
+      const isIgnored = IGNORED_PACKAGES.some(
+        ignored => name === ignored || name.startsWith(`${ignored}/`)
+      );
+
+      if (isIgnored) return false;
+
+      switch (activeFilter) {
+        case 'supported':
+          return status.newArchitecture === NewArchSupportStatus.Supported;
+        case 'unsupported':
+          return status.newArchitecture === NewArchSupportStatus.Unsupported;
+        case 'unmaintained':
+          return status.unmaintained;
+        case 'untested':
+          return status.newArchitecture === NewArchSupportStatus.Untested;
+        default:
+          return true;
+      }
+    });
+  };
+
+  const unlistedPackages = getFilteredResults().filter(([_, status]) => status.notInDirectory);
+  const hasUnlistedPackages = unlistedPackages.length > 0;
+
+  const renderStatus = (status: PackageInfo) => {
+    const icons = {
+      [NewArchSupportStatus.Supported]: <CheckCircle className="h-4 w-4 text-green-500" />,
+      [NewArchSupportStatus.Unsupported]: <XCircle className="h-4 w-4 text-red-500" />,
+      [NewArchSupportStatus.Untested]: <AlertCircle className="h-4 w-4 text-yellow-500" />,
+    };
+
+    return (
+      <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1">
+          {icons[status.newArchitecture || NewArchSupportStatus.Untested]}
+          <span className="text-sm">
+            {status.newArchitecture === NewArchSupportStatus.Supported
+              ? 'Supported New Architecture'
+              : status.newArchitecture === NewArchSupportStatus.Unsupported
+                ? 'Unsupported New Architecture'
+                : 'Untested'}
+          </span>
+        </div>
+
+        {status.unmaintained && (
+          <div className="flex items-center gap-1 text-amber-500">
+            <Archive className="h-4 w-4" />
+            <span className="text-sm">Unmaintained</span>
+          </div>
+        )}
+
+        {status.error && (
+          <div className="flex items-center gap-1 text-red-500">
+            <AlertTriangle className="h-4 w-4" />
+            <span className="text-sm">{status.error}</span>
+          </div>
+        )}
+      </div>
+    );
+  };
+
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-[400px]">
+        <div className="text-center space-y-4">
+          <div className="animate-spin h-8 w-8 border-4 border-primary border-t-transparent rounded-full mx-auto" />
+          <p className="text-muted-foreground">Checking packages...</p>
+        </div>
+      </div>
+    );
+  }
+
+  return (
+    <div className="min-h-screen flex flex-col">
+      <div className="flex-1 py-2">
+        {error ? (
+          <Alert variant="destructive">
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        ) : getFilteredResults().length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16">
+            <Package2 className="h-12 w-12 text-muted-foreground mb-4" />
+            <h3 className="text-lg font-medium mb-2">No packages found</h3>
+            <p className="text-sm text-muted-foreground text-center">
+              {activeFilter !== 'all'
+                ? 'No packages match the selected filter. Try changing the filter or checking more packages.'
+                : 'No packages to display. Try checking some packages first.'}
+            </p>
+          </div>
+        ) : (
+          <div>
+            {hasUnlistedPackages && (
+              <div className="mb-6">
+                <div className="flex items-center gap-2 mb-3">
+                  <h2 className="text-lg font-semibold">Unlisted Packages</h2>
+                </div>
+                <div className="flex flex-wrap gap-4 p-4 rounded-lg border bg-card hover:border-primary/50 transition-colors mb-6">
+                  {unlistedPackages.map(([name, status]) => (
+                    <a
+                      key={name}
+                      href={status.npmUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 py-1 text-sm bg-muted/30 hover:bg-muted/50 text-muted-foreground hover:text-foreground rounded-full transition-colors"
+                    >
+                      <Package2 className="h-3.5 w-3.5" />
+                      <span>{name}</span>
+                    </a>
+                  ))}
+                </div>
+              </div>
+            )}
+            <div className="flex items-center justify-between mb-3">
+              <h2 className="text-lg font-semibold">Directory Packages</h2>
+              <div className="flex items-center gap-2">
+                <Select
+                  value={sortBy}
+                  onValueChange={(value: 'name' | 'stars' | 'updated') => {
+                    setSortBy(value);
+                    setCurrentPage(1);
+                  }}
+                >
+                  <SelectTrigger className="w-[160px]">
+                    <span className="flex items-center gap-2">
+                      <ArrowUpDown className="h-4 w-4" />
+                      Sort by
+                    </span>
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="name">Package Name</SelectItem>
+                    <SelectItem value="stars">GitHub Stars</SelectItem>
+                    <SelectItem value="updated">Last Updated</SelectItem>
+                  </SelectContent>
+                </Select>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => setSortOrder(order => (order === 'asc' ? 'desc' : 'asc'))}
+                  className="text-muted-foreground hover:text-foreground"
+                >
+                  {sortOrder === 'asc' ? '↑' : '↓'}
+                </Button>
+              </div>
+            </div>
+            {getSortedAndPaginatedResults().paginatedResults.map(([name, status]) => (
+              <div
+                key={name}
+                className="p-4 rounded-lg border bg-card hover:border-primary/50 transition-colors mb-6"
+              >
+                <div className="flex items-start justify-between ">
+                  <div className="flex flex-col gap-1">
+                    <div className="flex items-center gap-2">
+                      <h3 className="text-lg font-medium">{name}</h3>
+                      <div className="flex items-center gap-1">
+                        {status.githubUrl && (
+                          <a
+                            href={status.githubUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-muted-foreground hover:text-foreground"
+                          >
+                            <Github className="h-4 w-4" />
+                          </a>
+                        )}
+                        {status.npmUrl && (
+                          <a
+                            href={status.npmUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-muted-foreground hover:text-foreground"
+                          >
+                            <Package2 className="h-4 w-4" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    {status.github?.description && (
+                      <p className="text-sm text-muted-foreground max-w-[600px] mb-2">
+                        {status.github.description}
+                      </p>
+                    )}
+                  </div>
+                  <div className="flex items-center gap-2 shrink-0">{renderStatus(status)}</div>
+                </div>
+
+                <div className="flex flex-wrap gap-2 mb-3">
+                  {status.platforms?.ios && (
+                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                      iOS
+                    </span>
+                  )}
+                  {status.platforms?.android && (
+                    <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                      Android
+                    </span>
+                  )}
+                  {status.platforms?.web && (
+                    <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
+                      Web
+                    </span>
+                  )}
+                  {status.support?.hasTypes && (
+                    <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+                      TypeScript
+                    </span>
+                  )}
+                  {status.support?.license && (
+                    <a
+                      href={status.support.licenseUrl || '#'}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium hover:bg-gray-200 transition-colors"
+                    >
+                      {status.support.license}
+                    </a>
+                  )}
+                </div>
+
+                {status.github && (
+                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
+                    <a
+                      href={status.github.commits_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 hover:text-foreground transition-colors"
+                    >
+                      <Calendar className="h-4 w-4" />
+                      <span>Updated {new Date(status.github.updated_at).toLocaleDateString()}</span>
+                    </a>
+                    <a
+                      href={status.github.stargazers_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 hover:text-foreground transition-colors"
+                    >
+                      <Star className="h-4 w-4" />
+                      <span>{status.github.stargazers_count.toLocaleString()}</span>
+                    </a>
+                    <a
+                      href={status.github.forks_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 hover:text-foreground transition-colors"
+                    >
+                      <GitFork className="h-4 w-4" />
+                      <span>{status.github.forks_count.toLocaleString()}</span>
+                    </a>
+                    <a
+                      href={status.github.watchers_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 hover:text-foreground transition-colors"
+                    >
+                      <Eye className="h-4 w-4" />
+                      <span>{status.github.watchers_count.toLocaleString()}</span>
+                    </a>
+                    <a
+                      href={status.github.issues_url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex items-center gap-1 hover:text-foreground transition-colors"
+                    >
+                      <AlertOctagon className="h-4 w-4" />
+                      <span>{status.github.open_issues_count.toLocaleString()} issues</span>
+                    </a>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            <div className="flex items-center justify-between mt-6">
+              <div className="flex items-center gap-2">
+                <span className="text-sm text-muted-foreground">Show:</span>
+                <Select
+                  value={itemsPerPage.toString()}
+                  onValueChange={value => {
+                    setItemsPerPage(Number(value));
+                    setCurrentPage(1);
+                  }}
+                >
+                  <SelectTrigger className="w-[100px]">
+                    <SelectValue />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="10">10</SelectItem>
+                    <SelectItem value="20">20</SelectItem>
+                    <SelectItem value="50">50</SelectItem>
+                    <SelectItem value="-1">All</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() => setCurrentPage(page => Math.max(1, page - 1))}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <span className="text-sm text-muted-foreground">
+                  Page {currentPage} of {getSortedAndPaginatedResults().totalPages}
+                </span>
+                <Button
+                  variant="outline"
+                  size="icon"
+                  onClick={() =>
+                    setCurrentPage(page =>
+                      Math.min(getSortedAndPaginatedResults().totalPages, page + 1)
+                    )
+                  }
+                  disabled={currentPage === getSortedAndPaginatedResults().totalPages}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
