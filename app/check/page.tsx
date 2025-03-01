@@ -82,43 +82,22 @@ export default function CheckPage() {
               </div>
             </div>
             <div className="flex items-center gap-2">
-              <div
-                className={cn(
-                  'flex items-center gap-2 px-3 py-1.5 text-sm rounded-md transition-colors',
-                  activeArchFilters.length > 0 ? 'bg-muted' : 'text-muted-foreground'
-                )}
-              >
-                <Filter className="h-4 w-4" />
-                <span>Filter</span>
-                {activeArchFilters.length > 0 && (
-                  <Button
-                    variant="ghost"
-                    size="icon"
-                    className="h-4 w-4 p-0 hover:bg-transparent"
-                    onClick={() => setActiveArchFilters([])}
-                  >
-                    <X className="h-3 w-3" />
-                  </Button>
-                )}
-              </div>
               <Popover open={open} onOpenChange={setOpen}>
                 <PopoverTrigger asChild>
                   <Button
                     variant="outline"
-                    className={cn(
-                      'w-[300px] justify-between',
-                      activeArchFilters.length === 0 && !activeMaintenanceFilter
-                        ? 'text-gray-400 hover:text-gray-400'
-                        : ''
-                    )}
+                    className="w-[300px] justify-between font-normal items-center"
                   >
-                    {activeArchFilters.length === 0 && !activeMaintenanceFilter
-                      ? 'Select filters'
-                      : `${activeArchFilters.length + (activeMaintenanceFilter ? 1 : 0)} filter${
-                          activeArchFilters.length + (activeMaintenanceFilter ? 1 : 0) > 1
-                            ? 's'
-                            : ''
-                        } selected`}
+                    <div className="flex flex-row gap-2 items-center">
+                      <Filter className="h-4 w-4 opacity-50" />
+                      {activeArchFilters.length === 0 && !activeMaintenanceFilter
+                        ? 'Filter'
+                        : `${activeArchFilters.length + (activeMaintenanceFilter ? 1 : 0)} filter${
+                            activeArchFilters.length + (activeMaintenanceFilter ? 1 : 0) > 1
+                              ? 's'
+                              : ''
+                          } selected`}
+                    </div>
                     <ChevronDown className="h-4 w-4 opacity-50" />
                   </Button>
                 </PopoverTrigger>
