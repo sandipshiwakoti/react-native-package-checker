@@ -105,3 +105,53 @@ export interface DirectoryPackage {
 }
 
 export type NewArchFilter = 'supported' | 'unsupported' | 'untested';
+
+export interface PDFExportOptions {
+  title?: string;
+  fileName?: string;
+  includeHeader?: boolean;
+  includeFooter?: boolean;
+  orientation?: 'portrait' | 'landscape';
+  pageSize?: 'A4' | 'Letter';
+}
+
+
+export interface FileExportPackageData {
+  name: string;
+  notInDirectory?: boolean;
+  status: {
+    newArchitecture: string;
+    maintenance: string;
+  };
+  links: {
+    github?: string;
+    npm: string;
+  };
+  metrics?: {
+    score?: number;
+    stars?: number;
+    forks?: number;
+    issues?: number;
+    lastUpdated?: string;
+  };
+  support?: {
+    platforms: string[];
+    typescript: boolean;
+    license?: string;
+  };
+  description?: string;
+  alternatives?: string[];
+}
+
+export interface FileExportData {
+  summary: {
+    total: number;
+    supported: number;
+    unsupported: number;
+    untested: number;
+    unlisted: number;
+    unmaintained: number;
+  };
+  packages: FileExportPackageData[];
+  generatedAt: string;
+}

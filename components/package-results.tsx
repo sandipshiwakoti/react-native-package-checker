@@ -27,6 +27,8 @@ import { NewArchSupportStatus, PackageInfo, NewArchFilter } from '@/types';
 import { MessageCircle } from 'lucide-react';
 import { IGNORED_PACKAGES, NEW_ARCH_ISSUE_QUERY } from '../constants';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
+import { prepareFileExportData } from '@/lib/file-export';
+import { ExportButton } from './ExportButton';
 
 interface PackageResultsProps {
   packages: string[];
@@ -47,6 +49,7 @@ export function PackageResults({
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [unlistedPackagesCollapsed, setUnlistedPackagesCollapsed] = useState(false);
+  const pdfData = prepareFileExportData(results);
 
   const getSortedAndPaginatedResults = () => {
     const filteredResults = getFilteredResults().filter(([_, status]) => !status.notInDirectory);
@@ -299,6 +302,7 @@ export function PackageResults({
             <div className="flex items-center justify-between py-3 sticky top-0 bg-white z-10">
               <h2 className="text-lg font-semibold">Directory Packages</h2>
               <div className="flex items-center gap-2">
+                <ExportButton data={pdfData} />
                 <Select
                   value={sortBy}
                   onValueChange={(value: 'name' | 'stars' | 'updated') => {
