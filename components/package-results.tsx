@@ -276,18 +276,18 @@ export function PackageResults({ packages, activeFilters }: PackageResultsProps)
         ) : (
           <div>
             {hasUnlistedPackages && (
-              <Collapsible className="mb-6" open={unlistedPackagesCollapsed}>
+              <Collapsible open={!unlistedPackagesCollapsed}>
                 <CollapsibleTrigger
                   className="w-full mb-4"
                   onClick={() => setUnlistedPackagesCollapsed(!unlistedPackagesCollapsed)}
                 >
                   <div className="flex flex-row justify-between items-center">
                     <h2 className="text-lg font-semibold">Unlisted Packages</h2>
-                    {unlistedPackagesCollapsed ? <ChevronDownIcon /> : <ChevronUpIcon />}
+                    {unlistedPackagesCollapsed ? <ChevronUpIcon /> : <ChevronDownIcon />}
                   </div>
                 </CollapsibleTrigger>
                 <CollapsibleContent>
-                  <div className="flex flex-wrap gap-4 p-4 rounded-lg border bg-card hover:border-primary/50 transition-colors mb-6">
+                  <div className="flex flex-wrap gap-4 p-4 rounded-lg border bg-card hover:border-primary/50 transition-colors mb-2">
                     {unlistedPackages.map(([name, status]) => (
                       <a
                         key={name}
@@ -304,7 +304,7 @@ export function PackageResults({ packages, activeFilters }: PackageResultsProps)
                 </CollapsibleContent>
               </Collapsible>
             )}
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between py-3 sticky top-0 bg-white">
               <h2 className="text-lg font-semibold">Directory Packages</h2>
               <div className="flex items-center gap-2">
                 <Select
