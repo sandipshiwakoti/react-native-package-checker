@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
 import {
   CheckCircle,
   XCircle,
@@ -18,6 +17,8 @@ import {
   ArrowUpDown,
   ChevronLeft,
   ChevronRight,
+  ChevronDownIcon,
+  ChevronUpIcon,
 } from 'lucide-react';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
@@ -25,6 +26,7 @@ import { Alert, AlertDescription } from './ui/alert';
 import { PackageFilter, NewArchSupportStatus, PackageInfo } from '@/types';
 import { MessageCircle } from 'lucide-react';
 import { IGNORED_PACKAGES, NEW_ARCH_ISSUE_QUERY } from '../constants';
+import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 
 interface PackageResultsProps {
   packages: string[];
@@ -39,6 +41,7 @@ export function PackageResults({ packages, activeFilters }: PackageResultsProps)
   const [sortBy, setSortBy] = useState<'name' | 'stars' | 'updated'>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [unlistedPackagesCollapsed, setUnlistedPackagesCollapsed] = useState(false);
 
   const getSortedAndPaginatedResults = () => {
     const filteredResults = getFilteredResults().filter(([_, status]) => !status.notInDirectory);
@@ -273,25 +276,33 @@ export function PackageResults({ packages, activeFilters }: PackageResultsProps)
         ) : (
           <div>
             {hasUnlistedPackages && (
-              <div className="mb-6">
-                <div className="flex items-center gap-2 mb-3">
-                  <h2 className="text-lg font-semibold">Unlisted Packages</h2>
-                </div>
-                <div className="flex flex-wrap gap-4 p-4 rounded-lg border bg-card hover:border-primary/50 transition-colors mb-6">
-                  {unlistedPackages.map(([name, status]) => (
-                    <a
-                      key={name}
-                      href={status.npmUrl}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1.5 py-1 text-sm bg-muted/30 hover:bg-muted/50 text-muted-foreground hover:text-foreground rounded-full transition-colors"
-                    >
-                      <Package2 className="h-3.5 w-3.5" />
-                      <span>{name}</span>
-                    </a>
-                  ))}
-                </div>
-              </div>
+              <Collapsible className="mb-6" open={unlistedPackagesCollapsed}>
+                <CollapsibleTrigger
+                  className="w-full mb-4"
+                  onClick={() => setUnlistedPackagesCollapsed(!unlistedPackagesCollapsed)}
+                >
+                  <div className="flex flex-row justify-between items-center">
+                    <h2 className="text-lg font-semibold">Unlisted Packages</h2>
+                    {unlistedPackagesCollapsed ? <ChevronDownIcon /> : <ChevronUpIcon />}
+                  </div>
+                </CollapsibleTrigger>
+                <CollapsibleContent>
+                  <div className="flex flex-wrap gap-4 p-4 rounded-lg border bg-card hover:border-primary/50 transition-colors mb-6">
+                    {unlistedPackages.map(([name, status]) => (
+                      <a
+                        key={name}
+                        href={status.npmUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-1.5 py-1 text-sm bg-muted/30 hover:bg-muted/50 text-muted-foreground hover:text-foreground rounded-full transition-colors"
+                      >
+                        <Package2 className="h-3.5 w-3.5" />
+                        <span>{name}</span>
+                      </a>
+                    ))}
+                  </div>
+                </CollapsibleContent>
+              </Collapsible>
             )}
             <div className="flex items-center justify-between mb-3">
               <h2 className="text-lg font-semibold">Directory Packages</h2>
