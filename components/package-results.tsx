@@ -425,7 +425,7 @@ export function PackageResults({
                     {renderStatus(status)}
                   </div>
                 </div>
-                <div className="relative group flex flex-row justify-between items-end">
+                <div className="flex flex-row justify-between items-center">
                   {status.github && (
                     <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mt-1">
                       <a
@@ -478,8 +478,8 @@ export function PackageResults({
                     </div>
                   )}
                   {status.score !== undefined && (
-                    <div>
-                      <div className="absolute top-0 right-0 -translate-y-4 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-card border">
+                    <div className="relative group">
+                      <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-card border">
                         <span className="text-xs font-medium text-muted-foreground">Score:</span>
                         <div
                           className={`text-lg font-semibold ${
