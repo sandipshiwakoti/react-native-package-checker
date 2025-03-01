@@ -53,6 +53,9 @@ export interface Support {
 export interface PackageInfo {
   npmUrl: string;
   githubUrl?: string;
+  score?: number;
+  matchingScoreModifiers?: string[];
+  alternatives?: string[];
   platforms?: {
     ios: boolean;
     android: boolean;
@@ -76,6 +79,9 @@ export interface DirectoryPackage {
   ios: boolean;
   android: boolean;
   web: boolean;
+  score?: number;
+  matchingScoreModifiers?: string[];
+  alternatives?: string[];
   github: {
     urls: {
       repo: string;

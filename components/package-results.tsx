@@ -183,60 +183,44 @@ export function PackageResults({ packages, activeFilters }: PackageResultsProps)
   const hasUnlistedPackages = unlistedPackages.length > 0;
 
   const renderStatus = (status: PackageInfo) => {
-    const icons = {
+    const archIcons = {
       [NewArchSupportStatus.Supported]: <CheckCircle className="h-4 w-4 text-green-500" />,
       [NewArchSupportStatus.Unsupported]: <XCircle className="h-4 w-4 text-red-500" />,
       [NewArchSupportStatus.Untested]: <AlertCircle className="h-4 w-4 text-yellow-500" />,
     };
 
     return (
-      <div className="flex items-center gap-2">
-        <div className="flex items-center gap-1">
-          {icons[status.newArchitecture || NewArchSupportStatus.Untested]}
-          {status.newArchitecture === NewArchSupportStatus.Unsupported ? (
-            <div className="flex items-center gap-1">
-              <span className="text-sm">Unsupported New Architecture</span>
-              {status.githubUrl && (
-                <a
-                  href={getIssueSearchUrl(status.githubUrl)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-red-500 hover:text-red-600 transition-colors"
-                  title="View New Architecture related issues on GitHub"
-                >
-                  <MessageCircle className="h-4 w-4" />
-                </a>
-              )}
-            </div>
-          ) : status.newArchitecture === NewArchSupportStatus.Untested ? (
-            <div className="flex items-center gap-1">
-              <span className="text-sm">Untested New Architecture</span>
-              {status.githubUrl && (
-                <a
-                  href={getIssueSearchUrl(status.githubUrl)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-yellow-500 hover:text-yellow-600 transition-colors"
-                  title="View New Architecture related issues on GitHub"
-                >
-                  <MessageCircle className="h-4 w-4" />
-                </a>
-              )}
-            </div>
-          ) : (
-            <span className="text-sm">Supported New Architecture</span>
-          )}
+      <div className="space-y-3">
+        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-muted/30">
+          {archIcons[status.newArchitecture || NewArchSupportStatus.Untested]}
+          <span className="text-sm">
+            {status.newArchitecture === NewArchSupportStatus.Supported
+              ? 'New Architecture Supported'
+              : status.newArchitecture === NewArchSupportStatus.Unsupported
+                ? 'New Architecture Unsupported'
+                : 'New Architecture Untested'}
+          </span>
+          {(status.newArchitecture === NewArchSupportStatus.Unsupported ||
+            status.newArchitecture === NewArchSupportStatus.Untested) &&
+            status.githubUrl && (
+              <a
+                href={getIssueSearchUrl(status.githubUrl)}
+                target="_blank"
+                rel="noopener noreferrer"
+                className={`hover:opacity-80 transition-colors ${
+                  status.newArchitecture === NewArchSupportStatus.Unsupported
+                    ? 'text-red-500'
+                    : 'text-yellow-500'
+                }`}
+                title="View New Architecture related issues on GitHub"
+              >
+                <MessageCircle className="h-4 w-4" />
+              </a>
+            )}
         </div>
 
-        {status.unmaintained && (
-          <div className="flex items-center gap-1 text-amber-500">
-            <Archive className="h-4 w-4" />
-            <span className="text-sm">Unmaintained</span>
-          </div>
-        )}
-
         {status.error && (
-          <div className="flex items-center gap-1 text-red-500">
+          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-red-50 text-red-700">
             <AlertTriangle className="h-4 w-4" />
             <span className="text-sm">{status.error}</span>
           </div>
@@ -304,7 +288,7 @@ export function PackageResults({ packages, activeFilters }: PackageResultsProps)
                 </CollapsibleContent>
               </Collapsible>
             )}
-            <div className="flex items-center justify-between py-3 sticky top-0 bg-white">
+            <div className="flex items-center justify-between py-3 sticky top-0 bg-white z-10">
               <h2 className="text-lg font-semibold">Directory Packages</h2>
               <div className="flex items-center gap-2">
                 <Select
@@ -343,7 +327,13 @@ export function PackageResults({ packages, activeFilters }: PackageResultsProps)
               >
                 <div className="flex items-start justify-between ">
                   <div className="flex flex-col gap-1">
-                    <div className="flex items-center gap-2">
+                    {status.unmaintained && (
+                      <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-amber-50 text-amber-700 w-fit">
+                        <Archive className="h-4 w-4" />
+                        <span className="text-sm">Package Unmaintained</span>
+                      </div>
+                    )}
+                    <div className="flex items-center gap-2 mb-1">
                       <h3 className="text-lg font-medium">{name}</h3>
                       <div className="flex items-center gap-1">
                         {status.githubUrl && (
@@ -368,97 +358,155 @@ export function PackageResults({ packages, activeFilters }: PackageResultsProps)
                         )}
                       </div>
                     </div>
+                    <div className="flex flex-wrap gap-2 mb-2">
+                      {status.platforms?.ios && (
+                        <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+                          iOS
+                        </span>
+                      )}
+                      {status.platforms?.android && (
+                        <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+                          Android
+                        </span>
+                      )}
+                      {status.platforms?.web && (
+                        <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
+                          Web
+                        </span>
+                      )}
+                      {status.support?.hasTypes && (
+                        <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+                          TypeScript
+                        </span>
+                      )}
+                      {status.support?.license && (
+                        <a
+                          href={status.support.licenseUrl || '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium hover:bg-gray-200 transition-colors"
+                        >
+                          {status.support.license}
+                        </a>
+                      )}
+                    </div>
                     {status.github?.description && (
-                      <p className="text-sm text-muted-foreground max-w-[600px] mb-2">
+                      <p className="text-sm text-muted-foreground max-w-[600px] mb-1">
                         {status.github.description}
+                        {status.alternatives && status.alternatives.length > 0 && (
+                          <span className="block mt-2">
+                            <span className="font-medium">Alternatives: </span>
+                            {status.alternatives.map((alt, index) => (
+                              <a
+                                key={index}
+                                href={`https://www.npmjs.com/package/${alt}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-primary hover:text-primary/80 transition-colors"
+                              >
+                                {alt}
+                                {index < (status.alternatives?.length ?? 0) - 1 ? ', ' : ''}
+                              </a>
+                            ))}
+                          </span>
+                        )}
                       </p>
                     )}
                   </div>
-                  <div className="flex items-center gap-2 shrink-0">{renderStatus(status)}</div>
-                </div>
-
-                <div className="flex flex-wrap gap-2 mb-3">
-                  {status.platforms?.ios && (
-                    <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
-                      iOS
-                    </span>
-                  )}
-                  {status.platforms?.android && (
-                    <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">
-                      Android
-                    </span>
-                  )}
-                  {status.platforms?.web && (
-                    <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
-                      Web
-                    </span>
-                  )}
-                  {status.support?.hasTypes && (
-                    <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
-                      TypeScript
-                    </span>
-                  )}
-                  {status.support?.license && (
-                    <a
-                      href={status.support.licenseUrl || '#'}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium hover:bg-gray-200 transition-colors"
-                    >
-                      {status.support.license}
-                    </a>
-                  )}
-                </div>
-
-                {status.github && (
-                  <div className="flex flex-wrap gap-4 text-sm text-muted-foreground">
-                    <a
-                      href={status.github.commits_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-foreground transition-colors"
-                    >
-                      <Calendar className="h-4 w-4" />
-                      <span>Updated {new Date(status.github.updated_at).toLocaleDateString()}</span>
-                    </a>
-                    <a
-                      href={status.github.stargazers_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-foreground transition-colors"
-                    >
-                      <Star className="h-4 w-4" />
-                      <span>{status.github.stargazers_count.toLocaleString()}</span>
-                    </a>
-                    <a
-                      href={status.github.forks_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-foreground transition-colors"
-                    >
-                      <GitFork className="h-4 w-4" />
-                      <span>{status.github.forks_count.toLocaleString()}</span>
-                    </a>
-                    <a
-                      href={status.github.watchers_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-foreground transition-colors"
-                    >
-                      <Eye className="h-4 w-4" />
-                      <span>{status.github.watchers_count.toLocaleString()}</span>
-                    </a>
-                    <a
-                      href={status.github.issues_url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center gap-1 hover:text-foreground transition-colors"
-                    >
-                      <AlertOctagon className="h-4 w-4" />
-                      <span>{status.github.open_issues_count.toLocaleString()} issues</span>
-                    </a>
+                  <div className="flex flex-col items-end gap-2 shrink-0">
+                    {renderStatus(status)}
                   </div>
-                )}
+                </div>
+                <div className="relative group flex flex-row justify-between items-end">
+                  {status.github && (
+                    <div className="flex flex-wrap gap-4 text-sm text-muted-foreground mt-1">
+                      <a
+                        href={status.github.commits_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 hover:text-foreground transition-colors"
+                      >
+                        <Calendar className="h-4 w-4" />
+                        <span>
+                          Updated {new Date(status.github.updated_at).toLocaleDateString()}
+                        </span>
+                      </a>
+                      <a
+                        href={status.github.stargazers_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 hover:text-foreground transition-colors"
+                      >
+                        <Star className="h-4 w-4" />
+                        <span>{status.github.stargazers_count.toLocaleString()}</span>
+                      </a>
+                      <a
+                        href={status.github.forks_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 hover:text-foreground transition-colors"
+                      >
+                        <GitFork className="h-4 w-4" />
+                        <span>{status.github.forks_count.toLocaleString()}</span>
+                      </a>
+                      <a
+                        href={status.github.watchers_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 hover:text-foreground transition-colors"
+                      >
+                        <Eye className="h-4 w-4" />
+                        <span>{status.github.watchers_count.toLocaleString()}</span>
+                      </a>
+                      <a
+                        href={status.github.issues_url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1 hover:text-foreground transition-colors"
+                      >
+                        <AlertOctagon className="h-4 w-4" />
+                        <span>{status.github.open_issues_count.toLocaleString()} issues</span>
+                      </a>
+                    </div>
+                  )}
+                  {status.score !== undefined && (
+                    <div>
+                      <div className="absolute top-0 right-0 -translate-y-4 flex items-center gap-2 px-3 py-1.5 rounded-lg bg-card border">
+                        <span className="text-xs font-medium text-muted-foreground">Score:</span>
+                        <div
+                          className={`text-lg font-semibold ${
+                            status.score > 75
+                              ? 'text-green-500'
+                              : status.score > 50
+                                ? 'text-blue-500'
+                                : status.score > 25
+                                  ? 'text-amber-500'
+                                  : 'text-red-500'
+                          }`}
+                        >
+                          {status.score}/100
+                        </div>
+                      </div>
+                      {status.matchingScoreModifiers &&
+                        status.matchingScoreModifiers.length > 0 && (
+                          <div className="absolute right-0 top-full mt-2 w-64 p-3 rounded-lg border bg-popover shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
+                            <div className="text-xs font-medium mb-2">Score Modifiers:</div>
+                            <ul className="space-y-1">
+                              {status.matchingScoreModifiers.map((modifier, index) => (
+                                <li
+                                  key={index}
+                                  className="text-xs text-muted-foreground flex items-center gap-2"
+                                >
+                                  <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/50" />
+                                  {modifier}
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        )}
+                    </div>
+                  )}
+                </div>
               </div>
             ))}
 

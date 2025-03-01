@@ -30,6 +30,9 @@ export async function POST(request: Request) {
               license: packageData.github.license?.name || null,
               licenseUrl: packageData.github.license?.url || undefined,
             },
+            score: packageData.score,
+            matchingScoreModifiers: packageData.matchingScoreModifiers,
+            alternatives: packageData.alternatives,
             github: {
               description: packageData.github.description,
               stargazers_count: packageData.github.stats.stars || 0,
