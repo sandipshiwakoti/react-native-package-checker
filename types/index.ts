@@ -104,9 +104,4 @@ export interface DirectoryPackage {
   };
 }
 
-export type PackageFilter =
-  | 'supported'
-  | 'unsupported'
-  | 'unmaintained'
-  | 'untested'
-  | 'notFound';
+export type NewArchFilter = 'supported' | 'unsupported' | 'untested';

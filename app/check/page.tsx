@@ -16,9 +16,8 @@ import {
   X,
   XCircle,
 } from 'lucide-react';
-import { PackageFilter } from '../../types';
+import { NewArchFilter } from '../../types';
 import { cn } from '../../lib/utils';
-// Add these new imports
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useMemo } from 'react';
@@ -28,21 +27,19 @@ export default function CheckPage() {
   const router = useRouter();
   const [showPreview, setShowPreview] = useState(false);
   const [open, setOpen] = useState(false);
-  const [activeFilters, setActiveFilters] = useState<PackageFilter[]>([]);
-  const [tempFilters, setTempFilters] = useState<PackageFilter[]>([]);
+  const [activeArchFilters, setActiveArchFilters] = useState<NewArchFilter[]>([]);
+  const [tempArchFilters, setTempArchFilters] = useState<NewArchFilter[]>([]);
+  const [activeMaintenanceFilter, setActiveMaintenanceFilter] = useState(false);
+  const [tempMaintenanceFilter, setTempMaintenanceFilter] = useState(false);
 
   const packages = useMemo(() => {
     const packagesParam = searchParams?.get('packages');
     return packagesParam?.split(',').filter(Boolean) || [];
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [searchParams, activeFilters]);
+  }, [searchParams, activeArchFilters]);
 
-  const handleFilterChange = useCallback((checked: boolean, value: PackageFilter) => {
-    setTempFilters(prev => {
-      if (value.length === 0) {
-        return ['supported', 'unsupported', 'untested', 'unmaintained'];
-      }
-
+  const handleArchFilterChange = useCallback((checked: boolean, value: NewArchFilter) => {
+    setTempArchFilters(prev => {
       const filtered = prev.filter(f => f !== value);
       if (checked) {
         filtered.push(value);
@@ -53,9 +50,10 @@ export default function CheckPage() {
 
   useEffect(() => {
     if (open) {
-      setTempFilters(activeFilters);
+      setTempArchFilters(activeArchFilters);
+      setTempMaintenanceFilter(activeMaintenanceFilter);
     }
-  }, [open, activeFilters]);
+  }, [open, activeArchFilters, activeMaintenanceFilter]);
 
   if (packages.length === 0) {
     router.push('/');
@@ -87,17 +85,17 @@ export default function CheckPage() {
               <div
                 className={cn(
                   'flex items-center gap-2 px-3 py-1.5 text-sm rounded-md transition-colors',
-                  activeFilters.length > 0 ? 'bg-muted' : 'text-muted-foreground'
+                  activeArchFilters.length > 0 ? 'bg-muted' : 'text-muted-foreground'
                 )}
               >
                 <Filter className="h-4 w-4" />
                 <span>Filter</span>
-                {activeFilters.length > 0 && (
+                {activeArchFilters.length > 0 && (
                   <Button
                     variant="ghost"
                     size="icon"
                     className="h-4 w-4 p-0 hover:bg-transparent"
-                    onClick={() => setActiveFilters([])}
+                    onClick={() => setActiveArchFilters([])}
                   >
                     <X className="h-3 w-3" />
                   </Button>
@@ -109,81 +107,111 @@ export default function CheckPage() {
                     variant="outline"
                     className={cn(
                       'w-[300px] justify-between',
-                      activeFilters.length === 0 ? 'text-gray-400 hover:text-gray-400' : ''
+                      activeArchFilters.length === 0 && !activeMaintenanceFilter
+                        ? 'text-gray-400 hover:text-gray-400'
+                        : ''
                     )}
                   >
-                    {activeFilters.length === 0
+                    {activeArchFilters.length === 0 && !activeMaintenanceFilter
                       ? 'Select filters'
-                      : `${activeFilters.length} filter${activeFilters.length > 1 ? 's' : ''} selected`}
+                      : `${activeArchFilters.length + (activeMaintenanceFilter ? 1 : 0)} filter${
+                          activeArchFilters.length + (activeMaintenanceFilter ? 1 : 0) > 1
+                            ? 's'
+                            : ''
+                        } selected`}
                     <ChevronDown className="h-4 w-4 opacity-50" />
                   </Button>
                 </PopoverTrigger>
                 <PopoverContent className="w-[300px] p-4">
                   <div className="space-y-4">
-                    <div className="flex justify-end" onClick={() => setOpen(false)}>
-                      <X className="h-4 w-4 cursor-pointer hover:text-gray-600" />
-                    </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="supported"
-                        checked={tempFilters.includes('supported')}
-                        onCheckedChange={checked => handleFilterChange(!!checked, 'supported')}
+                    <div className="flex justify-between items-center">
+                      <span className="font-medium">Filters</span>
+                      <X
+                        className="h-4 w-4 cursor-pointer hover:text-gray-600"
+                        onClick={() => setOpen(false)}
                       />
-                      <label
-                        htmlFor="supported"
-                        className="flex items-center gap-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        <CheckCircle className="h-4 w-4 text-green-500" />
-                        <span>Supported New Architecture</span>
-                      </label>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="unsupported"
-                        checked={tempFilters.includes('unsupported')}
-                        onCheckedChange={checked => handleFilterChange(!!checked, 'unsupported')}
-                      />
-                      <label
-                        htmlFor="unsupported"
-                        className="flex items-center gap-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        <XCircle className="h-4 w-4 text-red-500" />
-                        <span>Unsupported New Architecture</span>
-                      </label>
+
+                    <div className="space-y-2">
+                      <div className="text-sm text-muted-foreground">New Architecture Support</div>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="supported"
+                            checked={tempArchFilters.includes('supported')}
+                            onCheckedChange={checked =>
+                              handleArchFilterChange(!!checked, 'supported')
+                            }
+                          />
+                          <label
+                            htmlFor="supported"
+                            className="flex items-center gap-2 text-sm font-medium leading-none"
+                          >
+                            <CheckCircle className="h-4 w-4 text-green-500" />
+                            <span>Supported</span>
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="unsupported"
+                            checked={tempArchFilters.includes('unsupported')}
+                            onCheckedChange={checked =>
+                              handleArchFilterChange(!!checked, 'unsupported')
+                            }
+                          />
+                          <label
+                            htmlFor="unsupported"
+                            className="flex items-center gap-2 text-sm font-medium leading-none"
+                          >
+                            <XCircle className="h-4 w-4 text-red-500" />
+                            <span>Unsupported</span>
+                          </label>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="untested"
+                            checked={tempArchFilters.includes('untested')}
+                            onCheckedChange={checked =>
+                              handleArchFilterChange(!!checked, 'untested')
+                            }
+                          />
+                          <label
+                            htmlFor="untested"
+                            className="flex items-center gap-2 text-sm font-medium leading-none"
+                          >
+                            <AlertCircle className="h-4 w-4 text-yellow-500" />
+                            <span>Untested</span>
+                          </label>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="untested"
-                        checked={tempFilters.includes('untested')}
-                        onCheckedChange={checked => handleFilterChange(!!checked, 'untested')}
-                      />
-                      <label
-                        htmlFor="untested"
-                        className="flex items-center gap-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        <AlertCircle className="h-4 w-4 text-yellow-500" />
-                        <span>Untested New Architecture</span>
-                      </label>
+
+                    <div className="space-y-2 pt-2 border-t">
+                      <div className="text-sm text-muted-foreground">Maintenance Status</div>
+                      <div className="space-y-2">
+                        <div className="flex items-center space-x-2">
+                          <Checkbox
+                            id="unmaintained"
+                            checked={tempMaintenanceFilter}
+                            onCheckedChange={checked => setTempMaintenanceFilter(!!checked)}
+                          />
+                          <label
+                            htmlFor="unmaintained"
+                            className="flex items-center gap-2 text-sm font-medium leading-none"
+                          >
+                            <Archive className="h-4 w-4 text-amber-500" />
+                            <span>Unmaintained</span>
+                          </label>
+                        </div>
+                      </div>
                     </div>
-                    <div className="flex items-center space-x-2">
-                      <Checkbox
-                        id="unmaintained"
-                        checked={tempFilters.includes('unmaintained')}
-                        onCheckedChange={checked => handleFilterChange(!!checked, 'unmaintained')}
-                      />
-                      <label
-                        htmlFor="unmaintained"
-                        className="flex items-center gap-2 text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                      >
-                        <Archive className="h-4 w-4 text-amber-500" />
-                        <span>Unmaintained</span>
-                      </label>
-                    </div>
+
                     <div className="flex items-center justify-end pt-4 border-t gap-2">
                       <Button
                         variant="outline"
                         onClick={() => {
-                          setActiveFilters([]);
+                          setActiveArchFilters([]);
+                          setActiveMaintenanceFilter(false);
                           setOpen(false);
                         }}
                         className="w-20"
@@ -192,7 +220,8 @@ export default function CheckPage() {
                       </Button>
                       <Button
                         onClick={() => {
-                          setActiveFilters(tempFilters);
+                          setActiveArchFilters(tempArchFilters);
+                          setActiveMaintenanceFilter(tempMaintenanceFilter);
                           setOpen(false);
                         }}
                         className="w-20"
@@ -206,7 +235,11 @@ export default function CheckPage() {
             </div>
           </div>
         </div>
-        <PackageResults packages={packages} activeFilters={activeFilters} />
+        <PackageResults
+          packages={packages}
+          activeArchFilters={activeArchFilters}
+          showUnmaintained={activeMaintenanceFilter}
+        />
         <PackageUploadModal
           open={showPreview}
           onOpenChange={setShowPreview}

@@ -23,17 +23,22 @@ import {
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Alert, AlertDescription } from './ui/alert';
-import { PackageFilter, NewArchSupportStatus, PackageInfo } from '@/types';
+import { NewArchSupportStatus, PackageInfo, NewArchFilter } from '@/types';
 import { MessageCircle } from 'lucide-react';
 import { IGNORED_PACKAGES, NEW_ARCH_ISSUE_QUERY } from '../constants';
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from './ui/collapsible';
 
 interface PackageResultsProps {
   packages: string[];
-  activeFilters: PackageFilter[];
+  activeArchFilters: NewArchFilter[];
+  showUnmaintained: boolean;
 }
 
-export function PackageResults({ packages, activeFilters }: PackageResultsProps) {
+export function PackageResults({
+  packages,
+  activeArchFilters,
+  showUnmaintained,
+}: PackageResultsProps) {
   const [results, setResults] = useState<Record<string, PackageInfo>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -158,24 +163,27 @@ export function PackageResults({ packages, activeFilters }: PackageResultsProps)
       );
 
       if (isIgnored) return false;
-      if (activeFilters.length === 0) return true;
 
-      const matchesFilter = Array.from(activeFilters).some(filter => {
-        switch (filter) {
-          case 'supported':
-            return status.newArchitecture === NewArchSupportStatus.Supported;
-          case 'unsupported':
-            return status.newArchitecture === NewArchSupportStatus.Unsupported;
-          case 'unmaintained':
-            return status.unmaintained;
-          case 'untested':
-            return status.newArchitecture === NewArchSupportStatus.Untested;
-          default:
-            return false;
-        }
-      });
+      if (activeArchFilters.length === 0 && !showUnmaintained) return true;
 
-      return matchesFilter;
+      const matchesArchFilter =
+        activeArchFilters.length === 0 ||
+        activeArchFilters.some(filter => {
+          switch (filter) {
+            case 'supported':
+              return status.newArchitecture === NewArchSupportStatus.Supported;
+            case 'unsupported':
+              return status.newArchitecture === NewArchSupportStatus.Unsupported;
+            case 'untested':
+              return status.newArchitecture === NewArchSupportStatus.Untested;
+            default:
+              return false;
+          }
+        });
+
+      const matchesMaintenanceFilter = !showUnmaintained || status.unmaintained;
+
+      return matchesArchFilter && matchesMaintenanceFilter;
     });
   };
 
@@ -252,7 +260,7 @@ export function PackageResults({ packages, activeFilters }: PackageResultsProps)
             <Package2 className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium mb-2">No packages found</h3>
             <p className="text-sm text-muted-foreground text-center">
-              {activeFilters.length > 0
+              {activeArchFilters && activeArchFilters?.length > 0
                 ? 'No packages match the selected filters. Try changing the filters or checking more packages.'
                 : 'No packages to display. Try checking some packages first.'}
             </p>
