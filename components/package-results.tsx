@@ -28,19 +28,17 @@ import { IGNORED_PACKAGES, NEW_ARCH_ISSUE_QUERY } from '../constants';
 
 interface PackageResultsProps {
   packages: string[];
-  activeFilter: PackageFilter;
+  activeFilters: PackageFilter[];
 }
 
-export function PackageResults({ packages, activeFilter }: PackageResultsProps) {
+export function PackageResults({ packages, activeFilters }: PackageResultsProps) {
   const [results, setResults] = useState<Record<string, PackageInfo>>({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const router = useRouter();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<'name' | 'stars' | 'updated'>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-  const ITEMS_PER_PAGE = 10;
 
   const getSortedAndPaginatedResults = () => {
     const filteredResults = getFilteredResults().filter(([_, status]) => !status.notInDirectory);
@@ -157,19 +155,24 @@ export function PackageResults({ packages, activeFilter }: PackageResultsProps) 
       );
 
       if (isIgnored) return false;
+      if (activeFilters.length === 0) return true;
 
-      switch (activeFilter) {
-        case 'supported':
-          return status.newArchitecture === NewArchSupportStatus.Supported;
-        case 'unsupported':
-          return status.newArchitecture === NewArchSupportStatus.Unsupported;
-        case 'unmaintained':
-          return status.unmaintained;
-        case 'untested':
-          return status.newArchitecture === NewArchSupportStatus.Untested;
-        default:
-          return true;
-      }
+      const matchesFilter = Array.from(activeFilters).some(filter => {
+        switch (filter) {
+          case 'supported':
+            return status.newArchitecture === NewArchSupportStatus.Supported;
+          case 'unsupported':
+            return status.newArchitecture === NewArchSupportStatus.Unsupported;
+          case 'unmaintained':
+            return status.unmaintained;
+          case 'untested':
+            return status.newArchitecture === NewArchSupportStatus.Untested;
+          default:
+            return false;
+        }
+      });
+
+      return matchesFilter;
     });
   };
 
@@ -262,8 +265,8 @@ export function PackageResults({ packages, activeFilter }: PackageResultsProps) 
             <Package2 className="h-12 w-12 text-muted-foreground mb-4" />
             <h3 className="text-lg font-medium mb-2">No packages found</h3>
             <p className="text-sm text-muted-foreground text-center">
-              {activeFilter !== 'all'
-                ? 'No packages match the selected filter. Try changing the filter or checking more packages.'
+              {activeFilters.length > 0
+                ? 'No packages match the selected filters. Try changing the filters or checking more packages.'
                 : 'No packages to display. Try checking some packages first.'}
             </p>
           </div>

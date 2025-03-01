@@ -99,7 +99,6 @@ export interface DirectoryPackage {
 }
 
 export type PackageFilter =
-  | 'all'
   | 'supported'
   | 'unsupported'
   | 'unmaintained'
