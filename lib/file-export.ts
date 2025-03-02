@@ -1,6 +1,12 @@
 import { jsPDF } from 'jspdf';
 import autoTable from 'jspdf-autotable';
 import { PDFExportOptions, FileExportData, PackageInfo } from '../types';
+import { EXPORTED_FILE_NAME_PREFIX } from '../constants';
+
+const generateTimestampedFileName = (prefix: string, extension: string) => {
+    const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
+    return `${prefix}-${timestamp}${extension}`;
+};
 
 export const prepareFileExportData = (packages: Record<string, PackageInfo>): FileExportData => {
     const summary = {
@@ -66,7 +72,7 @@ export const prepareFileExportData = (packages: Record<string, PackageInfo>): Fi
 export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}) => {
     const {
         title = 'React Native Package Analysis',
-        fileName = 'package-analysis.pdf',
+        fileName = generateTimestampedFileName(EXPORTED_FILE_NAME_PREFIX, '.pdf'),
         orientation = 'landscape',
         pageSize = 'A4',
         includeHeader = true,
@@ -217,7 +223,8 @@ export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}
 
 
 
-export const generateCSV = (data: FileExportData, fileName: string = 'package-analysis.csv') => {
+export const generateCSV = (data: FileExportData) => {
+    const fileName = generateTimestampedFileName(EXPORTED_FILE_NAME_PREFIX, '.csv');
     const headers = [
         '#',
         'Package',
