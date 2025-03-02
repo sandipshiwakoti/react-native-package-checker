@@ -1,7 +1,7 @@
 import React from 'react';
 import { generatePDF, generateCSV } from '../lib/file-export';
 import { FileExportData } from '../types';
-import { ChevronDown, ChevronDownIcon, FileUp } from 'lucide-react';
+import { ChevronDown, FileUp } from 'lucide-react';
 import {
   DropdownMenu,
   DropdownMenuContent,

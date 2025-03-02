@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Search, FileJson } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { Input } from './ui/input';
-import { useDropzone } from 'react-dropzone';
+import { PackageUploader } from './package-uploader';
 
 export function PackageSearch() {
   const router = useRouter();
+  const [isDragging, setIsDragging] = useState(false);
 
   const goToCheckPage = (packageNames: string[]) => {
     router.push(`/check?packages=${packageNames.join(',')}`);
@@ -23,38 +24,30 @@ export function PackageSearch() {
     }
   };
 
-  const { getRootProps, getInputProps } = useDropzone({
-    accept: { 'application/json': ['.json'] },
-    maxFiles: 1,
-    onDrop: async files => {
-      try {
-        const content = await files[0].text();
-        const json = JSON.parse(content);
-        const deps = Object.keys(json.dependencies || {});
-        if (deps.length > 0) {
-          goToCheckPage(deps);
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    },
-  });
-
   return (
     <>
-      <div className="space-y-8">
-        <div className="space-y-4">
-          <div className="relative">
+      <div className="space-y-8 max-w-2xl mx-auto">
+        <div>
+          <div className="relative group">
             <Input
               placeholder="Search packages (e.g. react-native-reanimated)"
-              className="h-14 text-lg pl-12"
+              className="h-14 text-lg pl-12 pr-4 transition-all 
+                shadow-sm hover:shadow-md
+                focus:ring-2 focus:ring-primary/20 focus:shadow-lg
+                bg-white/50 backdrop-blur-sm"
               onKeyDown={e => {
                 if (e.key === 'Enter') {
                   handleSearch(e.currentTarget.value);
                 }
               }}
             />
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
+            <Search
+              className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 
+              text-muted-foreground/70 group-hover:text-muted-foreground/90"
+            />
+            <div className="absolute -bottom-6 left-4 text-xs text-muted-foreground/70">
+              Tip: Enter multiple packages separated by commas
+            </div>
           </div>
         </div>
 
@@ -67,17 +60,7 @@ export function PackageSearch() {
           </div>
         </div>
 
-        <div
-          {...getRootProps()}
-          className="border-2 border-dashed rounded-lg p-8 text-center cursor-pointer hover:bg-muted/50"
-        >
-          <input {...getInputProps()} />
-          <FileJson className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-medium mb-2">Upload package.json</h3>
-          <p className="text-sm text-muted-foreground">
-            Drag & drop your package.json here, or click to select
-          </p>
-        </div>
+        <PackageUploader onPackagesFound={goToCheckPage} />
       </div>
     </>
   );

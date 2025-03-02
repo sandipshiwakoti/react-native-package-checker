@@ -1,5 +1,3 @@
-'use client';
-
 import { useState } from 'react';
 import {
   CheckCircle,
@@ -20,20 +18,28 @@ import {
 } from 'lucide-react';
 import { NewArchSupportStatus, PackageInfo, NewArchFilter } from '@/types';
 import { MessageCircle } from 'lucide-react';
-import { NEW_ARCH_ISSUE_QUERY } from '../constants';
+import { CORE_PACKAGES, NEW_ARCH_ISSUE_QUERY } from '../constants';
 import { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/tabs';
 import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
+import { Overview } from './overview';
+import { FilterButton } from './filter-button';
 
 interface PackageResultsProps {
   data: Record<string, PackageInfo>;
   activeArchFilters: NewArchFilter[];
+  setActiveArchFilters: (filters: NewArchFilter[]) => void;
+  activeMaintenanceFilter: boolean;
+  setActiveMaintenanceFilter: (value: boolean) => void;
   showUnmaintained: boolean;
 }
 
 export function PackageResults({
   data: results,
   activeArchFilters,
+  setActiveArchFilters,
+  activeMaintenanceFilter,
+  setActiveMaintenanceFilter,
   showUnmaintained,
 }: PackageResultsProps) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -163,17 +169,47 @@ export function PackageResults({
   };
 
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen flex flex-col space-y-6">
+      <Overview results={results} />
       <div className="flex-1 py-2">
+        <div className="flex flex-row justify-between">
+          <div className="flex items-center gap-2 mb-4">
+            <h2 className="text-xl font-semibold">Results</h2>
+            <div className="relative flex group/tooltip">
+              <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
+              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 rounded-lg bg-popover text-popover-foreground shadow-lg text-xs opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all">
+                Analysis results of React Native packages showing compatibility status and metrics
+              </div>
+            </div>
+          </div>
+          <FilterButton
+            activeArchFilters={activeArchFilters}
+            setActiveArchFilters={setActiveArchFilters}
+            activeMaintenanceFilter={activeMaintenanceFilter}
+            setActiveMaintenanceFilter={setActiveMaintenanceFilter}
+          />
+        </div>
         <Tabs defaultValue="directory" className="w-full">
           <TabsList className="w-full justify-start mb-4">
-            <TabsTrigger value="directory">Directory Packages</TabsTrigger>
-            <TabsTrigger value="unlisted">Unlisted Packages</TabsTrigger>
+            <TabsTrigger value="directory" className="flex items-center gap-1.5">
+              Directory Packages
+            </TabsTrigger>
+            <TabsTrigger value="unlisted" className="flex items-center gap-1.5">
+              Unlisted Packages
+            </TabsTrigger>
           </TabsList>
           <TabsContent value="directory" className="p-0 m-0">
             <div className="flex items-center justify-between py-2 sticky top-0 bg-white z-10">
               <div>
-                <h2 className="text-lg font-semibold">Directory Packages</h2>
+                <div className="flex flex-row gap-2 items-center">
+                  <h2 className="text-md font-semibold">Directory Packages</h2>
+                  <div className="relative flex group/tooltip">
+                    <AlertCircle className="h-4 w-4 text-muted-foreground/50 hover:text-muted-foreground" />
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 rounded-lg bg-popover text-popover-foreground shadow-lg text-xs opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
+                      Packages listed in the official React Native directory
+                    </div>
+                  </div>
+                </div>
                 <p className="text-sm text-muted-foreground mt-1">
                   Found {directoryPackages.length} directory packages
                 </p>
@@ -224,7 +260,7 @@ export function PackageResults({
                           </div>
                         )}
                         <div className="flex items-center gap-2 mb-1">
-                          <h3 className="text-lg font-medium">{name}</h3>
+                          <h3 className="text-lg font-medium relative group">{name}</h3>
                           <div className="flex items-center gap-1">
                             {status.githubUrl && (
                               <a
@@ -457,9 +493,17 @@ export function PackageResults({
             )}
           </TabsContent>
           <TabsContent value="unlisted" className="p-0 m-0">
-            <div className="flex items-center justify-between py-3 sticky top-0 bg-white z-10">
+            <div className="flex items-center justify-between py-3 sticky top-0 backdrop-blur-sm bg-background/95 border-b z-10 -mx-6 px-6">
               <div>
-                <h2 className="text-lg font-semibold">Unlisted Packages</h2>
+                <div className="flex flex-row items-center gap-2">
+                  <h2 className="text-md font-semibold">Unlisted Packages</h2>
+                  <div className="relative flex group/tooltip">
+                    <AlertCircle className="h-4 w-4 text-muted-foreground/50 hover:text-muted-foreground" />
+                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 rounded-lg bg-popover text-popover-foreground shadow-lg text-xs opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
+                      Packages not found in the official React Native directory
+                    </div>
+                  </div>
+                </div>
                 <p className="text-sm text-muted-foreground mt-1">
                   Found {unlistedPackages.length} unlisted{' '}
                   {unlistedPackages.length === 1 ? 'package' : 'packages'}
@@ -477,6 +521,15 @@ export function PackageResults({
                       <div className="flex flex-col gap-1">
                         <div className="flex items-center gap-2 mb-1">
                           <h3 className="text-lg font-medium">{name}</h3>
+                          {CORE_PACKAGES.includes(name) && (
+                            <div className="relative flex group/tooltip">
+                              <AlertCircle className="h-4 w-4 text-muted-foreground/50 hover:text-muted-foreground" />
+                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 rounded-lg bg-popover text-popover-foreground shadow-lg text-xs opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
+                                Core dependency required by React Native. Not listed in the
+                                directory but fully compatible with the New Architecture.
+                              </div>
+                            </div>
+                          )}
                           <div className="flex items-center gap-1">
                             {status.githubUrl && (
                               <a
