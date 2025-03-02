@@ -1,5 +1,5 @@
+import Image from 'next/image';
 import { PackageSearch } from '../components/package-search';
-import { Package2, Zap } from 'lucide-react';
 
 export default function HomePage() {
   return (
@@ -7,10 +7,11 @@ export default function HomePage() {
       <div className="max-w-[800px] mx-auto px-4 space-y-12">
         <div className="text-center space-y-6">
           <div className="inline-flex items-center justify-center mb-2">
-            <img
-              src="assets/images/logo.png"
+            <Image
+              src="/assets/images/logo.png"
               alt="React Native Directory Logo"
-              className="h-[150px] w-[150px]"
+              width={150}
+              height={150}
             />
           </div>
           <div className="space-y-4">

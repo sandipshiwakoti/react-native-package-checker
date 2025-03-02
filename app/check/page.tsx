@@ -11,13 +11,11 @@ import {
   CheckCircle,
   ChevronDown,
   Filter,
-  Package2,
   UploadIcon,
   X,
   XCircle,
 } from 'lucide-react';
 import { NewArchFilter, PackageInfo } from '../../types';
-import { cn } from '../../lib/utils';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Checkbox } from '@/components/ui/checkbox';
 import { useMemo } from 'react';
@@ -61,11 +59,6 @@ export default function CheckPage() {
       setTempMaintenanceFilter(activeMaintenanceFilter);
     }
   }, [open, activeArchFilters, activeMaintenanceFilter]);
-
-  if (packages.length === 0) {
-    router.push('/');
-    return null;
-  }
 
   useEffect(() => {
     const checkPackages = async () => {
@@ -132,6 +125,11 @@ export default function CheckPage() {
       checkPackages();
     }
   }, [packages]);
+
+  if (packages.length === 0) {
+    router.push('/');
+    return null;
+  }
 
   return (
     <div className="min-h-screen">
