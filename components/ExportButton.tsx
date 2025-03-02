@@ -34,13 +34,13 @@ export const ExportButton: React.FC<ExportButtonProps> = ({ data }) => {
             className="flex items-center px-2 py-2 text-sm outline-none cursor-default hover:bg-gray-100 rounded-sm"
             onClick={() => generatePDF(data)}
           >
-            Export as PDF
+            Export all as PDF
           </DropdownMenuItem>
           <DropdownMenuItem
             className="flex items-center px-2 py-2 text-sm outline-none cursor-default hover:bg-gray-100 rounded-sm"
             onClick={() => generateCSV(data)}
           >
-            Export as CSV
+            Export all as CSV
           </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenuPortal>
