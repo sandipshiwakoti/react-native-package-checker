@@ -15,6 +15,7 @@ import {
   GitFork,
   Github,
   Star,
+  Search,
 } from 'lucide-react';
 import { NewArchSupportStatus, PackageInfo, NewArchFilter } from '@/types';
 import { MessageCircle } from 'lucide-react';
@@ -25,6 +26,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '.
 import { Overview } from './overview';
 import { FilterButton } from './filter-button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
+import { useDebounce } from '../hooks/use-debounce';
+import { SearchBar } from './ui/search-bar';
 
 interface PackageResultsProps {
   data: Record<string, PackageInfo>;
@@ -47,6 +50,10 @@ export function PackageResults({
   const [sortBy, setSortBy] = useState<'name' | 'stars' | 'updated'>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
+  const [directorySearchInput, setDirectorySearchInput] = useState('');
+  const [unlistedSearchInput, setUnlistedSearchInput] = useState('');
+  const directorySearchQuery = useDebounce(directorySearchInput);
+  const unlistedSearchQuery = useDebounce(unlistedSearchInput);
 
   const getFilteredResults = () => {
     return Object.entries(results).filter(([name, status]) => {
@@ -73,8 +80,17 @@ export function PackageResults({
     });
   };
 
-  const unlistedPackages = Object.entries(results).filter(([_, status]) => status.notInDirectory);
-  const directoryPackages = getFilteredResults().filter(([_, status]) => !status.notInDirectory);
+  const unlistedPackages = Object.entries(results).filter(
+    ([name, status]) =>
+      status.notInDirectory &&
+      (!unlistedSearchQuery || name.toLowerCase().includes(unlistedSearchQuery.toLowerCase()))
+  );
+
+  const directoryPackages = getFilteredResults().filter(
+    ([name, status]) =>
+      !status.notInDirectory &&
+      (!directorySearchQuery || name.toLowerCase().includes(directorySearchQuery.toLowerCase()))
+  );
 
   const getSortedAndPaginatedResults = () => {
     const sortedResults = [...directoryPackages].sort(([aName, aStatus], [bName, bStatus]) => {
@@ -223,6 +239,14 @@ export function PackageResults({
                 </p>
               </div>
               <div className="flex items-center gap-3">
+                <SearchBar
+                  value={directorySearchInput}
+                  onChange={value => {
+                    setDirectorySearchInput(value);
+                    setCurrentPage(1);
+                  }}
+                  placeholder="Search packages"
+                />
                 <FilterButton
                   activeArchFilters={activeArchFilters}
                   setActiveArchFilters={setActiveArchFilters}
@@ -529,6 +553,11 @@ export function PackageResults({
                   {unlistedPackages.length === 1 ? 'package' : 'packages'}
                 </p>
               </div>
+              <SearchBar
+                value={unlistedSearchInput}
+                onChange={value => setUnlistedSearchInput(value)}
+                placeholder="Search packages"
+              />
             </div>
             {unlistedPackages.length > 0 ? (
               <div className="space-y-6">
