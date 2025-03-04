@@ -8,6 +8,7 @@ import { Alert, AlertDescription } from '../../components/ui/alert';
 import { Logo } from '../../components/logo';
 import { UploadButton } from '../../components/upload-button';
 import { LoadingIndicator } from '../../components/loading-indicator';
+import { HeartIcon } from 'lucide-react';
 
 export default function CheckPage() {
   const searchParams = useSearchParams();
@@ -118,14 +119,30 @@ export default function CheckPage() {
             <AlertDescription>{error}</AlertDescription>
           </Alert>
         ) : (
-          <PackageResults
-            data={results}
-            activeArchFilters={activeArchFilters}
-            setActiveArchFilters={setActiveArchFilters}
-            activeMaintenanceFilter={activeMaintenanceFilter}
-            setActiveMaintenanceFilter={setActiveMaintenanceFilter}
-            showUnmaintained={activeMaintenanceFilter}
-          />
+          <>
+            <PackageResults
+              data={results}
+              activeArchFilters={activeArchFilters}
+              setActiveArchFilters={setActiveArchFilters}
+              activeMaintenanceFilter={activeMaintenanceFilter}
+              setActiveMaintenanceFilter={setActiveMaintenanceFilter}
+              showUnmaintained={activeMaintenanceFilter}
+            />
+            <div className="text-center py-6 text-sm mt-2 text-muted-foreground border-t">
+              <p className="flex items-center justify-center gap-1">
+                Data sourced from{' '}
+                <a
+                  href="https://github.com/react-native-community/directory"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-0.5"
+                >
+                  React Native Directory
+                </a>
+                <HeartIcon className="h-4 w-4 " />
+              </p>
+            </div>
+          </>
         )}
       </div>
     </div>
