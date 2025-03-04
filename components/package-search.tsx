@@ -1,6 +1,5 @@
 'use client';
 
-import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
 import { Input } from './ui/input';
@@ -8,10 +7,10 @@ import { PackageUploader } from './package-uploader';
 
 export function PackageSearch() {
   const router = useRouter();
-  const [isDragging, setIsDragging] = useState(false);
 
-  const goToCheckPage = (packageNames: string[]) => {
-    router.push(`/check?packages=${packageNames.join(',')}`);
+  const goToCheckPage = (packageNames: string[], rnVersion?: string) => {
+    const versionParam = rnVersion ? `&version=${rnVersion}` : '';
+    router.push(`/check?packages=${packageNames.join(',')}${versionParam}`);
   };
 
   const handleSearch = (value: string) => {

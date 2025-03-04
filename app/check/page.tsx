@@ -9,10 +9,12 @@ import { Logo } from '../../components/logo';
 import { UploadButton } from '../../components/upload-button';
 import { LoadingIndicator } from '../../components/loading-indicator';
 import { HeartIcon } from 'lucide-react';
+import { VersionChecker } from '../../components/version-checker';
 
 export default function CheckPage() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const [reactNativeVersions, setReactNativeVersions] = useState([]);
   const [results, setResults] = useState<Record<string, PackageInfo>>({});
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -66,11 +68,14 @@ export default function CheckPage() {
         }
 
         const infoData = await infoResponse.json();
+        const packages = infoData?.packages;
+
+        setReactNativeVersions(infoData.reactNativeVersions);
 
         const mergedResults = selectedPackages.reduce<Record<string, PackageInfo>>((acc, pkg) => {
-          if (infoData[pkg]) {
+          if (packages[pkg]) {
             acc[pkg] = {
-              ...(infoData[pkg] || {
+              ...(packages[pkg] || {
                 npmUrl: `https://www.npmjs.com/package/${pkg}`,
                 notInDirectory: true,
                 error: 'Package not found in React Native Directory',
@@ -78,11 +83,11 @@ export default function CheckPage() {
               newArchitecture: archData[pkg]?.newArchitecture,
               unmaintained: archData[pkg]?.unmaintained,
               error: archData[pkg]?.error,
+              packageJson: archData[pkg]?.packageJson,
             };
           }
           return acc;
         }, {});
-
         setResults(mergedResults);
       } catch (e) {
         console.error('API Error:', e);
@@ -108,7 +113,7 @@ export default function CheckPage() {
           <div className="flex items-center justify-between">
             <Logo />
             <div className="flex items-center gap-2">
-              <UploadButton packages={selectedPackages} />
+              <UploadButton />
             </div>
           </div>
         </div>
@@ -120,6 +125,7 @@ export default function CheckPage() {
           </Alert>
         ) : (
           <>
+            <VersionChecker versions={reactNativeVersions} />
             <PackageResults
               data={results}
               activeArchFilters={activeArchFilters}

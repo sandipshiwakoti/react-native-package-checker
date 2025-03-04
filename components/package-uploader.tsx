@@ -4,7 +4,7 @@ import { toast } from 'sonner';
 import { useState } from 'react';
 
 interface PackageUploaderProps {
-  onPackagesFound: (packages: string[]) => void;
+  onPackagesFound: (packages: string[], rnVersion: string) => void;
   children?: React.ReactNode;
   isDragActive?: boolean;
 }
@@ -39,14 +39,13 @@ export function PackageUploader({
           toast.error('No dependencies found in package.json');
           return;
         }
-
+        const rnVersion = json.dependencies['react-native'];
         const deps = Object.keys(json.dependencies);
         if (deps.length === 0) {
           toast.error('No dependencies found in package.json');
           return;
         }
-
-        onPackagesFound(deps);
+        onPackagesFound(deps, rnVersion);
       } catch (e) {
         console.error('File upload error:', e);
         if (e instanceof SyntaxError) {

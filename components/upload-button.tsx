@@ -5,16 +5,13 @@ import { useRouter } from 'next/navigation';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
 import { PackageUploader } from './package-uploader';
 
-interface UploadButtonProps {
-  packages: string[];
-}
-
-export const UploadButton = ({ packages }: UploadButtonProps) => {
+export const UploadButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
-  const goToCheckPage = (packageNames: string[]) => {
-    router.push(`/check?packages=${packageNames.join(',')}`);
+  const goToCheckPage = (packageNames: string[], rnVersion?: string) => {
+    const versionParam = rnVersion ? `&version=${rnVersion}` : '';
+    router.push(`/check?packages=${packageNames.join(',')}${versionParam}`);
     setIsOpen(false);
   };
 

@@ -16,7 +16,7 @@ export function SearchBar({ value, onChange, placeholder = 'Search', className }
         placeholder={placeholder}
         value={value}
         onChange={e => onChange(e.target.value)}
-        className={`w-[200px] pl-9 pr-3 py-2 rounded-md border bg-background text-sm ${className}`}
+        className={`w-[200px] pl-9 pr-3 rounded-md border bg-background text-sm ${className} h-10`}
       />
     </div>
   );

@@ -148,30 +148,28 @@ export function Overview({ results }: OverviewProps) {
   ];
 
   return (
-    <div>
-      <div className="mt-3">
-        <div className="flex flex-row justify-between">
-          <div className="flex items-center gap-2">
-            <h2 className="text-xl font-semibold">Overview</h2>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <div className="text-popover-foreground text-xs">
-                    Overview of React Native packages and their New Architecture support status
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
-          <ExportButton data={fileExportData} />
+    <div className="mt-3">
+      <div className="flex flex-row justify-between">
+        <div className="flex items-center gap-2">
+          <h2 className="text-xl font-semibold">Overview</h2>
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger>
+                <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
+              </TooltipTrigger>
+              <TooltipContent>
+                <div className="text-popover-foreground text-xs">
+                  Overview of React Native packages and their New Architecture support status
+                </div>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         </div>
-        <p className="text-sm text-muted-foreground mt-1">
-          Found {totalResultCounts} {totalResultCounts === 1 ? 'package' : 'packages'}
-        </p>
+        <ExportButton data={fileExportData} />
       </div>
+      <p className="text-sm text-muted-foreground mt-1">
+        Found {totalResultCounts} {totalResultCounts === 1 ? 'package' : 'packages'}
+      </p>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
         {overviewCards.map(card => (
           <OverviewCard

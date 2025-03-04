@@ -64,7 +64,18 @@ export async function POST(request: Request) {
       }
     }
 
-    return NextResponse.json(results);
+    const releaseResponse = await fetch(
+      'https://raw.githubusercontent.com/react-native-community/rn-diff-purge/master/RELEASES'
+    );
+    const releaseText = await releaseResponse.text();
+    const versions = releaseText.split('\n').filter(v => !v.includes('-rc'));
+
+    const response = {
+      packages: results,
+      reactNativeVersions: versions
+    };
+
+    return NextResponse.json(response);
   } catch (error) {
     console.error('Package info error:', error);
     return NextResponse.json({ error: 'Failed to fetch package information' }, { status: 500 });
