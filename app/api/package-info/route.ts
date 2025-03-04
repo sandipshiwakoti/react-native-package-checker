@@ -1,15 +1,20 @@
 import { NextResponse } from 'next/server';
+import axios from 'axios';
 import { DirectoryPackage, PackageInfo } from '@/types';
+import { externalUrls } from '../../../config/urls';
 
 export async function POST(request: Request) {
   try {
     const { packages } = await request.json();
     const results: Record<string, PackageInfo> = {};
 
-    const directoryResponse = await fetch(
-      'https://raw.githubusercontent.com/react-native-community/directory/main/assets/data.json'
-    );
-    const directoryData: { libraries: DirectoryPackage[] } = await directoryResponse.json();
+    const [directoryResponse, releaseResponse] = await Promise.all([
+      axios.get(externalUrls.reactNativeDirectory.directoryData),
+      axios.get(externalUrls.reactNativeDirectory.rnReleases),
+    ]);
+
+    const directoryData: { libraries: DirectoryPackage[] } = directoryResponse.data;
+    const versions = releaseResponse.data.split('\n').filter((v: string) => !v.includes('-rc'));
 
     for (const pkg of packages) {
       try {
@@ -18,7 +23,7 @@ export async function POST(request: Request) {
         if (packageData) {
           const githubUrl = packageData.github.urls.repo;
           results[pkg] = {
-            npmUrl: `https://www.npmjs.com/package/${pkg}`,
+            npmUrl: externalUrls.npm.package(pkg),
             githubUrl,
             platforms: {
               ios: packageData.ios || false,
@@ -49,7 +54,7 @@ export async function POST(request: Request) {
           };
         } else {
           results[pkg] = {
-            npmUrl: `https://www.npmjs.com/package/${pkg}`,
+            npmUrl: externalUrls.npm.package(pkg),
             error: 'Package not found in React Native Directory',
             notInDirectory: true,
           };
@@ -57,25 +62,17 @@ export async function POST(request: Request) {
       } catch (pkgError) {
         console.error(`Error processing ${pkg}:`, pkgError);
         results[pkg] = {
-          npmUrl: `https://www.npmjs.com/package/${pkg}`,
+          npmUrl: externalUrls.npm.package(pkg),
           error: 'Failed to process package information',
           notInDirectory: true,
         };
       }
     }
 
-    const releaseResponse = await fetch(
-      'https://raw.githubusercontent.com/react-native-community/rn-diff-purge/master/RELEASES'
-    );
-    const releaseText = await releaseResponse.text();
-    const versions = releaseText.split('\n').filter(v => !v.includes('-rc'));
-
-    const response = {
+    return NextResponse.json({
       packages: results,
       reactNativeVersions: versions,
-    };
-
-    return NextResponse.json(response);
+    });
   } catch (error) {
     console.error('Package info error:', error);
     return NextResponse.json({ error: 'Failed to fetch package information' }, { status: 500 });

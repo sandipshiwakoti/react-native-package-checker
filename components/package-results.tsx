@@ -28,9 +28,10 @@ import { FilterButton } from './filter-button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import { useDebounce } from '../hooks/use-debounce';
 import { SearchBar } from './search-bar';
+import { externalUrls } from '../config/urls';
 
 interface PackageResultsProps {
-  data: Record<string, PackageInfo>;
+  data?: Record<string, PackageInfo>;
   activeArchFilters: NewArchFilter[];
   setActiveArchFilters: (filters: NewArchFilter[]) => void;
   activeMaintenanceFilter: boolean;
@@ -56,6 +57,8 @@ export function PackageResults({
   const unlistedSearchQuery = useDebounce(unlistedSearchInput);
 
   const getFilteredResults = () => {
+    if (!results) return [];
+
     return Object.entries(results).filter(([name, status]) => {
       if (activeArchFilters.length === 0 && !showUnmaintained) return true;
 
@@ -80,7 +83,7 @@ export function PackageResults({
     });
   };
 
-  const unlistedPackages = Object.entries(results).filter(
+  const unlistedPackages = Object.entries(results ?? []).filter(
     ([name, status]) =>
       status.notInDirectory &&
       (!unlistedSearchQuery || name.toLowerCase().includes(unlistedSearchQuery.toLowerCase()))
@@ -363,7 +366,7 @@ export function PackageResults({
                                 {status.alternatives.map((alt, index) => (
                                   <a
                                     key={index}
-                                    href={`https://www.npmjs.com/package/${alt}`}
+                                    href={externalUrls.npm.package(alt)}
                                     target="_blank"
                                     rel="noopener noreferrer"
                                     className="text-primary hover:text-primary/80 transition-colors"

@@ -3,8 +3,8 @@ const nextConfig = {
   async rewrites() {
     return [
       {
-        source: '/api/:path*',
-        destination: 'https://reactnative.directory/api/:path*',
+        source: '/api/check',
+        destination: 'https://reactnative.directory/api/libraries/check',
       },
     ];
   },

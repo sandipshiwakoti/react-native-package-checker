@@ -9,6 +9,11 @@ export interface Package {
   selected: boolean;
 }
 
+export interface PackageResponse {
+  packages: Record<string, PackageInfo>;
+  reactNativeVersions: string[];
+}
+
 export interface PackageStatus {
   newArchitecture?: NewArchSupportStatus;
   unmaintained?: boolean;

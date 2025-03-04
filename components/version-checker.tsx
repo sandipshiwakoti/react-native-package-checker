@@ -4,6 +4,7 @@ import { ArrowUpCircle } from 'lucide-react';
 import { Button } from './ui/button';
 import { useSearchParams } from 'next/navigation';
 import { X } from 'lucide-react';
+import { externalUrls } from '../config/urls';
 
 interface VersionCheckerProps {
   versions: string[];
@@ -27,7 +28,7 @@ export function VersionChecker({ versions }: VersionCheckerProps) {
     return null;
   }
 
-  const upgradeUrl = `https://react-native-community.github.io/upgrade-helper?from=${currentVersion}&to=${latestVersion}`;
+  const upgradeUrl = externalUrls.tools.upgradeHelper(currentVersion, latestVersion);
 
   return (
     <Alert className="mt-6 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-l-blue-500">

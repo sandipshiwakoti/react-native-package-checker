@@ -1,4 +1,5 @@
 import { HeartIcon } from 'lucide-react';
+import { externalUrls } from '../config/urls';
 
 export function Footer() {
   return (
@@ -6,7 +7,7 @@ export function Footer() {
       <p className="flex items-center justify-center gap-1">
         Data sourced from{' '}
         <a
-          href="https://github.com/react-native-community/directory"
+          href={externalUrls.github.directory}
           target="_blank"
           rel="noopener noreferrer"
           className="text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-0.5"

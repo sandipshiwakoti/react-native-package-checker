@@ -5,7 +5,7 @@ import { ExportButton } from './export-button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 interface OverviewProps {
-  results: Record<string, PackageInfo>;
+  results?: Record<string, PackageInfo>;
 }
 
 interface OverviewCard {
@@ -94,7 +94,7 @@ function OverviewCard({ title, value, icon, color, tooltip, total }: OverviewCar
   );
 }
 
-export function Overview({ results }: OverviewProps) {
+export function Overview({ results = {} }: OverviewProps) {
   const totalResultCounts = Object.keys(results).length;
   const fileExportData = prepareFileExportData(results);
 
