@@ -2,6 +2,7 @@ import { AlertCircle, Archive, CheckCircle, Package2, XCircle } from 'lucide-rea
 import { NewArchSupportStatus, PackageInfo } from '@/types';
 import { prepareFileExportData } from '../lib/file-export';
 import { ExportButton } from './export-button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 interface OverviewProps {
   results: Record<string, PackageInfo>;
@@ -59,12 +60,16 @@ function OverviewCard({ title, value, icon, color, tooltip, total }: OverviewCar
               <div className="flex items-center gap-1.5">
                 <p className="text-sm font-medium text-muted-foreground">{title}</p>
                 {tooltip && (
-                  <div className="relative flex group/tooltip">
-                    <AlertCircle className="h-4 w-4 text-muted-foreground/50 hover:text-muted-foreground" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-48 p-2 rounded-lg bg-popover text-popover-foreground shadow-lg text-xs opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all">
-                      {tooltip}
-                    </div>
-                  </div>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <AlertCircle className="h-4 w-4 text-muted-foreground/50 hover:text-muted-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="text-popover-foreground text-xs">{tooltip}</div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )}
               </div>
               <div className="space-y-1">
@@ -148,12 +153,18 @@ export function Overview({ results }: OverviewProps) {
         <div className="flex flex-row justify-between">
           <div className="flex items-center gap-2">
             <h2 className="text-xl font-semibold">Overview</h2>
-            <div className="relative flex group/tooltip">
-              <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 rounded-lg bg-popover text-popover-foreground shadow-lg text-xs opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all">
-                Overview of React Native packages and their New Architecture support status
-              </div>
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-popover-foreground text-xs">
+                    Overview of React Native packages and their New Architecture support status
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
           <ExportButton data={fileExportData} />
         </div>

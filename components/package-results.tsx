@@ -24,6 +24,7 @@ import { Button } from './ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
 import { Overview } from './overview';
 import { FilterButton } from './filter-button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 interface PackageResultsProps {
   data: Record<string, PackageInfo>;
@@ -175,12 +176,19 @@ export function PackageResults({
         <div className="flex flex-row justify-between">
           <div className="flex items-center gap-2 mb-4">
             <h2 className="text-xl font-semibold">Results</h2>
-            <div className="relative flex group/tooltip">
-              <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
-              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 rounded-lg bg-popover text-popover-foreground shadow-lg text-xs opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all">
-                Analysis results of React Native packages showing compatibility status and metrics
-              </div>
-            </div>
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <div className="text-popover-foreground text-xs">
+                    Analysis results of React Native packages showing compatibility status and
+                    metrics
+                  </div>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
         </div>
         <Tabs defaultValue="directory" className="w-full">
@@ -197,12 +205,18 @@ export function PackageResults({
               <div>
                 <div className="flex flex-row gap-2 items-center">
                   <h2 className="text-md font-semibold">Directory Packages</h2>
-                  <div className="relative flex group/tooltip">
-                    <AlertCircle className="h-4 w-4 text-muted-foreground/50 hover:text-muted-foreground" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 rounded-lg bg-popover text-popover-foreground shadow-lg text-xs opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
-                      Packages listed in the official React Native directory
-                    </div>
-                  </div>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <AlertCircle className="h-4 w-4 text-muted-foreground/50 hover:text-muted-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="text-popover-foreground text-xs">
+                          Packages listed in the official React Native directory
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">
                   Found {directoryPackages.length} directory packages
@@ -497,12 +511,18 @@ export function PackageResults({
               <div>
                 <div className="flex flex-row items-center gap-2">
                   <h2 className="text-md font-semibold">Unlisted Packages</h2>
-                  <div className="relative flex group/tooltip">
-                    <AlertCircle className="h-4 w-4 text-muted-foreground/50 hover:text-muted-foreground" />
-                    <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 rounded-lg bg-popover text-popover-foreground shadow-lg text-xs opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
-                      Packages not found in the official React Native directory
-                    </div>
-                  </div>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger>
+                        <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <div className="text-popover-foreground text-xs">
+                          Packages not found in the official React Native directory
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 </div>
                 <p className="text-sm text-muted-foreground mt-1">
                   Found {unlistedPackages.length} unlisted{' '}
@@ -522,13 +542,19 @@ export function PackageResults({
                         <div className="flex items-center gap-2 mb-1">
                           <h3 className="text-lg font-medium">{name}</h3>
                           {CORE_PACKAGES.includes(name) && (
-                            <div className="relative flex group/tooltip">
-                              <AlertCircle className="h-4 w-4 text-muted-foreground/50 hover:text-muted-foreground" />
-                              <div className="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 w-64 p-2 rounded-lg bg-popover text-popover-foreground shadow-lg text-xs opacity-0 invisible group-hover/tooltip:opacity-100 group-hover/tooltip:visible transition-all z-50">
-                                Core dependency required by React Native. Not listed in the
-                                directory but fully compatible with the New Architecture.
-                              </div>
-                            </div>
+                            <TooltipProvider>
+                              <Tooltip>
+                                <TooltipTrigger>
+                                  <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
+                                </TooltipTrigger>
+                                <TooltipContent>
+                                  <div className="text-popover-foreground text-xs">
+                                    Core dependency required by React Native. Not listed in the
+                                    directory but fully compatible with the New Architecture.
+                                  </div>
+                                </TooltipContent>
+                              </Tooltip>
+                            </TooltipProvider>
                           )}
                           <div className="flex items-center gap-1">
                             {status.githubUrl && (
