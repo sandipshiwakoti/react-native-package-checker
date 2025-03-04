@@ -11,6 +11,7 @@ import { LoadingIndicator } from '../../components/loading-indicator';
 import { HeartIcon } from 'lucide-react';
 import { VersionChecker } from '../../components/version-checker';
 import Link from 'next/link';
+import { Footer } from '../../components/footer';
 
 export default function CheckPage() {
   const searchParams = useSearchParams();
@@ -108,10 +109,10 @@ export default function CheckPage() {
   }, [selectedPackages]);
 
   return (
-    <div className="min-h-screen">
-      <div className="max-w-[1200px] mx-auto px-4">
-        <div className="pt-4 pb-2 border-b mb-2">
-          <div className="flex items-center justify-between">
+    <div className="min-h-screen flex flex-col">
+      <div className="max-w-[1200px] mx-auto px-4 w-full flex-1 flex flex-col">
+        <div className="pt-4 pb-2 border-b mb-2 w-full">
+          <div className="flex w-full items-center justify-between">
             <Link href="/">
               <Logo />
             </Link>
@@ -120,39 +121,28 @@ export default function CheckPage() {
             </div>
           </div>
         </div>
-        {Object.keys(results).length === 0 || loading ? (
-          <LoadingIndicator />
-        ) : error ? (
-          <Alert variant="destructive">
-            <AlertDescription>{error}</AlertDescription>
-          </Alert>
-        ) : (
-          <>
-            <VersionChecker versions={reactNativeVersions} />
-            <PackageResults
-              data={results}
-              activeArchFilters={activeArchFilters}
-              setActiveArchFilters={setActiveArchFilters}
-              activeMaintenanceFilter={activeMaintenanceFilter}
-              setActiveMaintenanceFilter={setActiveMaintenanceFilter}
-              showUnmaintained={activeMaintenanceFilter}
-            />
-            <div className="text-center py-6 text-sm mt-2 text-muted-foreground border-t">
-              <p className="flex items-center justify-center gap-1">
-                Data sourced from{' '}
-                <a
-                  href="https://github.com/react-native-community/directory"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-0.5"
-                >
-                  React Native Directory
-                </a>
-                <HeartIcon className="h-4 w-4 " />
-              </p>
+        <div className="flex-1 flex items-center justify-center">
+          {Object.keys(results).length === 0 || loading ? (
+            <LoadingIndicator />
+          ) : error ? (
+            <Alert variant="destructive">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          ) : (
+            <div className="w-full">
+              <VersionChecker versions={reactNativeVersions} />
+              <PackageResults
+                data={results}
+                activeArchFilters={activeArchFilters}
+                setActiveArchFilters={setActiveArchFilters}
+                activeMaintenanceFilter={activeMaintenanceFilter}
+                setActiveMaintenanceFilter={setActiveMaintenanceFilter}
+                showUnmaintained={activeMaintenanceFilter}
+              />
             </div>
-          </>
-        )}
+          )}
+        </div>
+        <Footer />
       </div>
     </div>
   );

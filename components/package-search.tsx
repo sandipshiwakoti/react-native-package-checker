@@ -24,7 +24,7 @@ export function PackageSearch() {
   };
 
   return (
-    <div className="space-y-8 max-w-2xl mx-auto mt-4">
+    <div className="w-full space-y-8 max-w-2xl mx-auto mt-4">
       <div>
         <div className="relative group">
           <Input
