@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
-import { Button } from './ui/button';
-import { UploadIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog';
-import { PackageUploader } from './package-uploader';
+import { UploadIcon } from 'lucide-react';
+
+import { PackageUploader } from '@/components/package-uploader';
+import { Button } from '@/components/ui/button';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
 export const UploadButton = () => {
   const [isOpen, setIsOpen] = useState(false);

@@ -1,5 +1,6 @@
 import { HeartIcon } from 'lucide-react';
-import { externalUrls } from '../config/urls';
+
+import { externalUrls } from '@/config/urls';
 
 export function Footer() {
   return (

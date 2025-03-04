@@ -1,15 +1,16 @@
-import { useState, useCallback, useEffect } from 'react';
-import { Button } from './ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from './ui/popover';
-import { Checkbox } from './ui/checkbox';
+import { useCallback, useEffect, useState } from 'react';
 import { AlertCircle, Archive, CheckCircle, ChevronDown, Filter, X, XCircle } from 'lucide-react';
-import { NewArchFilter } from '../types';
+
+import { Button } from '@/components/ui/button';
+import { Checkbox } from '@/components/ui/checkbox';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { NewArchFilter } from '@/types';
 
 interface FilterButtonProps {
   activeArchFilters: NewArchFilter[];
-  setActiveArchFilters: (filters: NewArchFilter[]) => void;
+  setActiveArchFilters: (_filters: NewArchFilter[]) => void;
   activeMaintenanceFilter: boolean;
-  setActiveMaintenanceFilter: (value: boolean) => void;
+  setActiveMaintenanceFilter: (_value: boolean) => void;
 }
 
 export function FilterButton({

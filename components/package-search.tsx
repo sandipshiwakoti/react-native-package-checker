@@ -2,8 +2,9 @@
 
 import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
-import { Input } from './ui/input';
-import { PackageUploader } from './package-uploader';
+
+import { PackageUploader } from '@/components/package-uploader';
+import { Input } from '@/components/ui/input';
 
 export function PackageSearch() {
   const router = useRouter();

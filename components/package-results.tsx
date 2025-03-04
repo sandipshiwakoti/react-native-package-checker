@@ -1,41 +1,47 @@
 import { useState } from 'react';
 import {
-  CheckCircle,
-  XCircle,
   AlertCircle,
-  AlertTriangle,
-  Package2,
   AlertOctagon,
+  AlertTriangle,
   Archive,
   ArrowUpDown,
   Calendar,
+  CheckCircle,
   ChevronLeft,
   ChevronRight,
   Eye,
   GitFork,
   Github,
+  Package2,
   Star,
-  Search,
+  XCircle,
 } from 'lucide-react';
-import { NewArchSupportStatus, PackageInfo, NewArchFilter } from '@/types';
 import { MessageCircle } from 'lucide-react';
-import { CORE_PACKAGES, NEW_ARCH_ISSUE_QUERY } from '../constants';
-import { Tabs, TabsList, TabsTrigger, TabsContent } from './ui/tabs';
-import { Button } from './ui/button';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select';
-import { Overview } from './overview';
-import { FilterButton } from './filter-button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
-import { useDebounce } from '../hooks/use-debounce';
-import { SearchBar } from './search-bar';
-import { externalUrls } from '../config/urls';
+
+import { FilterButton } from '@/components/filter-button';
+import { Overview } from '@/components/overview';
+import { SearchBar } from '@/components/search-bar';
+import { Button } from '@/components/ui/button';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { externalUrls } from '@/config/urls';
+import { CORE_PACKAGES, NEW_ARCH_ISSUE_QUERY } from '@/constants';
+import { useDebounce } from '@/hooks/use-debounce';
+import { NewArchFilter, NewArchSupportStatus, PackageInfo } from '@/types';
 
 interface PackageResultsProps {
   data?: Record<string, PackageInfo>;
   activeArchFilters: NewArchFilter[];
-  setActiveArchFilters: (filters: NewArchFilter[]) => void;
+  setActiveArchFilters: (_filters: NewArchFilter[]) => void;
   activeMaintenanceFilter: boolean;
-  setActiveMaintenanceFilter: (value: boolean) => void;
+  setActiveMaintenanceFilter: (_value: boolean) => void;
   showUnmaintained: boolean;
 }
 
@@ -59,7 +65,7 @@ export function PackageResults({
   const getFilteredResults = () => {
     if (!results) return [];
 
-    return Object.entries(results).filter(([name, status]) => {
+    return Object.entries(results).filter(([_, status]) => {
       if (activeArchFilters.length === 0 && !showUnmaintained) return true;
 
       const matchesArchFilter =

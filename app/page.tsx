@@ -1,6 +1,6 @@
-import { PackageSearch } from '../components/package-search';
-import { Logo } from '../components/logo';
-import { Footer } from '../components/footer';
+import { Footer } from '@/components/footer';
+import { Logo } from '@/components/logo';
+import { PackageSearch } from '@/components/package-search';
 
 export default function HomePage() {
   return (

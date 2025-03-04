@@ -1,18 +1,19 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { useSearchParams, useRouter } from 'next/navigation';
-import { PackageResults } from '@/components/package-results';
-import { NewArchFilter, PackageInfo } from '../../types';
-import { Alert, AlertDescription } from '../../components/ui/alert';
-import { Logo } from '../../components/logo';
-import { UploadButton } from '../../components/upload-button';
-import { LoadingIndicator } from '../../components/loading-indicator';
-import { VersionChecker } from '../../components/version-checker';
 import Link from 'next/link';
-import { Footer } from '../../components/footer';
-import { externalUrls } from '../../config/urls';
-import { usePackages } from '../../hooks/queries/use-packages';
+import { useRouter, useSearchParams } from 'next/navigation';
+
+import { Footer } from '@/components/footer';
+import { LoadingIndicator } from '@/components/loading-indicator';
+import { Logo } from '@/components/logo';
+import { PackageResults } from '@/components/package-results';
+import { Alert, AlertDescription } from '@/components/ui/alert';
+import { UploadButton } from '@/components/upload-button';
+import { VersionChecker } from '@/components/version-checker';
+import { externalUrls } from '@/config/urls';
+import { usePackages } from '@/hooks/queries/use-packages';
+import { NewArchFilter, PackageInfo } from '@/types';
 
 export default function CheckPage() {
   const searchParams = useSearchParams();

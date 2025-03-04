@@ -1,10 +1,10 @@
-import { FileJson } from 'lucide-react';
-import { useDropzone } from 'react-dropzone';
-import { toast } from 'sonner';
 import { useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { FileJson } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface PackageUploaderProps {
-  onPackagesFound: (packages: string[], rnVersion: string) => void;
+  onPackagesFound: (_packages: string[], _rnVersion: string) => void;
   children?: React.ReactNode;
   isDragActive?: boolean;
 }

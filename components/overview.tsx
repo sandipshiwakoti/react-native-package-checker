@@ -1,8 +1,9 @@
 import { AlertCircle, Archive, CheckCircle, Package2, XCircle } from 'lucide-react';
+
+import { ExportButton } from '@/components/export-button';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
+import { prepareFileExportData } from '@/lib/file-export';
 import { NewArchSupportStatus, PackageInfo } from '@/types';
-import { prepareFileExportData } from '../lib/file-export';
-import { ExportButton } from './export-button';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 
 interface OverviewProps {
   results?: Record<string, PackageInfo>;

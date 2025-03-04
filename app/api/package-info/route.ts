@@ -1,7 +1,8 @@
 import { NextResponse } from 'next/server';
 import axios from 'axios';
+
+import { externalUrls } from '@/config/urls';
 import { DirectoryPackage, PackageInfo } from '@/types';
-import { externalUrls } from '../../../config/urls';
 
 export async function POST(request: Request) {
   try {

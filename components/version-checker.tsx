@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import { Alert, AlertDescription, AlertTitle } from './ui/alert';
-import { ArrowUpCircle } from 'lucide-react';
-import { Button } from './ui/button';
 import { useSearchParams } from 'next/navigation';
+import { ArrowUpCircle } from 'lucide-react';
 import { X } from 'lucide-react';
-import { externalUrls } from '../config/urls';
+
+import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Button } from '@/components/ui/button';
+import { externalUrls } from '@/config/urls';
 
 interface VersionCheckerProps {
   versions: string[];

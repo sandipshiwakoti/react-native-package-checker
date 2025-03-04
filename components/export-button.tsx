@@ -1,15 +1,16 @@
 import React from 'react';
-import { generatePDF, generateCSV } from '../lib/file-export';
-import { FileExportData } from '../types';
 import { ChevronDown, FileUp } from 'lucide-react';
+
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuPortal,
   DropdownMenuTrigger,
-} from './ui/dropdown-menu';
-import { Button } from './ui/button';
+} from '@/components/ui/dropdown-menu';
+import { generateCSV, generatePDF } from '@/lib/file-export';
+import { FileExportData } from '@/types';
 
 interface ExportButtonProps {
   data: FileExportData;

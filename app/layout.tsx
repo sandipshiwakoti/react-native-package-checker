@@ -1,9 +1,12 @@
-import './globals.css';
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-import { Toaster } from 'sonner';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { Providers } from './providers';
+import { Toaster } from 'sonner';
+
+import { Providers } from '@/app/providers';
+
+// eslint-disable-next-line no-restricted-imports
+import './globals.css';
 
 const inter = Inter({ subsets: ['latin'] });
 

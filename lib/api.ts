@@ -1,6 +1,7 @@
 import axios from 'axios';
+
+import { urls } from '@/config/urls';
 import { PackageResponse } from '@/types';
-import { urls } from '../config/urls';
 
 const api = axios.create({
   baseURL: '/api',
