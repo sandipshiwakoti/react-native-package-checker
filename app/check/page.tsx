@@ -10,6 +10,7 @@ import { UploadButton } from '../../components/upload-button';
 import { LoadingIndicator } from '../../components/loading-indicator';
 import { HeartIcon } from 'lucide-react';
 import { VersionChecker } from '../../components/version-checker';
+import Link from 'next/link';
 
 export default function CheckPage() {
   const searchParams = useSearchParams();
@@ -111,7 +112,9 @@ export default function CheckPage() {
       <div className="max-w-[1200px] mx-auto px-4">
         <div className="pt-4 pb-2 border-b mb-2">
           <div className="flex items-center justify-between">
-            <Logo />
+            <Link href="/">
+              <Logo />
+            </Link>
             <div className="flex items-center gap-2">
               <UploadButton />
             </div>
