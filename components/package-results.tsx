@@ -72,7 +72,7 @@ export function PackageResults({
     });
   };
 
-  const unlistedPackages = getFilteredResults().filter(([_, status]) => status.notInDirectory);
+  const unlistedPackages = Object.entries(results).filter(([_, status]) => status.notInDirectory);
   const directoryPackages = getFilteredResults().filter(([_, status]) => !status.notInDirectory);
 
   const getSortedAndPaginatedResults = () => {
@@ -182,12 +182,6 @@ export function PackageResults({
               </div>
             </div>
           </div>
-          <FilterButton
-            activeArchFilters={activeArchFilters}
-            setActiveArchFilters={setActiveArchFilters}
-            activeMaintenanceFilter={activeMaintenanceFilter}
-            setActiveMaintenanceFilter={setActiveMaintenanceFilter}
-          />
         </div>
         <Tabs defaultValue="directory" className="w-full">
           <TabsList className="w-full justify-start mb-4">
@@ -214,7 +208,13 @@ export function PackageResults({
                   Found {directoryPackages.length} directory packages
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-3">
+                <FilterButton
+                  activeArchFilters={activeArchFilters}
+                  setActiveArchFilters={setActiveArchFilters}
+                  activeMaintenanceFilter={activeMaintenanceFilter}
+                  setActiveMaintenanceFilter={setActiveMaintenanceFilter}
+                />
                 <Select
                   value={sortBy}
                   onValueChange={(value: 'name' | 'stars' | 'updated') => {
