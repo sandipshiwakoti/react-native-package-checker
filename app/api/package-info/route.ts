@@ -72,7 +72,7 @@ export async function POST(request: Request) {
 
     const response = {
       packages: results,
-      reactNativeVersions: versions
+      reactNativeVersions: versions,
     };
 
     return NextResponse.json(response);

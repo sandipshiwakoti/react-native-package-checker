@@ -27,7 +27,7 @@ import { Overview } from './overview';
 import { FilterButton } from './filter-button';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from './ui/tooltip';
 import { useDebounce } from '../hooks/use-debounce';
-import { SearchBar } from './ui/search-bar';
+import { SearchBar } from './search-bar';
 
 interface PackageResultsProps {
   data: Record<string, PackageInfo>;

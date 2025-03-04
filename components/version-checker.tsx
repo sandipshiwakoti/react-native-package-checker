@@ -48,7 +48,7 @@ export function VersionChecker({ versions }: VersionCheckerProps) {
             </div>
             <AlertDescription className="text-md text-slate-600 flex items-center justify-between">
               <div>
-                You're currently using React Native
+                You&apos;re currently using React Native
                 <span className="px-1 py-0.5 bg-slate-100 rounded-md font-bold text-slate-700">
                   v{currentVersion}
                 </span>

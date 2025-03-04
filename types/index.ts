@@ -115,7 +115,6 @@ export interface PDFExportOptions {
   pageSize?: 'A4' | 'Letter';
 }
 
-
 export interface FileExportPackageData {
   name: string;
   notInDirectory?: boolean;
