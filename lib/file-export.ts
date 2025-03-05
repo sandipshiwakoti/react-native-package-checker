@@ -88,45 +88,52 @@ export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}
     format: pageSize,
   });
 
-  doc.setFontSize(16);
-  doc.setFont('', 'bold');
-  doc.text('React Native Package Analysis Report', 14, 15);
-  doc.setFontSize(11);
-  doc.setFont('', 'semibold');
-  doc.text('Summary:', 14, 25);
+  doc.setFillColor(244, 244, 245);
+  doc.rect(0, 0, doc.internal.pageSize.width, 25, 'F');
 
-  const summaryData = [
-    [
-      { content: 'Total Packages', styles: { fontStyle: 'bold' } },
-      { content: 'New Architecture', styles: { fontStyle: 'bold' } },
-      { content: 'Status', styles: { fontStyle: 'bold' } },
-    ],
-    [
-      { content: data.summary.total.toString() },
-      { content: `Supported: ${data.summary.supported}` },
-      { content: `Unlisted: ${data.summary.unlisted}` },
-    ],
-    [
-      { content: '' },
-      { content: `Unsupported: ${data.summary.unsupported}` },
-      { content: `Unmaintained: ${data.summary.unmaintained}` },
-    ],
-    [{ content: '' }, { content: `Untested: ${data.summary.untested}` }, { content: '' }],
+  doc.setFontSize(20);
+  doc.setFont('', 'bold');
+  doc.setTextColor(24, 24, 27);
+  doc.text('React Native Package Checker Report', 14, 16);
+
+  const summaryStartY = 35;
+  const cardWidth = 45;
+  const cardHeight = 25;
+  const cardGap = 8;
+  const startX = 14;
+
+  const summaryCards = [
+    { title: 'Total Packages', value: data.summary.total },
+    { title: 'Supported', value: data.summary.supported },
+    { title: 'Unsupported', value: data.summary.unsupported },
+    { title: 'Untested', value: data.summary.untested },
+    { title: 'Unlisted', value: data.summary.unlisted },
   ];
 
-  autoTable(doc, {
-    startY: 30,
-    body: summaryData as any,
-    theme: 'plain',
-    styles: { fontSize: 10, cellPadding: 4 },
-    columnStyles: {
-      0: { cellWidth: 40 },
-      1: { cellWidth: 40 },
-      2: { cellWidth: 40 },
-    },
+  doc.setFontSize(14);
+  doc.setFont('', 'bold');
+  doc.setTextColor(24, 24, 27);
+  doc.text('Summary', startX, summaryStartY);
+
+  summaryCards.forEach((card, index) => {
+    const x = startX + (cardWidth + cardGap) * index;
+
+    doc.setFillColor(250, 250, 250);
+    doc.roundedRect(x, summaryStartY + 6, cardWidth, cardHeight, 2, 2, 'F');
+
+    doc.setFontSize(12);
+    doc.setFont('', 'normal');
+    doc.setTextColor(113, 113, 122);
+    doc.text(card.title, x + 4, summaryStartY + 16);
+
+    doc.setFontSize(16);
+    doc.setFont('', 'bold');
+    doc.setTextColor(24, 24, 27);
+    doc.text(card.value.toString(), x + 5, summaryStartY + 28);
   });
 
   autoTable(doc, {
+    startY: summaryStartY + cardHeight + 15,
     head: [
       [
         '#',
@@ -203,7 +210,7 @@ export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}
       ]),
     styles: { fontSize: 9, cellPadding: 2 },
     headStyles: {
-      fillColor: [41, 128, 185],
+      fillColor: [51, 65, 85],
       textColor: 255,
       fontStyle: 'bold',
     },
