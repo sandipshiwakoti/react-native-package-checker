@@ -23,7 +23,10 @@ const TooltipContent = React.forwardRef<
       className
     )}
     {...props}
-  />
+  >
+    {props.children}
+    <TooltipPrimitive.Arrow className="fill-popover h-2 w-4 -mt-0.5 animate-in fade-in-0 duration-200" />
+  </TooltipPrimitive.Content>
 ));
 TooltipContent.displayName = TooltipPrimitive.Content.displayName;
 

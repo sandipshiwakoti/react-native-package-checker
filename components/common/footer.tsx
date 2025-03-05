@@ -18,8 +18,8 @@ export function Footer() {
         <HeartIcon className="h-4 w-4" />
       </p>
       <p className="text-xs text-muted-foreground/80">
-        We don&apos;t store any of your package.json data. This tool is purely for helping the React
-        Native community.
+        We don&apos;t store any of your package.json data. This website is purely built for helping
+        the React Native community.
       </p>
     </div>
   );

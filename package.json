@@ -30,6 +30,7 @@
     "axios": "^1.8.1",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "debounce-control": "^1.1.0",
     "jspdf": "^3.0.0",
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.446.0",

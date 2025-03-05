@@ -1,12 +1,14 @@
+import React, { useMemo } from 'react';
 import { AlertCircle, Archive, CheckCircle, Package2, XCircle } from 'lucide-react';
 
-import { ExportButton } from '@/components/export-button';
+import { ExportButton } from '@/components/common/export-button';
+import { HeadingWithInfo } from '@/components/common/header-with-info';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { prepareFileExportData } from '@/lib/file-export';
 import { NewArchSupportStatus, PackageInfo } from '@/types';
 
 interface OverviewProps {
-  results?: Record<string, PackageInfo>;
+  data?: Record<string, PackageInfo>;
 }
 
 interface OverviewCard {
@@ -24,7 +26,7 @@ function OverviewCard({ title, value, icon, color, tooltip, total }: OverviewCar
     red: 'hover:border-red-200 hover:bg-red-50/50',
     yellow: 'hover:border-yellow-200 hover:bg-yellow-50/50',
     gray: 'hover:border-gray-200 hover:bg-gray-50/50',
-    amber: 'hover:border-amber-200 hover:bg-amber-50/50',
+    amber: 'hover:border-amber-200 hover:bg-amber-200',
   };
 
   const bgColorClasses = {
@@ -95,77 +97,69 @@ function OverviewCard({ title, value, icon, color, tooltip, total }: OverviewCar
   );
 }
 
-export function Overview({ results = {} }: OverviewProps) {
-  const totalResultCounts = Object.keys(results).length;
-  const fileExportData = prepareFileExportData(results);
+export function Overview({ data = {} }: OverviewProps) {
+  const totalResultCounts = Object.keys(data).length;
+  const fileExportData = prepareFileExportData(data);
 
-  const overviewCards: OverviewCard[] = [
-    {
-      title: 'Supported',
-      value: Object.values(results).filter(
-        pkg => pkg.newArchitecture === NewArchSupportStatus.Supported
-      ).length,
-      icon: <CheckCircle className="h-5 w-5 text-green-600" />,
-      color: 'green',
-      tooltip: 'Packages that have confirmed support for the New Architecture',
-      total: totalResultCounts,
-    },
-    {
-      title: 'Unsupported',
-      value: Object.values(results).filter(
-        pkg => pkg.newArchitecture === NewArchSupportStatus.Unsupported
-      ).length,
-      icon: <XCircle className="h-5 w-5 text-red-600" />,
-      color: 'red',
-      tooltip: 'Packages that are known to not support the New Architecture',
-      total: totalResultCounts,
-    },
-    {
-      title: 'Untested',
-      value: Object.values(results).filter(
-        pkg => pkg.newArchitecture === NewArchSupportStatus.Untested
-      ).length,
-      icon: <AlertCircle className="h-5 w-5 text-yellow-600" />,
-      color: 'yellow',
-      tooltip: 'Packages that have not been tested with the New Architecture',
-      total: totalResultCounts,
-    },
-    {
-      title: 'Unlisted',
-      value: Object.values(results).filter(pkg => pkg.notInDirectory).length,
-      icon: <Package2 className="h-5 w-5 text-gray-600" />,
-      color: 'gray',
-      tooltip: 'Packages not listed in the official directory',
-      total: totalResultCounts,
-    },
-    {
-      title: 'Unmaintained',
-      value: Object.values(results).filter(pkg => pkg.unmaintained).length,
-      icon: <Archive className="h-5 w-5 text-amber-600" />,
-      color: 'amber',
-      tooltip: 'Packages that are no longer actively maintained',
-      total: totalResultCounts,
-    },
-  ];
+  const overviewCards = useMemo(
+    () => [
+      {
+        title: 'Supported',
+        value: Object.values(data).filter(
+          pkg => pkg.newArchitecture === NewArchSupportStatus.Supported
+        ).length,
+        icon: <CheckCircle className="h-5 w-5 text-green-600" />,
+        color: 'green',
+        tooltip: 'Packages that have confirmed support for the New Architecture',
+        total: totalResultCounts,
+      },
+      {
+        title: 'Unsupported',
+        value: Object.values(data).filter(
+          pkg => pkg.newArchitecture === NewArchSupportStatus.Unsupported
+        ).length,
+        icon: <XCircle className="h-5 w-5 text-red-600" />,
+        color: 'red',
+        tooltip: 'Packages that are known to not support the New Architecture',
+        total: totalResultCounts,
+      },
+      {
+        title: 'Untested',
+        value: Object.values(data).filter(
+          pkg => pkg.newArchitecture === NewArchSupportStatus.Untested
+        ).length,
+        icon: <AlertCircle className="h-5 w-5 text-yellow-600" />,
+        color: 'yellow',
+        tooltip: 'Packages that have not been tested with the New Architecture',
+        total: totalResultCounts,
+      },
+      {
+        title: 'Unlisted',
+        value: Object.values(data).filter(pkg => pkg.notInDirectory).length,
+        icon: <Package2 className="h-5 w-5 text-gray-600" />,
+        color: 'gray',
+        tooltip: 'Packages not listed in the official directory',
+        total: totalResultCounts,
+      },
+      {
+        title: 'Unmaintained',
+        value: Object.values(data).filter(pkg => pkg.unmaintained).length,
+        icon: <Archive className="h-5 w-5 text-amber-600" />,
+        color: 'amber',
+        tooltip: 'Packages that are no longer actively maintained',
+        total: totalResultCounts,
+      },
+    ],
+    [data, totalResultCounts]
+  );
 
   return (
     <div className="mt-3">
       <div className="flex flex-row justify-between">
-        <div className="flex items-center gap-2">
-          <h2 className="text-xl font-semibold">Overview</h2>
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger>
-                <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
-              </TooltipTrigger>
-              <TooltipContent>
-                <div className="text-popover-foreground text-xs">
-                  Overview of React Native packages and their New Architecture support status
-                </div>
-              </TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
-        </div>
+        <HeadingWithInfo
+          title="Overview"
+          tooltip="Overview of React Native packages and their New Architecture support status"
+        />
         <ExportButton data={fileExportData} />
       </div>
       <p className="text-sm text-muted-foreground mt-1">

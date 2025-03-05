@@ -6,6 +6,7 @@ import { X } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { externalUrls } from '@/config/urls';
+import { getNormalizedVersion } from '@/lib/helpers';
 
 interface VersionCheckerProps {
   versions: string[];
@@ -14,14 +15,7 @@ interface VersionCheckerProps {
 export function VersionChecker({ versions }: VersionCheckerProps) {
   const [isVisible, setIsVisible] = useState(true);
   const searchParams = useSearchParams();
-
-  const normalizeVersion = (version: string | null) => {
-    if (!version) return null;
-    const parts = version.split('.');
-    return parts.length === 2 ? `${version}.0` : version;
-  };
-
-  const currentVersionParam = normalizeVersion(searchParams.get('version'));
+  const currentVersionParam = getNormalizedVersion(searchParams.get('version'));
   const currentVersion = versions?.includes(currentVersionParam ?? '') ? currentVersionParam : null;
   const latestVersion = versions[0];
 

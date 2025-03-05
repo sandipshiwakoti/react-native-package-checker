@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { UploadIcon } from 'lucide-react';
 
-import { PackageUploader } from '@/components/package-uploader';
+import { PackageUploader } from '@/components/common/package-uploader';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 
