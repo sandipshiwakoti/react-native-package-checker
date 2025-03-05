@@ -10,7 +10,7 @@ export function Logo({ variant = 'horizontal', size = 'small' }: LogoProps) {
   const textSize = size === 'large' ? 'text-3xl' : 'text-2xl';
 
   return (
-    <div className={`flex ${variant === 'vertical' ? 'flex-col' : ''} items-center gap-2`}>
+    <div className={`flex ${variant === 'vertical' ? 'flex-col' : ''} items-center gap-1.5`}>
       <div className={`relative ${logoSize}`}>
         <Image
           src="/logo.svg"
