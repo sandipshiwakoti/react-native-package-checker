@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "react-native": "^0.78.0",
+    "react-native-reanimated": "^3.0.0",
+    "react-native-gesture-handler": "^2.0.0"
+  }
+}

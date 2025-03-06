@@ -1,0 +1,5 @@
+{
+  "invalidDependencies": {
+    "react-native-reanimated": "^3.0.0"
+  }
+}
