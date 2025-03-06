@@ -1,5 +1,6 @@
 'use client';
 
+import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
 
@@ -10,6 +11,7 @@ import { Input } from '@/components/ui/input';
 
 export default function HomePage() {
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const goToCheckPage = (packageNames: string[], rnVersion?: string) => {
     const versionParam = rnVersion ? `&version=${rnVersion}` : '';
@@ -40,8 +42,9 @@ export default function HomePage() {
           <div className="w-full space-y-8 max-w-2xl mx-auto mt-4">
             <div className="relative group">
               <Input
+                ref={inputRef}
                 placeholder="Search packages (e.g. react-native-reanimated)"
-                className="h-14 sm:text-lg rounded-xl pl-12 pr-4 transition-all 
+                className="h-14 sm:text-lg rounded-xl pr-12 pl-4 transition-all 
                 shadow-sm hover:shadow-md
                 focus:ring-2 focus:ring-primary/20 focus:shadow-lg
                 bg-white/50 backdrop-blur-sm"
@@ -51,10 +54,16 @@ export default function HomePage() {
                   }
                 }}
               />
-              <Search
-                className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 
-              text-muted-foreground/70 group-hover:text-muted-foreground/90"
-              />
+              <button
+                onClick={() => {
+                  if (inputRef.current) {
+                    handleSearch(inputRef.current.value);
+                  }
+                }}
+                className="absolute right-4 top-1/2 -translate-y-1/2 p-1 rounded-md text-muted-foreground/70"
+              >
+                <Search className="h-6 w-6" />
+              </button>
               <div className="absolute -bottom-6 left-4 text-xs text-muted-foreground/70">
                 Tip: Enter multiple packages separated by commas
               </div>
