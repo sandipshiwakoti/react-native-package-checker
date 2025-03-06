@@ -13,7 +13,39 @@ const inter = Inter({ subsets: ['latin'] });
 export const metadata: Metadata = {
   title: 'React Native Package Checker',
   description:
-    ' Analyze your React Native packages in bulk and discover their New Architecture compatibility',
+    'Analyze your React Native packages in bulk and discover their New Architecture compatibility. Check version compatibility, find updates, and export reports.',
+  keywords: [
+    'React Native',
+    'package checker',
+    'new architecture',
+    'compatibility',
+    'bulk analysis',
+    'version checker',
+  ],
+  openGraph: {
+    type: 'website',
+    locale: 'en_US',
+    url: 'https://react-native-package-checker.vercel.app/',
+    title: 'React Native Package Checker',
+    description:
+      'Analyze your React Native packages in bulk and discover their New Architecture compatibility',
+    siteName: 'React Native Package Checker',
+    images: [
+      {
+        url: '/assets/favicon/apple-touch-icon.png',
+        width: 180,
+        height: 180,
+        alt: 'React Native Package Checker',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary',
+    title: 'React Native Package Checker',
+    description:
+      'Analyze your React Native packages in bulk and discover their New Architecture compatibility',
+    images: ['/assets/favicon/apple-touch-icon.png'],
+  },
   icons: {
     icon: [
       {
@@ -30,6 +62,14 @@ export const metadata: Metadata = {
       sizes: '180x180',
       type: 'image/png',
     },
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+  },
+  robots: {
+    index: true,
+    follow: true,
   },
 };
 
