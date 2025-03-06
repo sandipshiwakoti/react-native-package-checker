@@ -32,7 +32,7 @@ export default function HomePage() {
         <div className="w-full px-4 py-10">
           <div className="text-center space-y-6">
             <Logo variant="vertical" size="large" />
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+            <p className="sm:text-xl text-muted-foreground max-w-2xl mx-auto">
               Is your React Native app ready for the New Architecture? Check all your packages at
               once.
             </p>
@@ -41,7 +41,7 @@ export default function HomePage() {
             <div className="relative group">
               <Input
                 placeholder="Search packages (e.g. react-native-reanimated)"
-                className="h-14 text-lg rounded-xl pl-12 pr-4 transition-all 
+                className="h-14 sm:text-lg rounded-xl pl-12 pr-4 transition-all 
                 shadow-sm hover:shadow-md
                 focus:ring-2 focus:ring-primary/20 focus:shadow-lg
                 bg-white/50 backdrop-blur-sm"

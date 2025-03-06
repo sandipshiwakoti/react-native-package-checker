@@ -43,7 +43,10 @@ export function FilterButton({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="w-[160px] justify-between font-normal items-center">
+        <Button
+          variant="outline"
+          className="w-[120px] sm:w-[160px] justify-between font-normal items-center"
+        >
           <div className="flex flex-row gap-2 items-center">
             <Filter className="h-4 w-4 opacity-50" />
             {activeArchFilters.length === 0 && !activeMaintenanceFilter

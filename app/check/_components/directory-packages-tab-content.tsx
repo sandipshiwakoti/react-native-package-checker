@@ -111,7 +111,7 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
 
   return (
     <>
-      <div className="flex items-center justify-between py-2 sticky top-0 bg-white z-10">
+      <div className="flex flex-col gap-3 flex-wrap md:flex-row md:items-start md:justify-between py-2 mb-2 sticky top-0 bg-white z-10">
         <div>
           <HeadingWithInfo
             title="Directory Packages"
@@ -122,7 +122,7 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
             Found {totalCount} directory packages
           </p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 flex-wrap">
           <DebounceControl
             value={searchText}
             onDebouncedChange={value => {
@@ -131,42 +131,50 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
             }}
             delay={300}
             render={({ value, onChange }) => (
-              <SearchBar value={value} onChange={onChange} placeholder="Search packages" />
+              <SearchBar
+                value={value}
+                onChange={onChange}
+                placeholder="Search packages"
+                containerClassName="flex-1"
+                className="w-full"
+              />
             )}
           />
-          <FilterButton
-            activeArchFilters={activeArchFilters}
-            setActiveArchFilters={setActiveArchFilters}
-            activeMaintenanceFilter={activeMaintenanceFilter}
-            setActiveMaintenanceFilter={setActiveMaintenanceFilter}
-          />
-          <Select
-            value={sortBy}
-            onValueChange={(value: 'name' | 'stars' | 'updated') => {
-              setSortBy(value);
-              setCurrentPage(1);
-            }}
-          >
-            <SelectTrigger className="w-[160px]">
-              <span className="flex items-center gap-2">
-                <ArrowUpDown className="h-4 w-4" />
-                Sort by
-              </span>
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="name">Package Name</SelectItem>
-              <SelectItem value="stars">GitHub Stars</SelectItem>
-              <SelectItem value="updated">Last Updated</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setSortOrder(order => (order === 'asc' ? 'desc' : 'asc'))}
-            className="text-muted-foreground hover:text-foreground"
-          >
-            {sortOrder === 'asc' ? '↑' : '↓'}
-          </Button>
+          <div className="flex items-center gap-2">
+            <FilterButton
+              activeArchFilters={activeArchFilters}
+              setActiveArchFilters={setActiveArchFilters}
+              activeMaintenanceFilter={activeMaintenanceFilter}
+              setActiveMaintenanceFilter={setActiveMaintenanceFilter}
+            />
+            <Select
+              value={sortBy}
+              onValueChange={(value: 'name' | 'stars' | 'updated') => {
+                setSortBy(value);
+                setCurrentPage(1);
+              }}
+            >
+              <SelectTrigger className="w-[120px] sm:w-[160px]">
+                <span className="flex items-center gap-2">
+                  <ArrowUpDown className="h-4 w-4" />
+                  Sort by
+                </span>
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="name">Package Name</SelectItem>
+                <SelectItem value="stars">GitHub Stars</SelectItem>
+                <SelectItem value="updated">Last Updated</SelectItem>
+              </SelectContent>
+            </Select>
+            <Button
+              variant="ghost"
+              size="icon"
+              onClick={() => setSortOrder(order => (order === 'asc' ? 'desc' : 'asc'))}
+              className="text-muted-foreground hover:text-foreground"
+            >
+              {sortOrder === 'asc' ? '↑' : '↓'}
+            </Button>
+          </div>
         </div>
       </div>
       {totalCount > 0 ? (

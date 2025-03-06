@@ -1,11 +1,11 @@
 import React, { useMemo, useState } from 'react';
 import DebounceControl from 'debounce-control';
-import { AlertCircle, Package2 } from 'lucide-react';
+import { Package2 } from 'lucide-react';
 
 import UnlistedPackageItem from '@/app/check/_components/unlisted-package-item';
+import { HeadingWithInfo } from '@/components/common/header-with-info';
 import { SearchBar } from '@/components/common/search-bar';
 import { EmptyListFallback } from '@/components/empy-list-fallback';
-import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { PackageInfo } from '@/types';
 
 interface UnlistedPackagesTabContentProps {
@@ -27,23 +27,13 @@ const UnlistedPackagesTabContent = ({ data }: UnlistedPackagesTabContentProps) =
 
   return (
     <>
-      <div className="flex items-center justify-between py-3 sticky top-0 backdrop-blur-sm bg-background/95 border-b z-10 -mx-6 px-6">
+      <div className="flex flex-col gap-3 flex-wrap md:flex-row md:items-start md:justify-between py-2 mb-2 sticky top-0 bg-white z-10">
         <div>
-          <div className="flex flex-row items-center gap-2">
-            <h2 className="text-md font-semibold">Unlisted Packages</h2>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <div className="text-popover-foreground text-xs">
-                    Packages not found in the official React Native directory
-                  </div>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+          <HeadingWithInfo
+            title="Unlisted Packages"
+            tooltip="Packages not found in the official React Native directory"
+            variant="small"
+          />
           <p className="text-sm text-muted-foreground mt-1">
             Found {unlistedPackages.length} unlisted{' '}
             {unlistedPackages.length === 1 ? 'package' : 'packages'}
@@ -54,7 +44,12 @@ const UnlistedPackagesTabContent = ({ data }: UnlistedPackagesTabContentProps) =
           onDebouncedChange={setSearchText}
           delay={300}
           render={({ value, onChange }) => (
-            <SearchBar value={value} onChange={onChange} placeholder="Search packages" />
+            <SearchBar
+              value={value}
+              onChange={onChange}
+              placeholder="Search packages"
+              className="w-full"
+            />
           )}
         />
       </div>

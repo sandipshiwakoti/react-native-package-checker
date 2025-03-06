@@ -35,7 +35,7 @@ export function LoadingIndicator({
           </svg>
         </div>
         <div className="mt-6 space-y-2 text-center">
-          <p className="text-lg font-medium text-foreground">{title}</p>
+          <p className="sm:text-lg font-medium text-foreground">{title}</p>
           <p className="text-sm text-muted-foreground">{message}</p>
         </div>
       </div>

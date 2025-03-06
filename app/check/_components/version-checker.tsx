@@ -31,8 +31,8 @@ export function VersionChecker({ versions }: VersionCheckerProps) {
         <div className="flex gap-3 flex-1">
           <ArrowUpCircle className="h-6 w-6 text-blue-500 mt-0.5" />
           <div className="space-y-1 flex-1">
-            <div className="flex items-center justify-between">
-              <AlertTitle className="text-lg font-semibold text-blue-700">
+            <div className="flex items-start justify-between">
+              <AlertTitle className="text-lg sm:text-xl font-semibold text-blue-700">
                 React Native Update Available
               </AlertTitle>
               <button
@@ -42,7 +42,7 @@ export function VersionChecker({ versions }: VersionCheckerProps) {
                 <X className="h-5 w-5 text-blue-600" />
               </button>
             </div>
-            <AlertDescription className="text-md text-slate-600 flex items-center justify-between">
+            <AlertDescription className="sm:text-lg gap-2 text-slate-600 flex flex-col sm:flex-row items-start sm:items-center ">
               <div>
                 You&apos;re currently using React Native
                 <span className="px-1 py-0.5 bg-slate-100 rounded-md font-bold text-slate-700">

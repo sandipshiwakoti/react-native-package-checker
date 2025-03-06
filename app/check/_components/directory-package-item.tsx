@@ -22,7 +22,10 @@ interface DirectoryPackageItemProps {
 export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItemProps) => {
   return (
     <div className="p-4 rounded-lg border bg-card hover:border-primary/50 transition-colors mb-6">
-      <div className="flex items-start justify-between ">
+      <div className="flex flex-col sm:flex-row items-start justify-between">
+        <div className="block sm:hidden">
+          <PackageStatus packageInfo={packageInfo} />
+        </div>
         <div className="flex flex-col gap-1">
           {packageInfo.unmaintained && (
             <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-amber-50 text-amber-700 w-fit">
@@ -31,7 +34,7 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
             </div>
           )}
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-medium relative group">{name}</h3>
+            <h3 className="sm:text-lg font-medium relative group">{name}</h3>
             <div className="flex items-center gap-1">
               {packageInfo.githubUrl && (
                 <a
@@ -110,7 +113,7 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
             </p>
           )}
         </div>
-        <div className="flex flex-col items-end gap-2 shrink-0">
+        <div className="hidden sm:flex shrink-0">
           <PackageStatus packageInfo={packageInfo} />
         </div>
       </div>
@@ -169,7 +172,7 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
             <div className="flex items-center gap-2 px-3 py-1.5 rounded-lg bg-card border">
               <span className="text-xs font-medium text-muted-foreground">Score:</span>
               <div
-                className={`text-lg font-semibold ${
+                className={`sm:text-lg font-semibold ${
                   packageInfo.score > 75
                     ? 'text-green-500'
                     : packageInfo.score > 50

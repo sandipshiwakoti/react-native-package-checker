@@ -19,7 +19,7 @@ interface ExportButtonProps {
 export const ExportButton: React.FC<ExportButtonProps> = ({ data }) => {
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger asChild className="min-w-[160px] flex flex-row justify-between">
+      <DropdownMenuTrigger asChild className="w-[120px] sm:w-[160px] flex flex-row justify-between">
         <Button variant="outline" className="font-normal">
           <div className="flex flex-row gap-2 items-center">
             <FileUp className="h-4 w-4 opacity-50" />
@@ -30,7 +30,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({ data }) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuPortal>
-        <DropdownMenuContent className="min-w-[160px] bg-white rounded-md p-1 shadow-lg">
+        <DropdownMenuContent className="w-[120px] sm:w-[160px] bg-white rounded-md p-1 shadow-lg">
           <DropdownMenuItem
             className="flex items-center px-2 py-2 text-sm outline-none cursor-default hover:bg-gray-100 rounded-sm"
             onClick={() => generatePDF(data)}

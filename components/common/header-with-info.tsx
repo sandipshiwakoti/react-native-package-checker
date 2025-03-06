@@ -11,7 +11,7 @@ const variants = {
   },
   small: {
     container: 'flex items-center gap-1.5',
-    title: 'text-md font-semibold',
+    title: 'text-base font-semibold',
     icon: 'h-4 w-4',
   },
 } as const;

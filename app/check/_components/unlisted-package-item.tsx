@@ -16,7 +16,7 @@ const UnlistedPackageItem = ({ name, packageInfo }: UnlistedPackageItemProps) =>
       <div className="flex items-start justify-between">
         <div className="flex flex-col gap-1">
           <div className="flex items-center gap-2 mb-1">
-            <h3 className="text-lg font-medium">{name}</h3>
+            <h3 className="sm:text-lg font-medium">{name}</h3>
             {CORE_PACKAGES.includes(name) && (
               <TooltipProvider>
                 <Tooltip>

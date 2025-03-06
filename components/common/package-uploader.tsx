@@ -79,10 +79,10 @@ export function PackageUploader({
       {children || (
         <div>
           <FileJson className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          <h3 className="text-lg font-medium mb-2">
+          <h3 className="sm:text-lg font-medium mb-2">
             {isDragActiveState ? 'Drop package.json here' : 'Upload package.json'}
           </h3>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-xs sm:text-sm text-muted-foreground">
             {isDragActiveState
               ? 'Release to analyze dependencies'
               : 'Drag & drop your package.json here, or click to select'}

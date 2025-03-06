@@ -47,7 +47,7 @@ function OverviewCard({ title, value, icon, color, tooltip, total }: OverviewCar
 
   return (
     <div
-      className={`p-6 rounded-xl border transition-all group relative ${colorClasses[color as keyof typeof colorClasses]}`}
+      className={`p-4 rounded-xl border transition-all group relative ${colorClasses[color as keyof typeof colorClasses]}`}
     >
       <div className="flex items-start gap-3">
         <div className="space-y-2">
@@ -154,18 +154,20 @@ export function Overview({ data = {} }: OverviewProps) {
   );
 
   return (
-    <div className="mt-3">
-      <div className="flex flex-row justify-between">
-        <HeadingWithInfo
-          title="Overview"
-          tooltip="Overview of React Native packages and their New Architecture support status"
-        />
+    <div className="mt-4">
+      <div className="flex justify-between gap-2">
+        <div>
+          <HeadingWithInfo
+            title="Overview"
+            tooltip="Overview of React Native packages and their New Architecture support status"
+          />
+          <p className="text-sm text-muted-foreground mt-1">
+            Found {totalResultCounts} {totalResultCounts === 1 ? 'package' : 'packages'}
+          </p>
+        </div>
         <ExportButton data={fileExportData} />
       </div>
-      <p className="text-sm text-muted-foreground mt-1">
-        Found {totalResultCounts} {totalResultCounts === 1 ? 'package' : 'packages'}
-      </p>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mt-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 min-[1250px]:grid-cols-5 gap-4 mt-6">
         {overviewCards.map(card => (
           <OverviewCard
             key={card.title}
