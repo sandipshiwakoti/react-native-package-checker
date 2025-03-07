@@ -35,8 +35,7 @@ export default function HomePage() {
           <div className="text-center space-y-6">
             <Logo variant="vertical" size="large" />
             <p className="sm:text-xl text-muted-foreground max-w-2xl mx-auto">
-              Is your React Native app ready for the New Architecture? Check all your packages at
-              once.
+              Check your React Native packages for New Architecture compatibility in seconds ⚡️
             </p>
           </div>
           <div className="w-full space-y-8 max-w-2xl mx-auto mt-4">

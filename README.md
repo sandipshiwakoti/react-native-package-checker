@@ -2,7 +2,7 @@
   <img src="public/logo.svg" alt="React Native Package Checker Logo" width="200" style="margin-bottom: 0;"/>
   <div style="font-family: 'Inter', sans-serif; margin-top: 0;">
     <h1><strong>React Native Package Checker</strong></h1>
-    <p>Is your React Native app ready for the New Architecture? Check all your packages at once.</p>
+    <p>Check your React Native packages for New Architecture compatibility in seconds ⚡️</p>
   </div>
 
 <p align="center">
@@ -27,7 +27,7 @@
 - 📊 **Comprehensive Analysis**: View package details
 - maintenance, platforms, TypeScript, quality score, GitHub stats, alternatives & more
 - 💾 **Export & Share**: Download analysis in PDF/Excel to share with your team
-- 🔎 **Smart Search & Filters**: Easily find and filter packages based on various criteria
+- 🔎 **Quick Search & Filters**: Easily find and filter packages based on various criteria
 - 🔄 **Upgrade Helper**: Get upgrade paths with direct links to React Native Upgrade Helper
 
 ## Getting Started
@@ -66,7 +66,7 @@ The React Native Directory website doesn't support checking multiple packages si
 
 ### 2. How accurate is the data?
 
-All package information comes directly from the React Native Directory, which is maintained by the React Native community. The data is as accurate as the directory's latest updates.
+All package information is sourced from the [React Native Directory](https://reactnative.directory), the official package database maintained by the React Native team. We're grateful for their work in maintaining this valuable resource. The data is as accurate as the directory's latest updates.
 
 ## Tech Stack
 
@@ -92,23 +92,35 @@ All package information comes directly from the React Native Directory, which is
   <a href="https://bun.sh">
     <img src="https://img.shields.io/badge/Bun-black?style=for-the-badge&logo=bun&logoColor=white" alt="Bun" />
   </a>
+   <a href="https://playwright.dev">
+    <img src="https://img.shields.io/badge/-playwright-%232EAD33?style=for-the-badge&logo=playwright&logoColor=white" alt="Playwright" />
+  </a>
+  <a href="https://sentry.io">
+    <img src="https://img.shields.io/badge/Sentry-362D59?style=for-the-badge&logo=sentry&logoColor=white" alt="Sentry" />
+  </a>
 </p>
+
+## Alternative Tools
+
+While React Native Package Checker provides instant web-based bulk package analysis with visual reporting and sharing capabilities, here are other useful tools in the ecosystem:
+
+**[Expo Doctor](https://docs.expo.dev/workflow/doctor/)**
+✓ Built-in package compatibility checker
+✗ Limited to Expo projects
+✗ Requires local installation and setup
+✗ CLI-only interface, no visual feedback
+
+**[React Native Directory](https://reactnative.directory)**
+✓ Official directory maintained by the React Native team
+✗ Requires checking packages individually
+✗ Manual tracking needed for multiple packages
+✗ No export or sharing capabilities
 
 ## Contributing
 
-Contributions are welcome! Here's how you can help:
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feat/amazing-feature`)
-3. Commit your changes (`git commit -m 'feat: add amazing feature'`)
-4. Push to the branch (`git push origin feat/amazing-feature`)
-5. Open a Pull Request
+We welcome contributions! Please see our [Contributing Guidelines](.github/CONTRIBUTING.md) for details on how to submit pull requests, report issues, and contribute to the project.
 
 For major changes, please open an issue first to discuss what you would like to change.
-
-## License
-
-This project is licensed under the [MIT License](https://github.com/sandipshiwakoti/react-native-package-checker/blob/main/LICENSE).
 
 ## Support
 
@@ -117,4 +129,8 @@ If you find this project helpful, please consider:
 - ⭐️ [Starring the repository](https://github.com/sandipshiwakoti/react-native-package-checker/stargazers)
 - 🐛 [Reporting bugs](https://github.com/sandipshiwakoti/react-native-package-checker/issues/new?labels=bug&template=bug_report.md)
 - 💡 [Suggesting new features](https://github.com/sandipshiwakoti/react-native-package-checker/issues/new?labels=enhancement&template=feature_request.md)
-- 🔄 [Sharing with the React Native community](https://twitter.com/intent/tweet?text=Check%20out%20React%20Native%20Package%20Checker%20-%20a%20tool%20to%20check%20New%20Architecture%20compatibility%20for%20your%20packages%20https%3A%2F%2Freact-native-package-checker.vercel.app)
+- 🔄 [Sharing with the React Native community](https://twitter.com/intent/tweet?text=🚀%20Discovered%20a%20great%20tool!%20React%20Native%20Package%20Checker%20helps%20verify%20New%20Architecture%20compatibility%20for%20all%20your%20packages%20in%20seconds%20⚡️%20Try%20it%20out:%20https://react-native-package-checker.vercel.app)
+
+## License
+
+This project is licensed under the [MIT License](https://github.com/sandipshiwakoti/react-native-package-checker/blob/main/LICENSE).
