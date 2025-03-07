@@ -16,6 +16,15 @@ jobs:
         with:
           bun-version: latest
 
+      - name: Cache dependencies
+        id: bun-cache
+        uses: actions/cache@v4
+        with:
+          path: |
+            node_modules
+            ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/package.json', '**/bun.lockb') }}
+
       - name: Install dependencies
         run: bun install
 
