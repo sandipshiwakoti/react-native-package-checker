@@ -11,7 +11,9 @@ import { Footer } from '@/components/common/footer';
 import { LoadingIndicator } from '@/components/common/loading-indicator';
 import { Logo } from '@/components/common/logo';
 import { UploadButton } from '@/components/common/upload-button';
+import { GithubIcon } from '@/components/icons/github';
 import { Alert, AlertDescription } from '@/components/ui/alert';
+import { externalUrls } from '@/config/urls';
 import { usePackages } from '@/hooks/queries/use-packages';
 
 export default function CheckPage() {
@@ -38,12 +40,23 @@ export default function CheckPage() {
     <div className="min-h-screen flex flex-col">
       <div className="max-w-[1200px] mx-auto px-4 w-full flex-1 flex flex-col">
         <div className="pt-4 pb-2 border-b mb-2 w-full">
-          <div className="flex w-full items-center justify-between">
-            <Link href="/">
+          <div className="flex flex-wrap gap-4">
+            <Link href="/" className="flex-shrink-0">
               <Logo />
             </Link>
-            <div className="flex items-center gap-2">
+            <div className="flex-1 flex items-center justify-end gap-3 min-w-[200px]">
               <UploadButton />
+              <Link
+                href={externalUrls.github.rnpc}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center justify-center h-10 px-4 rounded-md border 
+                  hover:bg-secondary/10 text-muted-foreground/70 
+                  hover:text-muted-foreground transition-all"
+                aria-label="View source on GitHub"
+              >
+                <GithubIcon className="h-5 w-5" />
+              </Link>
             </div>
           </div>
         </div>

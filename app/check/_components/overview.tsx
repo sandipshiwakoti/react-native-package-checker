@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { AlertCircle, Archive, CheckCircle, Package2, XCircle } from 'lucide-react';
+import { AlertCircle, Archive, CheckCircle, FileQuestion, XCircle } from 'lucide-react';
 
 import { ExportButton } from '@/components/common/export-button';
 import { HeadingWithInfo } from '@/components/common/header-with-info';
@@ -136,7 +136,7 @@ export function Overview({ data = {} }: OverviewProps) {
       {
         title: 'Unlisted',
         value: Object.values(data).filter(pkg => pkg.notInDirectory).length,
-        icon: <Package2 className="h-5 w-5 text-gray-600" />,
+        icon: <FileQuestion className="h-5 w-5 text-gray-600" />,
         color: 'gray',
         tooltip: 'Packages not listed in the official directory',
         total: totalResultCounts,

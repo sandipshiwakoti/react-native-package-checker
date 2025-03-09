@@ -15,6 +15,7 @@ export const externalUrls = {
     package: (packageName: string) => `https://www.npmjs.com/package/${packageName}`,
   },
   github: {
+    rnpc: 'https://github.com/sandipshiwakoti/react-native-package-checker',
     directory: 'https://github.com/react-native-community/directory',
   },
   tools: {

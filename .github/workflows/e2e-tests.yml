@@ -16,14 +16,21 @@ jobs:
         with:
           bun-version: latest
 
-      - name: Cache dependencies
+      - name: Restore cached dependencies
         id: bun-cache
         uses: actions/cache@v4
         with:
           path: |
             node_modules
             ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/package.json', '**/bun.lockb') }}
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: List dependencies state
+        if: ${{ steps.bun-cache.outputs.cache-hit != 'true' }}
+        continue-on-error: true
+        run: bun pm ls
 
       - name: Install dependencies
         run: bun install

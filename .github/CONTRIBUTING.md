@@ -12,8 +12,8 @@ Thank you for your interest in contributing to React Native Package Checker!
 ## Development
 
 1. Make your changes
-2. Run tests: `bun run test`
-3. Ensure code style is correct: `bun run lint`
+2. Run tests: `bun run test:e2e`
+3. Ensure code style is correct: `bun run check`
 4. Commit your changes using conventional commits
 
 ## Pull Request Process

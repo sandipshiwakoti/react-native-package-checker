@@ -25,18 +25,12 @@ export function Logo({ variant = 'horizontal', size = 'small' }: LogoProps) {
           priority
         />
       </div>
-      <div
-        className={cn(
-          'flex',
-          variant === 'vertical'
-            ? 'flex-row items-center gap-2'
-            : 'flex-col item-start gap-1 sm:gap-0'
-        )}
-      >
+      <div>
         <span
           className={cn(
-            'font-display  font-extrabold tracking-tight text-slate-800 leading-none whitespace-nowrap',
-            textSize
+            'font-display font-extrabold tracking-tight text-slate-800 leading-3 whitespace-nowrap',
+            textSize,
+            variant === 'vertical' ? 'inline-block' : 'block translate-y-0.5'
           )}
         >
           React Native
@@ -44,7 +38,8 @@ export function Logo({ variant = 'horizontal', size = 'small' }: LogoProps) {
         <span
           className={cn(
             'font-display font-extrabold tracking-tight text-slate-800 leading-none whitespace-nowrap',
-            textSize
+            textSize,
+            variant === 'vertical' ? 'ml-2' : 'block -translate-y-0.5'
           )}
         >
           Package Checker

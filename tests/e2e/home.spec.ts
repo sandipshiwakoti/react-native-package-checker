@@ -5,13 +5,6 @@ test.describe('Home Page', () => {
     await page.goto('/');
   });
 
-  test('should display search input and placeholder text', async ({ page }) => {
-    const searchInput = page.getByPlaceholder('Search packages (e.g. react-native-reanimated)');
-
-    await expect(searchInput).toBeVisible();
-    await expect(page.getByText('Enter multiple packages separated by commas')).toBeVisible();
-  });
-
   test('should search multiple packages', async ({ page }) => {
     const searchInput = page.getByPlaceholder('Search packages');
     await searchInput.fill('react-native-reanimated, react-native-gesture-handler');

@@ -24,11 +24,9 @@
 
 - 📦 **Upload & Analyze**: Drop your package.json and get instant compatibility analysis
 - 🔍 **Bulk Package Checking**: Check multiple packages simultaneously for New Architecture compatibility
-- 📊 **Comprehensive Analysis**: View package details
-- maintenance, platforms, TypeScript, quality score, GitHub stats, alternatives & more
-- 💾 **Export & Share**: Download analysis in PDF/Excel to share with your team
+- 📊 **Comprehensive Analysis**: View package details such as maintenance, platforms, TypeScript, quality score, GitHub stats, alternatives & more
 - 🔎 **Quick Search & Filters**: Easily find and filter packages based on various criteria
-- 🔄 **Upgrade Helper**: Get upgrade paths with direct links to React Native Upgrade Helper
+- 💾 **Export & Share**: Download analysis in PDF/Excel to share with your team
 
 ## Getting Started
 
@@ -105,15 +103,23 @@ All package information is sourced from the [React Native Directory](https://rea
 While React Native Package Checker provides instant web-based bulk package analysis with visual reporting and sharing capabilities, here are other useful tools in the ecosystem:
 
 **[Expo Doctor](https://docs.expo.dev/workflow/doctor/)**
+
 ✓ Built-in package compatibility checker
+
 ✗ Limited to Expo projects
+
 ✗ Requires local installation and setup
+
 ✗ CLI-only interface, no visual feedback
 
 **[React Native Directory](https://reactnative.directory)**
+
 ✓ Official directory maintained by the React Native team
+
 ✗ Requires checking packages individually
+
 ✗ Manual tracking needed for multiple packages
+
 ✗ No export or sharing capabilities
 
 ## Contributing

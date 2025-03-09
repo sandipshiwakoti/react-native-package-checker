@@ -26,10 +26,10 @@ export function VersionChecker({ versions }: VersionCheckerProps) {
   const upgradeUrl = externalUrls.tools.upgradeHelper(currentVersion, latestVersion);
 
   return (
-    <Alert className="mt-6 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-l-blue-500">
+    <Alert className="mt-4 bg-gradient-to-r from-blue-50 to-purple-50 border-l-4 border-l-blue-500">
       <div className="flex justify-between">
         <div className="flex gap-3 flex-1">
-          <ArrowUpCircle className="h-6 w-6 text-blue-500 mt-0.5" />
+          <ArrowUpCircle className="h-6 w-6 text-blue-500" />
           <div className="space-y-1 flex-1">
             <div className="flex items-start justify-between">
               <AlertTitle className="text-lg sm:text-xl font-semibold text-blue-700">

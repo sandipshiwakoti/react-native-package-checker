@@ -1,10 +1,9 @@
 import { useQuery } from '@tanstack/react-query';
 
+import { externalUrls } from '@/config/urls';
 import { checkPackages } from '@/lib/api';
 import { queryKeys } from '@/lib/query-keys';
-
-import { externalUrls } from '../../config/urls';
-import { PackageInfo } from '../../types';
+import { PackageInfo } from '@/types';
 
 export function usePackages(selectedPackages: string[]) {
   return useQuery({

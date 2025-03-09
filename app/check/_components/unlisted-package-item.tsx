@@ -1,6 +1,8 @@
 import React from 'react';
-import { AlertCircle, AlertTriangle, Github, Package2 } from 'lucide-react';
+import { AlertCircle, AlertTriangle } from 'lucide-react';
 
+import { GithubIcon } from '@/components/icons/github';
+import { NpmIcon } from '@/components/icons/npm';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { CORE_PACKAGES } from '@/constants';
 import { PackageInfo } from '@/types';
@@ -40,7 +42,7 @@ const UnlistedPackageItem = ({ name, packageInfo }: UnlistedPackageItemProps) =>
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-foreground"
                 >
-                  <Github className="h-4 w-4" />
+                  <GithubIcon className="h-4 w-4" />
                 </a>
               )}
               {packageInfo.npmUrl && (
@@ -50,7 +52,7 @@ const UnlistedPackageItem = ({ name, packageInfo }: UnlistedPackageItemProps) =>
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-foreground"
                 >
-                  <Package2 className="h-4 w-4" />
+                  <NpmIcon className="h-8 w-8" />
                 </a>
               )}
             </div>

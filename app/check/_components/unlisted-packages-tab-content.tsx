@@ -1,11 +1,10 @@
 import React, { useMemo, useState } from 'react';
 import DebounceControl from 'debounce-control';
-import { Package2 } from 'lucide-react';
 
 import UnlistedPackageItem from '@/app/check/_components/unlisted-package-item';
+import { EmptyListFallback } from '@/components/common/empy-list-fallback';
 import { HeadingWithInfo } from '@/components/common/header-with-info';
 import { SearchBar } from '@/components/common/search-bar';
-import { EmptyListFallback } from '@/components/empy-list-fallback';
 import { PackageInfo } from '@/types';
 
 interface UnlistedPackagesTabContentProps {
@@ -60,7 +59,10 @@ const UnlistedPackagesTabContent = ({ data }: UnlistedPackagesTabContentProps) =
           ))}
         </div>
       ) : (
-        <EmptyListFallback message="No packages match the selected filters" Icon={Package2} />
+        <EmptyListFallback
+          title="No packages found"
+          message="Try searching with different keywords."
+        />
       )}
     </>
   );

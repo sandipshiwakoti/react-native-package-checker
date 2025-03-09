@@ -1,16 +1,9 @@
 import React from 'react';
-import {
-  AlertOctagon,
-  Archive,
-  Calendar,
-  Eye,
-  GitFork,
-  Github,
-  Package2,
-  Star,
-} from 'lucide-react';
+import { AlertOctagon, Archive, Calendar, Eye, GitFork, Star } from 'lucide-react';
 
 import { PackageStatus } from '@/app/check/_components/package-status';
+import { GithubIcon } from '@/components/icons/github';
+import { NpmIcon } from '@/components/icons/npm';
 import { externalUrls } from '@/config/urls';
 import { PackageInfo } from '@/types';
 
@@ -43,7 +36,7 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-foreground"
                 >
-                  <Github className="h-4 w-4" />
+                  <GithubIcon className="h-4 w-4" />
                 </a>
               )}
               {packageInfo.npmUrl && (
@@ -53,7 +46,7 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
                   rel="noopener noreferrer"
                   className="text-muted-foreground hover:text-foreground"
                 >
-                  <Package2 className="h-4 w-4" />
+                  <NpmIcon className="h-8 w-8" />
                 </a>
               )}
             </div>

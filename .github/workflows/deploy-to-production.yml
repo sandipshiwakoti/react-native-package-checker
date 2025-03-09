@@ -25,31 +25,37 @@ jobs:
           bun-version: latest
 
       - name: Restore cached dependencies
+        id: bun-cache
         uses: actions/cache@v4
         with:
           path: |
             node_modules
             ~/.bun/install/cache
-          key: ${{ runner.os }}-bun-${{ hashFiles('**/package.json', '**/bun.lockb') }}
+          key: ${{ runner.os }}-bun-${{ hashFiles('**/bun.lockb') }}
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      - name: List dependencies state
+        if: ${{ steps.bun-cache.outputs.cache-hit != 'true' }}
+        continue-on-error: true
+        run: bun pm ls
 
       - name: Install dependencies
         run: bun install
 
-      - name: Install Vercel CLI
-        run: bun install --global vercel@latest
-
       - name: Pull Vercel Environment Information
-        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        run: bunx vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Build Project Artifacts
-        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: bunx vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
 
       - name: Create Sentry release
         uses: getsentry/action-release@v3
         with:
           environment: production
-          version: ${{ github.sha }}
+          release: ${{ github.sha }}
           sourcemaps: '.next'
+          ignore_missing: true
 
       - name: Deploy Project Artifacts to Vercel
-        run: vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}
+        run: bunx vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }}

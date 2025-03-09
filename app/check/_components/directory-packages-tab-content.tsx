@@ -1,13 +1,13 @@
 import React, { useMemo, useState } from 'react';
 import DebounceControl from 'debounce-control';
-import { ArrowUpDown, Package2 } from 'lucide-react';
+import { ArrowUpDown } from 'lucide-react';
 
 import { DirectoryPackageItem } from '@/app/check/_components/directory-package-item';
+import { EmptyListFallback } from '@/components/common/empy-list-fallback';
 import { FilterButton } from '@/components/common/filter-button';
 import { HeadingWithInfo } from '@/components/common/header-with-info';
 import { Pagination } from '@/components/common/pagination';
 import { SearchBar } from '@/components/common/search-bar';
-import { EmptyListFallback } from '@/components/empy-list-fallback';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
 import { NewArchFilter, NewArchSupportStatus, PackageInfo } from '@/types';
@@ -192,8 +192,8 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
         </div>
       ) : (
         <EmptyListFallback
-          message="No packages match the selected filters. Try changing the filters or checking more packages."
-          Icon={Package2}
+          title="No packages found"
+          message="Try adjusting your filters or searching with different keywords."
         />
       )}
     </>
