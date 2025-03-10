@@ -18,7 +18,7 @@
   </p>
 </div>
 
-![Demo](./docs/assets/demo.gif)
+https://github.com/user-attachments/assets/ac4cbfa3-1c91-4542-80b1-2aff8171f53a
 
 ## Features
 
@@ -41,12 +41,11 @@ git clone https://github.com/sandipshiwakoti/react-native-package-checker.git
 cd react-native-package-checker
 ```
 
-````
-
 2. Install dependencies:
+
 ```bash
 bun install
-````
+```
 
 3. Start the development server:
 
