@@ -82,6 +82,11 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
                 {packageInfo.support.license}
               </a>
             )}
+            {packageInfo.isRecent && (
+              <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+                Recent
+              </span>
+            )}
           </div>
           {packageInfo.github?.description && (
             <p className="text-sm text-muted-foreground max-w-[600px] mb-1">

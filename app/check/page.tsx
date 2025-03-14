@@ -7,6 +7,7 @@ import { useRouter, useSearchParams } from 'next/navigation';
 import { Overview } from '@/app/check/_components/overview';
 import { PackageResults } from '@/app/check/_components/package-results';
 import { VersionChecker } from '@/app/check/_components/version-checker';
+import { EmptyListFallback } from '@/components/common/empy-list-fallback';
 import { Footer } from '@/components/common/footer';
 import { LoadingIndicator } from '@/components/common/loading-indicator';
 import { Logo } from '@/components/common/logo';
@@ -60,14 +61,14 @@ export default function CheckPage() {
             </div>
           </div>
         </div>
-        <div className="flex-1 flex items-center justify-center">
-          {Object.keys(data?.results ?? {}).length === 0 || isLoading ? (
-            <LoadingIndicator />
-          ) : error ? (
+        <div className="flex-1">
+          {error ? (
             <Alert variant="destructive">
               <AlertDescription>{error.message}</AlertDescription>
             </Alert>
-          ) : (
+          ) : isLoading || !data ? (
+            <LoadingIndicator />
+          ) : Object.keys(data.results || {}).length > 0 ? (
             <div className="w-full">
               <VersionChecker versions={data?.reactNativeVersions ?? []} />
               <div className="min-h-screen flex flex-col space-y-6">
@@ -75,6 +76,8 @@ export default function CheckPage() {
                 <PackageResults data={data?.results} />
               </div>
             </div>
+          ) : (
+            <EmptyListFallback title="No results found" />
           )}
         </div>
         <Footer />

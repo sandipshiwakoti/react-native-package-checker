@@ -77,6 +77,7 @@ export interface PackageInfo {
   unmaintained?: boolean;
   error?: string;
   notInDirectory?: boolean;
+  isRecent?: boolean;
 }
 
 export interface DirectoryPackage {
@@ -88,6 +89,7 @@ export interface DirectoryPackage {
   score?: number;
   matchingScoreModifiers?: string[];
   alternatives?: string[];
+  isRecent?: boolean;
   github: {
     urls: {
       repo: string;

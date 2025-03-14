@@ -1,16 +1,7 @@
 const { withSentryConfig } = require('@sentry/nextjs');
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: '/api/check',
-        destination: 'https://reactnative.directory/api/libraries/check',
-      },
-    ];
-  },
-};
+const nextConfig = {};
 
 module.exports = withSentryConfig(nextConfig, {
   org: process.env.SENTRY_ORG,

@@ -1,11 +1,11 @@
 export const urls = {
-  check: '/check',
   packageInfo: '/package-info',
 } as const;
 
 export const externalUrls = {
   reactNativeDirectory: {
     directoryCheck: 'https://reactnative.directory/api/libraries/check',
+    directoryLibraries: 'https://reactnative.directory/api/libraries',
     directoryData:
       'https://raw.githubusercontent.com/react-native-community/directory/main/assets/data.json',
     rnReleases:

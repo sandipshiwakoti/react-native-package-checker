@@ -12,13 +12,9 @@ const api = axios.create({
 });
 
 export const checkPackages = async (packages: string[]) => {
-  const [archResponse, infoResponse] = await Promise.all([
-    api.post(urls.check, { packages }),
-    api.post<PackageResponse>(urls.packageInfo, { packages }),
-  ]);
+  const infoResponse = await api.post<PackageResponse>(urls.packageInfo, { packages });
 
   return {
-    archData: archResponse.data,
     packageInfo: infoResponse.data,
   };
 };

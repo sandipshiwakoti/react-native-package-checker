@@ -8,7 +8,6 @@ test.describe('Check Page', () => {
   });
 
   test('should search for multiple packages via URL', async ({ page }) => {
-    await expect(page.getByRole('tab', { name: 'Directory Packages' })).toBeVisible();
     await expect(page.getByText('react-native-gesture-handler', { exact: true })).toBeVisible({
       timeout: 30000,
     });

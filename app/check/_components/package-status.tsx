@@ -45,7 +45,7 @@ export const PackageStatus = ({ packageInfo }: PackageStatusProps) => {
           )}
       </div>
       {packageInfo.error && (
-        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-red-50 text-red-700">
+        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-red-50 text-red-700 max-w-[300px]">
           <AlertTriangle className="h-4 w-4" />
           <span className="text-sm">{packageInfo.error}</span>
         </div>
