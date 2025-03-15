@@ -4,21 +4,18 @@ import { AlertCircle, Archive, CheckCircle, ChevronDown, Filter, X, XCircle } fr
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { useFilter } from '@/contexts/filter-context';
 import { NewArchFilter } from '@/types';
 
-interface FilterButtonProps {
-  activeArchFilters: NewArchFilter[];
-  setActiveArchFilters: (_filters: NewArchFilter[]) => void;
-  activeMaintenanceFilter: boolean;
-  setActiveMaintenanceFilter: (_value: boolean) => void;
-}
+export function FilterButton() {
+  const {
+    setActiveFilter,
+    activeArchFilters,
+    setActiveArchFilters,
+    activeMaintenanceFilter,
+    setActiveMaintenanceFilter,
+  } = useFilter();
 
-export function FilterButton({
-  activeArchFilters,
-  setActiveArchFilters,
-  activeMaintenanceFilter,
-  setActiveMaintenanceFilter,
-}: FilterButtonProps) {
   const [open, setOpen] = useState(false);
   const [tempArchFilters, setTempArchFilters] = useState<NewArchFilter[]>([]);
   const [tempMaintenanceFilter, setTempMaintenanceFilter] = useState(false);
@@ -40,20 +37,26 @@ export function FilterButton({
     }
   }, [open, activeArchFilters, activeMaintenanceFilter]);
 
+  const totalActiveFilters = activeArchFilters.length + (activeMaintenanceFilter ? 1 : 0);
+
+  const clearFilters = () => {
+    setActiveFilter(null);
+    setActiveArchFilters([]);
+    setActiveMaintenanceFilter(false);
+  };
+
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-[120px] sm:w-[160px] justify-between font-normal items-center"
+          className="w-[120px] sm:w-[160px] justify-between font-normal items-center relative"
         >
           <div className="flex flex-row gap-2 items-center">
             <Filter className="h-4 w-4 opacity-50" />
-            {activeArchFilters.length === 0 && !activeMaintenanceFilter
+            {totalActiveFilters === 0
               ? 'Filter'
-              : `${activeArchFilters.length + (activeMaintenanceFilter ? 1 : 0)} filter${
-                  activeArchFilters.length + (activeMaintenanceFilter ? 1 : 0) > 1 ? 's' : ''
-                } selected`}
+              : `${totalActiveFilters} filter${totalActiveFilters > 1 ? 's' : ''} selected`}
           </div>
           <ChevronDown className="h-4 w-4 opacity-50" />
         </Button>
@@ -140,8 +143,7 @@ export function FilterButton({
             <Button
               variant="outline"
               onClick={() => {
-                setActiveArchFilters([]);
-                setActiveMaintenanceFilter(false);
+                clearFilters();
                 setOpen(false);
               }}
               className="w-20"
@@ -152,6 +154,7 @@ export function FilterButton({
               onClick={() => {
                 setActiveArchFilters(tempArchFilters);
                 setActiveMaintenanceFilter(tempMaintenanceFilter);
+                setActiveFilter(null);
                 setOpen(false);
               }}
               className="w-20"

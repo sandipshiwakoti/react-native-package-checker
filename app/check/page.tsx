@@ -15,6 +15,7 @@ import { UploadButton } from '@/components/common/upload-button';
 import { GithubIcon } from '@/components/icons/github';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { externalUrls } from '@/config/urls';
+import { FilterProvider } from '@/contexts/filter-context';
 import { usePackages } from '@/hooks/queries/use-packages';
 
 export default function CheckPage() {
@@ -69,13 +70,15 @@ export default function CheckPage() {
           ) : isLoading || !data ? (
             <LoadingIndicator />
           ) : Object.keys(data.results || {}).length > 0 ? (
-            <div className="w-full">
-              <VersionChecker versions={data?.reactNativeVersions ?? []} />
-              <div className="min-h-screen flex flex-col space-y-6">
-                <Overview data={data?.results} />
-                <PackageResults data={data?.results} />
+            <FilterProvider>
+              <div className="w-full">
+                <VersionChecker versions={data?.reactNativeVersions ?? []} />
+                <div className="min-h-screen flex flex-col space-y-6">
+                  <Overview data={data?.results} />
+                  <PackageResults data={data?.results} />
+                </div>
               </div>
-            </div>
+            </FilterProvider>
           ) : (
             <EmptyListFallback title="No results found" />
           )}

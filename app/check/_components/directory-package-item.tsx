@@ -23,7 +23,7 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
           {packageInfo.unmaintained && (
             <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-amber-50 text-amber-700 w-fit">
               <Archive className="h-4 w-4" />
-              <span className="text-sm">Package Unmaintained</span>
+              <span className="text-sm">Unmaintained</span>
             </div>
           )}
           <div className="flex items-center gap-2 mb-1">

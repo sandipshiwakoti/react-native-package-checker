@@ -1,29 +1,56 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import DebounceControl from 'debounce-control';
-import { ArrowUpDown } from 'lucide-react';
+import { ArrowUpDown, Trash2 } from 'lucide-react';
+import { AlertCircle, Archive, CheckCircle, XCircle } from 'lucide-react';
 
 import { DirectoryPackageItem } from '@/app/check/_components/directory-package-item';
 import { EmptyListFallback } from '@/components/common/empy-list-fallback';
 import { FilterButton } from '@/components/common/filter-button';
+import { FilterChip } from '@/components/common/filter-chip';
 import { HeadingWithInfo } from '@/components/common/header-with-info';
 import { Pagination } from '@/components/common/pagination';
 import { SearchBar } from '@/components/common/search-bar';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
-import { NewArchFilter, NewArchSupportStatus, PackageInfo } from '@/types';
+import { useFilter } from '@/contexts/filter-context';
+import { NewArchSupportStatus, PackageInfo } from '@/types';
 
 interface DirectoryPackagesTabContentProps {
   data: Record<string, PackageInfo> | undefined;
 }
 
 const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps) => {
+  const {
+    activeFilter,
+    activeArchFilters,
+    setActiveArchFilters,
+    activeMaintenanceFilter,
+    setActiveMaintenanceFilter,
+  } = useFilter();
+
+  const chipConfig = {
+    supported: { icon: CheckCircle, label: 'Supported', variant: 'green' },
+    unsupported: { icon: XCircle, label: 'Unsupported', variant: 'red' },
+    untested: { icon: AlertCircle, label: 'Untested', variant: 'yellow' },
+  } as const;
+
+  useEffect(() => {
+    if (
+      activeFilter === 'supported' ||
+      activeFilter === 'unsupported' ||
+      activeFilter === 'untested'
+    ) {
+      setActiveArchFilters([activeFilter]);
+    } else if (activeFilter === 'unmaintained') {
+      setActiveMaintenanceFilter(true);
+    }
+  }, [activeFilter, setActiveArchFilters, setActiveMaintenanceFilter]);
+
   const [currentPage, setCurrentPage] = useState(1);
   const [sortBy, setSortBy] = useState<'name' | 'stars' | 'updated'>('name');
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const [itemsPerPage, setItemsPerPage] = useState<number>(10);
   const [searchText, setSearchText] = useState('');
-  const [activeArchFilters, setActiveArchFilters] = useState<NewArchFilter[]>([]);
-  const [activeMaintenanceFilter, setActiveMaintenanceFilter] = useState(false);
 
   const { paginatedResults, totalPages, totalCount } = useMemo(() => {
     if (!data) return { paginatedResults: [], totalPages: 0, totalCount: 0 };
@@ -32,9 +59,12 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
     const filteredByStatus = Object.entries(data).filter(([_, packageInfo]) => {
       if (activeArchFilters.length === 0 && !activeMaintenanceFilter) return true;
 
-      const matchesArchFilter =
-        activeArchFilters.length === 0 ||
-        activeArchFilters.some(filter => {
+      if (activeArchFilters.length === 0 && activeMaintenanceFilter) {
+        return packageInfo.unmaintained;
+      }
+
+      if (activeArchFilters.length > 0 && !activeMaintenanceFilter) {
+        return activeArchFilters.some(filter => {
           switch (filter) {
             case 'supported':
               return packageInfo.newArchitecture === NewArchSupportStatus.Supported;
@@ -46,10 +76,23 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
               return false;
           }
         });
+      }
 
-      const matchesMaintenanceFilter = !activeMaintenanceFilter || packageInfo.unmaintained;
-
-      return matchesArchFilter && matchesMaintenanceFilter;
+      return (
+        packageInfo.unmaintained ||
+        activeArchFilters.some(filter => {
+          switch (filter) {
+            case 'supported':
+              return packageInfo.newArchitecture === NewArchSupportStatus.Supported;
+            case 'unsupported':
+              return packageInfo.newArchitecture === NewArchSupportStatus.Unsupported;
+            case 'untested':
+              return packageInfo.newArchitecture === NewArchSupportStatus.Untested;
+            default:
+              return false;
+          }
+        })
+      );
     });
 
     // Filter by directory status and search query
@@ -141,12 +184,7 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
             )}
           />
           <div className="flex items-center gap-2">
-            <FilterButton
-              activeArchFilters={activeArchFilters}
-              setActiveArchFilters={setActiveArchFilters}
-              activeMaintenanceFilter={activeMaintenanceFilter}
-              setActiveMaintenanceFilter={setActiveMaintenanceFilter}
-            />
+            <FilterButton />
             <Select
               value={sortBy}
               onValueChange={(value: 'name' | 'stars' | 'updated') => {
@@ -177,6 +215,43 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
           </div>
         </div>
       </div>
+      {(activeArchFilters.length > 0 || activeMaintenanceFilter) && (
+        <div className="flex flex-wrap items-center gap-2 mt-2 mb-4">
+          {activeArchFilters.map(filter => {
+            const config = chipConfig[filter as keyof typeof chipConfig];
+
+            return (
+              <FilterChip
+                key={filter}
+                icon={config.icon}
+                label={config.label}
+                variant={config.variant}
+                onRemove={() => setActiveArchFilters(activeArchFilters.filter(f => f !== filter))}
+              />
+            );
+          })}
+          {activeMaintenanceFilter && (
+            <FilterChip
+              icon={Archive}
+              label="Unmaintained"
+              variant="amber"
+              onRemove={() => setActiveMaintenanceFilter(false)}
+            />
+          )}
+          <Button
+            variant="ghost"
+            size="sm"
+            className="text-xs text-muted-foreground h-6 px-2 gap-1"
+            onClick={() => {
+              setActiveArchFilters([]);
+              setActiveMaintenanceFilter(false);
+            }}
+          >
+            <Trash2 className="h-3 w-3" />
+            Clear all
+          </Button>
+        </div>
+      )}
       {totalCount > 0 ? (
         <div>
           {paginatedResults.map(([name, packageInfo]) => (
