@@ -97,9 +97,9 @@ export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}
   doc.text('React Native Package Checker Report', 14, 16);
 
   const summaryStartY = 35;
-  const cardWidth = 45;
+  const cardWidth = 40;
   const cardHeight = 25;
-  const cardGap = 8;
+  const cardGap = 6;
   const startX = 14;
 
   const summaryCards = [
@@ -108,6 +108,7 @@ export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}
     { title: 'Unsupported', value: data.summary.unsupported },
     { title: 'Untested', value: data.summary.untested },
     { title: 'Unlisted', value: data.summary.unlisted },
+    { title: 'Unmaintained', value: data.summary.unmaintained },
   ];
 
   doc.setFontSize(14);
@@ -215,16 +216,16 @@ export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}
       fontStyle: 'bold',
     },
     columnStyles: {
-      0: { cellWidth: 8 }, // #
-      1: { cellWidth: 35 }, // Package
-      2: { cellWidth: 25 }, // New Architecture
-      3: { cellWidth: 20 }, // Maintenance
+      0: { cellWidth: 10 }, // #
+      1: { cellWidth: 45 }, // Package
+      2: { cellWidth: 30 }, // New Architecture
+      3: { cellWidth: 25 }, // Maintenance
       4: { cellWidth: 15 }, // Score
       5: { cellWidth: 15 }, // Stars
       6: { cellWidth: 25 }, // Last Updated
-      7: { cellWidth: 25 }, // Platforms
+      7: { cellWidth: 30 }, // Platforms
       8: { cellWidth: 45 }, // Links
-      9: { cellWidth: 35 }, // Alternatives
+      9: { cellWidth: 30 }, // Alternatives
     },
   });
 
