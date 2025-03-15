@@ -25,7 +25,7 @@ export const PackageStatus = ({ packageInfo }: PackageStatusProps) => {
   const archIcons = {
     [NewArchSupportStatus.Supported]: <CheckCircle className="h-4 w-4 text-green-500" />,
     [NewArchSupportStatus.Unsupported]: <XCircle className="h-4 w-4 text-red-500" />,
-    [NewArchSupportStatus.Untested]: <AlertCircle className="h-4 w-4 text-yellow-500" />,
+    [NewArchSupportStatus.Untested]: <AlertCircle className="h-4 w-4 text-amber-500" />,
   };
 
   const githubLinks = useMemo(() => {
@@ -70,7 +70,7 @@ export const PackageStatus = ({ packageInfo }: PackageStatusProps) => {
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-1.5 py-1.5 rounded-md bg-muted/30">
+      <div className="flex items-center gap-1.5 p-1.5 rounded-md bg-muted/30">
         {archIcons[packageInfo.newArchitecture || NewArchSupportStatus.Untested]}
         <span className="text-sm">
           {packageInfo.newArchitecture === NewArchSupportStatus.Supported
@@ -90,7 +90,7 @@ export const PackageStatus = ({ packageInfo }: PackageStatusProps) => {
                 className={`p-1 rounded-md hover:bg-muted transition-colors ${
                   packageInfo.unmaintained
                     ? 'text-amber-500 hover:text-amber-600'
-                    : 'text-yellow-500 hover:text-yellow-600'
+                    : 'text-amber-500 hover:text-amber-600'
                 }`}
                 title={title}
               >
@@ -101,7 +101,12 @@ export const PackageStatus = ({ packageInfo }: PackageStatusProps) => {
         )}
       </div>
       {packageInfo.error && (
-        <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-red-50 text-red-700 max-w-[300px]">
+        <div
+          className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md 
+          bg-red-100/50 text-red-700 
+          dark:bg-red-900/30 dark:text-red-400 
+          max-w-[300px]"
+        >
           <AlertTriangle className="h-4 w-4" />
           <span className="text-sm">{packageInfo.error}</span>
         </div>

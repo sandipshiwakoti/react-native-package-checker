@@ -11,10 +11,10 @@ import { EmptyListFallback } from '@/components/common/empy-list-fallback';
 import { Footer } from '@/components/common/footer';
 import { LoadingIndicator } from '@/components/common/loading-indicator';
 import { Logo } from '@/components/common/logo';
+import { RepositoryLink } from '@/components/common/repository-link';
 import { UploadButton } from '@/components/common/upload-button';
-import { GithubIcon } from '@/components/icons/github';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { Alert, AlertDescription } from '@/components/ui/alert';
-import { externalUrls } from '@/config/urls';
 import { FilterProvider } from '@/contexts/filter-context';
 import { usePackages } from '@/hooks/queries/use-packages';
 
@@ -48,17 +48,8 @@ export default function CheckPage() {
             </Link>
             <div className="flex-1 flex items-center justify-end gap-3 min-w-[200px]">
               <UploadButton />
-              <Link
-                href={externalUrls.github.rnpc}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center justify-center h-10 px-4 rounded-md border 
-                  hover:bg-secondary/10 text-muted-foreground/70 
-                  hover:text-muted-foreground transition-all"
-                aria-label="View source on GitHub"
-              >
-                <GithubIcon className="h-5 w-5" />
-              </Link>
+              <ThemeToggle />
+              <RepositoryLink />
             </div>
           </div>
         </div>

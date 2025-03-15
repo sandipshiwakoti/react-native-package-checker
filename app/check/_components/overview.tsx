@@ -36,27 +36,27 @@ function OverviewCard({
   onClick,
 }: OverviewCard) {
   const colorClasses = {
-    green: 'hover:border-green-200 hover:bg-green-50/50',
-    red: 'hover:border-red-200 hover:bg-red-50/50',
-    yellow: 'hover:border-yellow-200 hover:bg-yellow-50/50',
-    gray: 'hover:border-gray-200 hover:bg-gray-50/50',
-    amber: 'hover:border-amber-200 hover:bg-amber-50/50',
+    green: 'hover:bg-emerald-50/30 dark:hover:bg-emerald-900/20',
+    red: 'hover:bg-red-50/30 dark:hover:bg-red-900/20',
+    yellow: 'hover:bg-amber-50/30 dark:hover:bg-amber-900/20',
+    gray: 'hover:bg-slate-50/30 dark:hover:bg-slate-800/30',
+    amber: 'hover:bg-amber-50/30 dark:hover:bg-amber-900/20',
   };
 
   const bgColorClasses = {
-    green: 'bg-green-100 group-hover:bg-green-200',
-    red: 'bg-red-100 group-hover:bg-red-200',
-    yellow: 'bg-yellow-100 group-hover:bg-yellow-200',
-    gray: 'bg-gray-100 group-hover:bg-gray-200',
-    amber: 'bg-amber-100 group-hover:bg-amber-200',
+    green: 'bg-emerald-100/50 dark:bg-emerald-900/30',
+    red: 'bg-red-100/50 dark:bg-red-900/30',
+    yellow: 'bg-amber-100/50 dark:bg-amber-900/30',
+    gray: 'bg-slate-100/50 dark:bg-slate-800/40',
+    amber: 'bg-amber-100/50 dark:bg-amber-900/30',
   };
 
   const progressColorClasses = {
-    green: 'bg-green-500',
-    red: 'bg-red-500',
-    yellow: 'bg-yellow-500',
-    gray: 'bg-gray-500',
-    amber: 'bg-amber-500',
+    green: 'bg-emerald-500/80 dark:bg-emerald-500/60',
+    red: 'bg-red-500/80 dark:bg-red-500/60',
+    yellow: 'bg-amber-500/80 dark:bg-amber-500/60',
+    gray: 'bg-slate-500/80 dark:bg-slate-500/60',
+    amber: 'bg-amber-500/80 dark:bg-amber-500/60',
   };
 
   return (
@@ -64,9 +64,9 @@ function OverviewCard({
       <Tooltip>
         <TooltipTrigger asChild>
           <div
-            className={`p-4 rounded-xl border transition-all group relative cursor-pointer
+            className={`p-4 rounded-xl border border-border transition-all duration-200 group relative cursor-pointer
               ${colorClasses[color as keyof typeof colorClasses]}
-              ${isActive ? 'ring-2 ring-primary' : ''}`}
+              ${isActive ? 'ring-1 ring-primary/30 bg-primary/5' : ''}`}
             onClick={onClick}
             role="button"
             tabIndex={0}
@@ -90,9 +90,7 @@ function OverviewCard({
                             <TooltipTrigger>
                               <AlertCircle className="h-4 w-4 text-muted-foreground/50 hover:text-muted-foreground" />
                             </TooltipTrigger>
-                            <TooltipContent>
-                              <div className="text-popover-foreground text-xs">{tooltip}</div>
-                            </TooltipContent>
+                            <TooltipContent>{tooltip}</TooltipContent>
                           </Tooltip>
                         </TooltipProvider>
                       )}

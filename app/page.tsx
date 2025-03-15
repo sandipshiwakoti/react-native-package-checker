@@ -1,16 +1,15 @@
 'use client';
 
 import { useRef } from 'react';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
 
 import { Footer } from '@/components/common/footer';
 import { Logo } from '@/components/common/logo';
 import { PackageUploader } from '@/components/common/package-uploader';
-import { GithubIcon } from '@/components/icons/github';
+import { RepositoryLink } from '@/components/common/repository-link';
+import { ThemeToggle } from '@/components/theme-toggle';
 import { Input } from '@/components/ui/input';
-import { externalUrls } from '@/config/urls';
 
 export default function HomePage() {
   const router = useRouter();
@@ -33,18 +32,9 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="flex justify-center items-center sm:justify-end m-2">
-        <Link
-          href={externalUrls.github.rnpc}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 px-3 py-1.5 rounded-full 
-          bg-secondary/10 hover:bg-secondary/20 text-muted-foreground/70 
-          hover:text-muted-foreground transition-all text-md sm:text-xl"
-        >
-          <GithubIcon className="h-5 w-5 sm:h-7 sm:w-7" />
-          <span>View on GitHub</span>
-        </Link>
+      <div className="flex justify-end items-center gap-2 m-4">
+        <ThemeToggle />
+        <RepositoryLink />
       </div>
       <div className="flex-1 max-w-[900px] mx-auto flex items-center justify-center">
         <div className="w-full px-4 py-10">
@@ -62,7 +52,7 @@ export default function HomePage() {
                 className="h-14 sm:text-lg rounded-xl pr-12 pl-4 transition-all 
                 shadow-sm hover:shadow-md
                 focus:ring-2 focus:ring-primary/20 focus:shadow-lg
-                bg-white/50 backdrop-blur-sm"
+                bg-background/50 dark:bg-secondary/10 backdrop-blur-sm"
                 onKeyDown={e => {
                   if (e.key === 'Enter') {
                     handleSearch(e.currentTarget.value);

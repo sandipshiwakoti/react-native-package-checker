@@ -14,16 +14,20 @@ interface DirectoryPackageItemProps {
 
 export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItemProps) => {
   return (
-    <div className="p-4 rounded-lg border bg-card hover:border-primary/50 transition-colors mb-6">
+    <div
+      className="p-4 rounded-lg border border-border/80 bg-card/50 hover:border-primary/50 hover:bg-card/80 
+      dark:border-border/70 dark:hover:border-primary/40 dark:hover:bg-card/60 
+      transition-all duration-200 mb-6 shadow-sm hover:shadow-md"
+    >
       <div className="flex flex-col sm:flex-row items-start justify-between">
         <div className="block sm:hidden">
           <PackageStatus packageInfo={packageInfo} />
         </div>
         <div className="flex flex-col gap-1">
           {packageInfo.unmaintained && (
-            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-amber-50 text-amber-700 w-fit">
-              <Archive className="h-4 w-4" />
-              <span className="text-sm">Unmaintained</span>
+            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-amber-100/50 dark:bg-amber-900/30 w-fit">
+              <Archive className="h-4 w-4 text-amber-600 dark:text-amber-400" />
+              <span className="text-sm text-amber-600 dark:text-amber-400">Unmaintained</span>
             </div>
           )}
           <div className="flex items-center gap-2 mb-1">
@@ -53,22 +57,22 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
           </div>
           <div className="flex flex-wrap gap-2 mb-2">
             {packageInfo.platforms?.ios && (
-              <span className="px-2 py-0.5 bg-blue-100 text-blue-700 rounded-full text-xs font-medium">
+              <span className="px-2 py-0.5 bg-blue-100/70 text-blue-700 dark:bg-blue-900/30 dark:text-blue-400 rounded-full text-xs font-medium">
                 iOS
               </span>
             )}
             {packageInfo.platforms?.android && (
-              <span className="px-2 py-0.5 bg-green-100 text-green-700 rounded-full text-xs font-medium">
+              <span className="px-2 py-0.5 bg-emerald-100/70 text-emerald-700 dark:bg-emerald-900/30 dark:text-emerald-400 rounded-full text-xs font-medium">
                 Android
               </span>
             )}
             {packageInfo.platforms?.web && (
-              <span className="px-2 py-0.5 bg-purple-100 text-purple-700 rounded-full text-xs font-medium">
+              <span className="px-2 py-0.5 bg-purple-100/70 text-purple-700 dark:bg-purple-900/30 dark:text-purple-400 rounded-full text-xs font-medium">
                 Web
               </span>
             )}
             {packageInfo.support?.hasTypes && (
-              <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+              <span className="px-2 py-0.5 bg-slate-100/70 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300 rounded-full text-xs font-medium">
                 TypeScript
               </span>
             )}
@@ -77,13 +81,13 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
                 href={packageInfo.support.licenseUrl || '#'}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium hover:bg-gray-200 transition-colors"
+                className="px-2 py-0.5 bg-slate-100/70 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300 rounded-full text-xs font-medium hover:bg-slate-200/70 dark:hover:bg-slate-700/50 transition-colors"
               >
                 {packageInfo.support.license}
               </a>
             )}
             {packageInfo.isRecent && (
-              <span className="px-2 py-0.5 bg-gray-100 text-gray-700 rounded-full text-xs font-medium">
+              <span className="px-2 py-0.5 bg-slate-100/70 text-slate-700 dark:bg-slate-800/50 dark:text-slate-300 rounded-full text-xs font-medium">
                 Recent
               </span>
             )}

@@ -12,11 +12,11 @@ export function Footer() {
             href={externalUrls.github.directory}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-0.5 font-medium"
+            className="text-primary hover:text-primary/80 transition-colors inline-flex items-center gap-0.5 font-medium dark:text-indigo-400 dark:hover:text-indigo-300"
           >
             React Native Directory
           </a>
-          <HeartIcon className="h-3.5 w-3.5 text-primary" />
+          <HeartIcon className="h-3.5 w-3.5 text-red-500" />
         </p>
         <p className="text-xs text-muted-foreground/80 mx-auto">
           Built for the React Native community. We don&apos;t store any of your package.json data.

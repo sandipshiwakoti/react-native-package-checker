@@ -28,7 +28,7 @@ export function Logo({ variant = 'horizontal', size = 'small' }: LogoProps) {
       <div>
         <span
           className={cn(
-            'font-display font-extrabold tracking-tight text-slate-800 leading-3 whitespace-nowrap',
+            'font-display font-extrabold tracking-tight leading-3 whitespace-nowrap',
             textSize,
             variant === 'vertical' ? 'inline-block' : 'block translate-y-0.5'
           )}
@@ -37,7 +37,7 @@ export function Logo({ variant = 'horizontal', size = 'small' }: LogoProps) {
         </span>
         <span
           className={cn(
-            'font-display font-extrabold tracking-tight text-slate-800 leading-none whitespace-nowrap',
+            'font-display font-extrabold tracking-tight leading-none whitespace-nowrap',
             textSize,
             variant === 'vertical' ? 'ml-2' : 'block -translate-y-0.5'
           )}

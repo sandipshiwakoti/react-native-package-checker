@@ -26,10 +26,8 @@ const UnlistedPackageItem = ({ name, packageInfo }: UnlistedPackageItemProps) =>
                     <AlertCircle className="h-5 w-5 text-muted-foreground/50 hover:text-muted-foreground" />
                   </TooltipTrigger>
                   <TooltipContent>
-                    <div className="text-popover-foreground text-xs">
-                      Core dependency required by React Native. Not listed in the directory but
-                      fully compatible with the New Architecture.
-                    </div>
+                    Core dependency required by React Native. Not listed in the directory but fully
+                    compatible with the New Architecture.
                   </TooltipContent>
                 </Tooltip>
               </TooltipProvider>
@@ -58,7 +56,11 @@ const UnlistedPackageItem = ({ name, packageInfo }: UnlistedPackageItemProps) =>
             </div>
           </div>
           {packageInfo.error && (
-            <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-red-50 text-red-700">
+            <div
+              className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md 
+              bg-red-100/50 text-red-700 
+              dark:bg-red-900/30 dark:text-red-400"
+            >
               <AlertTriangle className="h-4 w-4" />
               <span className="text-sm">{packageInfo.error}</span>
             </div>

@@ -154,7 +154,7 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
 
   return (
     <>
-      <div className="flex flex-col gap-3 flex-wrap md:flex-row md:items-start md:justify-between py-2 mb-2 sticky top-0 bg-white z-10">
+      <div className="flex flex-col gap-3 flex-wrap md:flex-row md:items-start md:justify-between py-2 mb-2 sticky top-0 bg-background z-10">
         <div>
           <HeadingWithInfo
             title="Directory Packages"

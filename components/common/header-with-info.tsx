@@ -49,9 +49,7 @@ export function HeadingWithInfo({
               />
             )}
           </TooltipTrigger>
-          <TooltipContent>
-            <div className="text-popover-foreground text-xs">{tooltip}</div>
-          </TooltipContent>
+          <TooltipContent>{tooltip}</TooltipContent>
         </Tooltip>
       </TooltipProvider>
     </div>
