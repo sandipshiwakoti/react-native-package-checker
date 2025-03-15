@@ -50,7 +50,7 @@ export function FilterButton() {
       <PopoverTrigger asChild>
         <Button
           variant="outline"
-          className="w-[120px] sm:w-[160px] justify-between font-normal items-center relative"
+          className="min-w-[120px] sm:min-w-[160px] justify-between font-normal items-center relative"
         >
           <div className="flex flex-row gap-2 items-center">
             <Filter className="h-4 w-4 opacity-50" />

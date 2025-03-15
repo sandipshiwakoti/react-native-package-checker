@@ -62,7 +62,7 @@ const UnlistedPackageItem = ({ name, packageInfo }: UnlistedPackageItemProps) =>
               dark:bg-red-900/30 dark:text-red-400"
             >
               <AlertTriangle className="h-4 w-4" />
-              <span className="text-sm">{packageInfo.error}</span>
+              <span className="text-xs">{packageInfo.error}</span>
             </div>
           )}
         </div>

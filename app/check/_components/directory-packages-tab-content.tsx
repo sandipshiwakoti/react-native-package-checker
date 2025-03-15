@@ -6,11 +6,11 @@ import { AlertCircle, Archive, CheckCircle, XCircle } from 'lucide-react';
 import { DirectoryPackageItem } from '@/app/check/_components/directory-package-item';
 import { EmptyListFallback } from '@/components/common/empy-list-fallback';
 import { FilterButton } from '@/components/common/filter-button';
-import { FilterChip } from '@/components/common/filter-chip';
 import { HeadingWithInfo } from '@/components/common/header-with-info';
 import { Pagination } from '@/components/common/pagination';
 import { SearchBar } from '@/components/common/search-bar';
 import { Button } from '@/components/ui/button';
+import { Chip } from '@/components/ui/chip';
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
 import { useFilter } from '@/contexts/filter-context';
 import { NewArchSupportStatus, PackageInfo } from '@/types';
@@ -18,6 +18,12 @@ import { NewArchSupportStatus, PackageInfo } from '@/types';
 interface DirectoryPackagesTabContentProps {
   data: Record<string, PackageInfo> | undefined;
 }
+
+const newArchChipConfig = {
+  supported: { icon: CheckCircle, label: 'Supported', variant: 'green' },
+  unsupported: { icon: XCircle, label: 'Unsupported', variant: 'red' },
+  untested: { icon: AlertCircle, label: 'Untested', variant: 'yellow' },
+} as const;
 
 const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps) => {
   const {
@@ -27,12 +33,6 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
     activeMaintenanceFilter,
     setActiveMaintenanceFilter,
   } = useFilter();
-
-  const chipConfig = {
-    supported: { icon: CheckCircle, label: 'Supported', variant: 'green' },
-    unsupported: { icon: XCircle, label: 'Unsupported', variant: 'red' },
-    untested: { icon: AlertCircle, label: 'Untested', variant: 'yellow' },
-  } as const;
 
   useEffect(() => {
     if (
@@ -218,10 +218,10 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
       {(activeArchFilters.length > 0 || activeMaintenanceFilter) && (
         <div className="flex flex-wrap items-center gap-2 mt-2 mb-4">
           {activeArchFilters.map(filter => {
-            const config = chipConfig[filter as keyof typeof chipConfig];
+            const config = newArchChipConfig[filter as keyof typeof newArchChipConfig];
 
             return (
-              <FilterChip
+              <Chip
                 key={filter}
                 icon={config.icon}
                 label={config.label}
@@ -231,7 +231,7 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
             );
           })}
           {activeMaintenanceFilter && (
-            <FilterChip
+            <Chip
               icon={Archive}
               label="Unmaintained"
               variant="amber"
@@ -240,7 +240,6 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
           )}
           <Button
             variant="ghost"
-            size="sm"
             className="text-xs text-muted-foreground h-6 px-2 gap-1"
             onClick={() => {
               setActiveArchFilters([]);

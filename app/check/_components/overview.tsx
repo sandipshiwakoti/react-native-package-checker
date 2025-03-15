@@ -64,9 +64,7 @@ function OverviewCard({
       <Tooltip>
         <TooltipTrigger asChild>
           <div
-            className={`p-4 rounded-xl border border-border transition-all duration-200 group relative cursor-pointer
-              ${colorClasses[color as keyof typeof colorClasses]}
-              ${isActive ? 'ring-1 ring-primary/30 bg-primary/5' : ''}`}
+            className={`p-4 rounded-xl border border-border/80 bg-card/50 hover:border-primary/50 hover:bg-card/80 dark:border-border/70 dark:hover:border-primary/40 dark:hover:bg-card/60 transition-all duration-200 shadow-sm hover:shadow-md group relative cursor-pointer ${colorClasses[color as keyof typeof colorClasses]} ${isActive ? 'ring-1 ring-primary/30 bg-primary/5' : ''}`}
             onClick={onClick}
             role="button"
             tabIndex={0}
