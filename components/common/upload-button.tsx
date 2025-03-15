@@ -20,7 +20,7 @@ export const UploadButton = () => {
     <>
       <Button variant="outline" onClick={() => setIsOpen(true)} className="font-normal">
         <div className="flex flex-row gap-2 items-center">
-          <UploadIcon className="h-4 w-4 opacity-50" />
+          <UploadIcon className="h-4 w-4" />
           Upload
         </div>
       </Button>

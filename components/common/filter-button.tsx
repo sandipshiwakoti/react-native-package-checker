@@ -53,12 +53,12 @@ export function FilterButton() {
           className="min-w-[120px] sm:min-w-[160px] justify-between font-normal items-center relative"
         >
           <div className="flex flex-row gap-2 items-center">
-            <Filter className="h-4 w-4 opacity-50" />
+            <Filter className="h-4 w-4" />
             {totalActiveFilters === 0
               ? 'Filter'
               : `${totalActiveFilters} filter${totalActiveFilters > 1 ? 's' : ''} selected`}
           </div>
-          <ChevronDown className="h-4 w-4 opacity-50" />
+          <ChevronDown className="h-4 w-4" />
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-4">

@@ -67,7 +67,7 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
                   href={externalUrls.npm.package(alt)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-primary hover:text-primary/80 transition-colors"
+                  className="text-primary dark:text-indigo-400 dark:hover:text-indigo-300 transition-colors"
                 >
                   {alt}
                   {index < (packageInfo.alternatives?.length ?? 0) - 1 ? ', ' : ''}

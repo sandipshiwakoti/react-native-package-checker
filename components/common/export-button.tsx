@@ -22,10 +22,10 @@ export const ExportButton: React.FC<ExportButtonProps> = ({ data }) => {
       <DropdownMenuTrigger asChild className="w-[120px] sm:w-[160px] flex flex-row justify-between">
         <Button variant="outline" className="font-normal">
           <div className="flex flex-row gap-2 items-center">
-            <FileUp className="h-4 w-4 opacity-50" />
+            <FileUp className="h-4 w-4" />
             Export
           </div>
-          <ChevronDown className="h-4 w-4 opacity-50" />
+          <ChevronDown className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
 

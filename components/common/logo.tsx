@@ -21,7 +21,7 @@ export function Logo({ variant = 'horizontal', size = 'small' }: LogoProps) {
           src="/logo.svg"
           alt="React Native Package Checker Logo"
           fill
-          className="object-contain"
+          className="object-contain dark:opacity-90"
           priority
         />
       </div>
