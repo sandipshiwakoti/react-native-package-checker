@@ -14,8 +14,9 @@ import {
   getMaintenanceIssuesUrl,
   getMaintenancePRSearchUrl,
   getNewArchIssueSearchUrl,
+  getNewArchMergedPRSearchUrl,
   getNewArchPRSearchUrl,
-  getNewArchReleaseNotesUrl,
+  getReadmeUrl,
 } from '@/lib/helpers';
 import { NewArchSupportStatus, PackageInfo } from '@/types';
 
@@ -32,24 +33,13 @@ export const MoreLinksButton = ({ packageInfo }: MoreLinksButtonProps) => {
         <>
           <DropdownMenuItem asChild className="cursor-pointer">
             <a
-              href={getNewArchReleaseNotesUrl(packageInfo.githubUrl ?? '')}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-2"
-            >
-              <CircleDot className="h-4 w-4 opacity-70" />
-              <span>New Arch Release Notes</span>
-            </a>
-          </DropdownMenuItem>
-          <DropdownMenuItem asChild className="cursor-pointer">
-            <a
-              href={getNewArchPRSearchUrl(packageInfo.githubUrl ?? '')}
+              href={getNewArchMergedPRSearchUrl(packageInfo.githubUrl ?? '')}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-2"
             >
               <GitPullRequest className="h-4 w-4 opacity-70" />
-              <span>New Arch PRs</span>
+              <span>New Arch Merged PRs</span>
             </a>
           </DropdownMenuItem>
         </>
@@ -70,7 +60,7 @@ export const MoreLinksButton = ({ packageInfo }: MoreLinksButtonProps) => {
               className="flex items-center gap-2"
             >
               <CircleDot className="h-4 w-4 opacity-70" />
-              <span>New Arch Issues</span>
+              <span>New Arch Open Issues</span>
             </a>
           </DropdownMenuItem>
           <DropdownMenuItem asChild className="cursor-pointer">
@@ -81,7 +71,7 @@ export const MoreLinksButton = ({ packageInfo }: MoreLinksButtonProps) => {
               className="flex items-center gap-2"
             >
               <GitPullRequest className="h-4 w-4 opacity-70" />
-              <span>New Arch PRs</span>
+              <span>New Arch Open PRs</span>
             </a>
           </DropdownMenuItem>
         </>
@@ -104,7 +94,7 @@ export const MoreLinksButton = ({ packageInfo }: MoreLinksButtonProps) => {
             className="flex items-center gap-2"
           >
             <CircleDot className="h-4 w-4 opacity-70" />
-            <span>Maintenance Issues</span>
+            <span>Maintenance Open Issues</span>
           </a>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer">
@@ -126,7 +116,7 @@ export const MoreLinksButton = ({ packageInfo }: MoreLinksButtonProps) => {
             className="flex items-center gap-2"
           >
             <GitPullRequest className="h-4 w-4 opacity-70" />
-            <span>Contributor Activity</span>
+            <span>Contributors Activity</span>
           </a>
         </DropdownMenuItem>
         <DropdownMenuItem asChild className="cursor-pointer">
@@ -157,6 +147,17 @@ export const MoreLinksButton = ({ packageInfo }: MoreLinksButtonProps) => {
         <DropdownMenuContent align="end">
           {renderMaintenanceLinks()}
           {renderNewArchLinks()}
+          <DropdownMenuItem asChild className="cursor-pointer">
+            <a
+              href={getReadmeUrl(packageInfo.githubUrl ?? '')}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex items-center gap-2"
+            >
+              <CircleDot className="h-4 w-4 opacity-70" />
+              <span>Documentation</span>
+            </a>
+          </DropdownMenuItem>
         </DropdownMenuContent>
       </DropdownMenuPortal>
     </DropdownMenu>

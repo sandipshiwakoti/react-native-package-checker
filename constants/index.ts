@@ -4,6 +4,9 @@ export const NEW_ARCH_ISSUE_QUERY =
 export const NEW_ARCH_PR_QUERY =
   'is:pr is:open "new arch" OR "new architecture" OR "fabric" OR "turbomodule" OR "JSI" OR "codegen"';
 
+export const NEW_ARCH_MERGED_PR_QUERY =
+  'is:pr is:merged "new arch" OR "new architecture" OR "fabric" OR "turbomodule" OR "JSI" OR "codegen"';
+
 export const NEW_ARCH_RELEASE_NOTES_QUERY = 'new+arch';
 
 export const MAINTENANCE_ISSUE_QUERY =
@@ -17,6 +20,7 @@ export enum GITHUB_PATHS {
   FORKS = 'forks',
   CONTRIBUTORS_ACTIVITY = 'graphs/contributors',
   RELEASES = 'releases',
+  README = 'blob/master/README.md',
 }
 
 export const EXPORTED_FILE_NAME_PREFIX = 'react-native-package-checker-report';

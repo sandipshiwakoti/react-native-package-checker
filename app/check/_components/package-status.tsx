@@ -35,7 +35,7 @@ export const PackageStatus = ({ packageInfo }: PackageStatusProps) => {
           href={packageInfo.support.licenseUrl || '#'}
         />
       )}
-      {packageInfo.isRecent && <Chip label="Recent" variant="slate" />}
+      {packageInfo.isRecent && <Chip label="Recently Added" variant="slate" />}
     </div>
   );
 };

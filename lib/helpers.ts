@@ -3,6 +3,7 @@ import {
   MAINTENANCE_ISSUE_QUERY,
   MAINTENANCE_PR_QUERY,
   NEW_ARCH_ISSUE_QUERY,
+  NEW_ARCH_MERGED_PR_QUERY,
   NEW_ARCH_PR_QUERY,
   NEW_ARCH_RELEASE_NOTES_QUERY,
 } from '@/constants';
@@ -24,8 +25,13 @@ export const getNewArchIssueSearchUrl = (repoUrl: string) =>
 export const getNewArchPRSearchUrl = (repoUrl: string) =>
   createGithubUrl(repoUrl, GITHUB_PATHS.PULLS, NEW_ARCH_PR_QUERY);
 
+export const getNewArchMergedPRSearchUrl = (repoUrl: string) =>
+  createGithubUrl(repoUrl, GITHUB_PATHS.PULLS, NEW_ARCH_MERGED_PR_QUERY);
+
 export const getNewArchReleaseNotesUrl = (repoUrl: string) =>
   createGithubUrl(repoUrl, GITHUB_PATHS.RELEASES, NEW_ARCH_RELEASE_NOTES_QUERY);
+
+export const getReadmeUrl = (repoUrl: string) => createGithubUrl(repoUrl, GITHUB_PATHS.README);
 
 export const getMaintenanceIssuesUrl = (repoUrl: string) =>
   createGithubUrl(repoUrl, GITHUB_PATHS.ISSUES, MAINTENANCE_ISSUE_QUERY);
