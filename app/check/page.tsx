@@ -43,7 +43,7 @@ export default function CheckPage() {
       <div className="max-w-[1200px] mx-auto px-4 w-full flex-1 flex flex-col">
         <div className="pt-4 pb-2 border-b mb-2 w-full">
           <div className="flex flex-wrap gap-4">
-            <Link href="/" className="flex-shrink-0">
+            <Link href="/" className="shrink-0">
               <Logo />
             </Link>
             <div className="flex-1 flex items-center justify-end gap-3 min-w-[200px]">
@@ -64,7 +64,7 @@ export default function CheckPage() {
             <FilterProvider>
               <div className="w-full">
                 <VersionChecker versions={data?.reactNativeVersions ?? []} />
-                <div className="min-h-screen flex flex-col space-y-6">
+                <div className="min-h-screen flex flex-col gap-6">
                   <Overview data={data?.results} />
                   <PackageResults data={data?.results} />
                 </div>

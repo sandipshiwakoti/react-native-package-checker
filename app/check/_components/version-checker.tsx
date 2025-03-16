@@ -27,13 +27,13 @@ export function VersionChecker({ versions }: VersionCheckerProps) {
 
   return (
     <Alert
-      className="mt-4 bg-gradient-to-r from-indigo-50/50 to-purple-50/30 
+      className="mt-4 bg-linear-to-r from-indigo-50/50 to-purple-50/30 
       dark:from-indigo-900/20 dark:to-purple-900/10 border-l-4 border-l-indigo-400 dark:border-l-indigo-500"
     >
       <div className="flex justify-between">
         <div className="flex gap-3 flex-1">
           <ArrowUpCircle className="h-6 w-6 text-indigo-400 dark:text-indigo-500" />
-          <div className="space-y-1 flex-1">
+          <div className="flex flex-1 flex-col gap-1">
             <div className="flex items-start justify-between">
               <AlertTitle className="text-lg sm:text-xl font-semibold text-indigo-600 dark:text-indigo-400">
                 React Native Update Available

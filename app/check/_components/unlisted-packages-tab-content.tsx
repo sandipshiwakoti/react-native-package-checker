@@ -53,7 +53,7 @@ const UnlistedPackagesTabContent = ({ data }: UnlistedPackagesTabContentProps) =
         />
       </div>
       {unlistedPackages.length > 0 ? (
-        <div className="space-y-6">
+        <div className="flex flex-col gap-6">
           {unlistedPackages.map(([name, packageInfo]) => (
             <UnlistedPackageItem key={name} packageInfo={packageInfo} name={name} />
           ))}

@@ -16,7 +16,7 @@ interface OverviewCard {
   id: string;
   title: string;
   value: number;
-  icon: React.ReactElement;
+  icon: React.ReactElement<any>;
   color: string;
   tooltip: string;
   total: number;
@@ -64,13 +64,13 @@ function OverviewCard({
       <Tooltip>
         <TooltipTrigger asChild>
           <div
-            className={`p-4 rounded-xl border border-border/80 bg-card/50 hover:border-primary/50 hover:bg-card/80 dark:border-border/70 dark:hover:border-primary/40 dark:hover:bg-card/60 transition-all duration-200 shadow-sm hover:shadow-md group relative cursor-pointer ${colorClasses[color as keyof typeof colorClasses]} ${isActive ? 'ring-1 ring-primary/30 bg-primary/5' : ''}`}
+            className={`p-4 rounded-xl border border-border/80 bg-card/50 hover:border-primary/50 hover:bg-card/80 dark:border-border/70 dark:hover:border-primary/40 dark:hover:bg-card/60 transition-all duration-200 shadow-xs hover:shadow-md group relative cursor-pointer ${colorClasses[color as keyof typeof colorClasses]} ${isActive ? 'ring-1 ring-primary/30 bg-primary/5' : ''}`}
             onClick={onClick}
             role="button"
             tabIndex={0}
           >
             <div className="flex items-start gap-3">
-              <div className="space-y-2">
+              <div className="flex flex-col gap-2">
                 <div className="flex flex-row items-center gap-3">
                   <div className="shrink-0">
                     <div
@@ -93,7 +93,7 @@ function OverviewCard({
                         </TooltipProvider>
                       )}
                     </div>
-                    <div className="space-y-1">
+                    <div className="flex flex-col gap-1">
                       <h3 className="text-3xl font-bold">{value}</h3>
                       <div className="flex items-center gap-2">
                         <div className="w-24 h-1.5 rounded-full bg-muted overflow-hidden">
@@ -208,7 +208,7 @@ export function Overview({ data = {} }: OverviewProps) {
         </div>
         <ExportButton data={fileExportData} />
       </div>
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 min-[1250px]:grid-cols-5 gap-4 mt-6">
+      <div className="grid grid-cols-1 min-[500px]:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 mt-6">
         {overviewCards.map(card => (
           <OverviewCard
             key={card.id}

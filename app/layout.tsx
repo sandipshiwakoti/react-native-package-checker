@@ -1,4 +1,5 @@
-import type { Metadata } from 'next';
+import { Suspense } from 'react';
+import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { Toaster } from 'sonner';
@@ -11,6 +12,11 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(
+    process.env.NODE_ENV === 'production'
+      ? 'https://react-native-package-checker.vercel.app'
+      : 'http://localhost:3000'
+  ),
   title: 'React Native Package Checker',
   description:
     'Analyze your React Native packages in bulk and discover their New Architecture compatibility. Check version compatibility, find updates, and export reports.',
@@ -63,25 +69,28 @@ export const metadata: Metadata = {
       type: 'image/png',
     },
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-  },
   robots: {
     index: true,
     follow: true,
   },
 };
 
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+};
+
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className={inter.className}>
-        <Providers>
-          {children}
-          <Toaster />
-          {process.env.NODE_ENV === 'development' && <ReactQueryDevtools />}
-        </Providers>
+    <html lang="en" suppressHydrationWarning>
+      <body className={inter.className} suppressHydrationWarning>
+        <Suspense>
+          <Providers>
+            {children}
+            <Toaster />
+            {process.env.NODE_ENV === 'development' && <ReactQueryDevtools />}
+          </Providers>
+        </Suspense>
       </body>
     </html>
   );

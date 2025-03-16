@@ -5,7 +5,7 @@ import { externalUrls } from '@/config/urls';
 export function Footer() {
   return (
     <div className="text-center py-6 text-sm mt-2 text-muted-foreground border-t">
-      <div className="space-y-2 text-center">
+      <div className="flex flex-col gap-2 text-center">
         <p className="flex items-center justify-center gap-1.5">
           Data sourced from{' '}
           <a

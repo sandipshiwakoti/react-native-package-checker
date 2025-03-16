@@ -128,7 +128,7 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
           </div>
         )}
         {packageInfo.score !== undefined && (
-          <div className="relative group">
+          <div className="cursor-default relative group">
             <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-card border">
               <span className="text-xs font-medium text-muted-foreground">Score:</span>
               <div
@@ -149,7 +149,7 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
               packageInfo.matchingScoreModifiers.length > 0 && (
                 <div className="absolute right-0 top-full mt-2 w-64 p-3 rounded-lg border bg-popover shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all z-10">
                   <div className="text-xs font-medium mb-2">Score Modifiers:</div>
-                  <ul className="space-y-1">
+                  <ul className="flex flex-col gap-1">
                     {packageInfo.matchingScoreModifiers.map((modifier, index) => (
                       <li
                         key={index}

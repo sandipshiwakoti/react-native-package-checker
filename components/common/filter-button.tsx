@@ -62,7 +62,7 @@ export function FilterButton() {
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[300px] p-4">
-        <div className="space-y-4">
+        <div className="flex flex-col gap-4">
           <div className="flex justify-between items-center">
             <span className="font-medium">Filters</span>
             <X
@@ -71,9 +71,9 @@ export function FilterButton() {
             />
           </div>
 
-          <div className="space-y-2">
+          <div className="flex flex-col gap-2">
             <div className="text-sm text-muted-foreground">New Architecture Support</div>
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2">
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="supported"
@@ -119,9 +119,9 @@ export function FilterButton() {
             </div>
           </div>
 
-          <div className="space-y-2 pt-2 border-t">
+          <div className="flex flex-col gap-2 pt-2 border-t">
             <div className="text-sm text-muted-foreground">Maintenance Status</div>
-            <div className="space-y-2">
+            <div className="flex flex-col gap-2">
               <div className="flex items-center space-x-2">
                 <Checkbox
                   id="unmaintained"

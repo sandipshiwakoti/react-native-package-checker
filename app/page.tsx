@@ -38,13 +38,13 @@ export default function HomePage() {
       </div>
       <div className="flex-1 max-w-[900px] mx-auto flex items-center justify-center">
         <div className="w-full px-4 py-10">
-          <div className="text-center space-y-6">
+          <div className="text-center flex flex-col gap-6">
             <Logo variant="vertical" size="large" />
             <p className="sm:text-xl text-muted-foreground max-w-2xl mx-auto">
               Check your React Native packages for New Architecture compatibility in seconds ⚡️
             </p>
           </div>
-          <div className="w-full space-y-8 max-w-2xl mx-auto mt-4">
+          <div className="w-full flex flex-col gap-8 max-w-2xl mx-auto mt-4">
             <div className="relative group">
               <Input
                 ref={inputRef}
@@ -52,7 +52,7 @@ export default function HomePage() {
                 className="h-14 sm:text-lg rounded-xl pr-12 pl-4 transition-all 
                 shadow-sm hover:shadow-md
                 focus:ring-2 focus:ring-primary/20 focus:shadow-lg
-                bg-background/50 dark:bg-secondary/10 backdrop-blur-sm"
+                bg-background/50 dark:bg-secondary/10 backdrop-blur-xs"
                 onKeyDown={e => {
                   if (e.key === 'Enter') {
                     handleSearch(e.currentTarget.value);

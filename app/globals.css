@@ -1,7 +1,7 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
- 
+@import 'tailwindcss';
+
+@config '../tailwind.config.ts';
+
 @layer base {
   :root {
     --background: 0 0% 100%;
@@ -20,7 +20,7 @@
     --accent-foreground: 222.2 47.4% 11.2%;
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
-    --border: 214.3 31.8% 85%; 
+    --border: 214.3 31.8% 85%;
     --ring: 248 90% 66%;
     --radius: 0.5rem;
   }
@@ -51,18 +51,27 @@
   * {
     @apply border-border;
   }
+
   body {
     @apply bg-background text-foreground;
   }
-  h1, h2, h3, h4, h5, h6 {
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
     @apply text-slate-800 dark:text-slate-200;
   }
-  p, span {
+
+  p,
+  span {
     @apply text-slate-700 dark:text-slate-300;
   }
-}
-.bg-dot-pattern {
-  background-image: radial-gradient(rgba(0, 0, 0, 0.1) 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-position: -12px -12px;
+
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
 }
