@@ -30,7 +30,7 @@ export const ExportButton: React.FC<ExportButtonProps> = ({ data }) => {
       </DropdownMenuTrigger>
 
       <DropdownMenuPortal>
-        <DropdownMenuContent className="w-[120px] sm:w-[160px] bg-white rounded-md p-1 shadow-lg">
+        <DropdownMenuContent className="w-[120px] sm:w-[160px] rounded-md p-1 shadow-lg">
           <DropdownMenuItem
             className="flex items-center px-2 py-2 text-sm outline-none cursor-default hover:bg-gray-100 rounded-sm"
             onClick={() => generatePDF(data)}
