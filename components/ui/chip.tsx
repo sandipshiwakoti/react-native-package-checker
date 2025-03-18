@@ -4,7 +4,7 @@ import { cn } from '@/lib/utils';
 
 interface ChipProps {
   label: string;
-  icon?: LucideIcon;
+  icon?: LucideIcon | React.ComponentType<{ className?: string }>;
   variant: 'green' | 'red' | 'yellow' | 'amber' | 'blue' | 'purple' | 'slate';
   size?: 'sm' | 'md';
   onRemove?: () => void;
@@ -23,7 +23,7 @@ const variantStyles = {
 
 const sizeStyles = {
   sm: 'text-xs px-2 py-1',
-  md: 'text-sm px-3 py-1.5',
+  md: 'text-xs px-3 py-1.5',
 };
 
 export function Chip({ label, icon: Icon, variant, size = 'sm', onRemove, href }: ChipProps) {

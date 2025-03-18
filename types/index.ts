@@ -17,6 +17,7 @@ export interface PackageResponse {
 
 export interface PackageStatus {
   newArchitecture?: NewArchSupportStatus;
+  newArchitectureNote?: string;
   unmaintained?: boolean;
   error?: string;
   githubUrl?: string;
@@ -59,21 +60,25 @@ export interface Support {
 export interface PackageInfo {
   npmUrl: string;
   githubUrl?: string;
-  score?: number;
-  matchingScoreModifiers?: string[];
   alternatives?: string[];
   platforms?: {
     ios: boolean;
     android: boolean;
     web: boolean;
+    windows: boolean;
+    macos: boolean;
+    fireos: boolean;
   };
   support?: {
     hasTypes: boolean;
     license: string | null;
     licenseUrl?: string;
+    expoGo?: boolean;
+    dev?: boolean;
   };
   github?: GithubInfo;
   newArchitecture?: NewArchSupportStatus;
+  newArchitectureNote?: string;
   unmaintained?: boolean;
   error?: string;
   notInDirectory?: boolean;
@@ -86,8 +91,12 @@ export interface DirectoryPackage {
   ios: boolean;
   android: boolean;
   web: boolean;
-  score?: number;
-  matchingScoreModifiers?: string[];
+  windows: boolean;
+  macos: boolean;
+  fireos: boolean;
+  expoGo?: boolean;
+  dev?: boolean;
+  newArchitectureNote?: string;
   alternatives?: string[];
   isRecent?: boolean;
   github: {
@@ -135,7 +144,6 @@ export interface FileExportPackageData {
     npm: string;
   };
   metrics?: {
-    score?: number;
     stars?: number;
     forks?: number;
     issues?: number;

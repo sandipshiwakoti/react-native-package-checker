@@ -24,9 +24,9 @@ https://github.com/user-attachments/assets/ac4cbfa3-1c91-4542-80b1-2aff8171f53a
 
 - 📦 **Upload & Analyze**: Drop your package.json and get instant compatibility analysis
 - 🔍 **Bulk Package Checking**: Check multiple packages simultaneously for New Architecture compatibility
-- 📊 **Comprehensive Analysis**: View package details such as maintenance, platforms, TypeScript, quality score, GitHub stats, alternatives & more
+- 📊 **Comprehensive Analysis**: View package details such as maintenance, platforms, TypeScript, GitHub stats, alternatives & more
 - 🔎 **Quick Search & Filters**: Easily find and filter packages based on various criteria
-- 💾 **Export & Share**: Download analysis in PDF/Excel to share with your team
+- 💾 **Export & Share**: Download analysis in PDF/CSV to share with your team
 
 ## Getting Started
 

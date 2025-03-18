@@ -1,5 +1,12 @@
 import React, { useMemo } from 'react';
-import { AlertCircle, Archive, CheckCircle, FileQuestion, XCircle } from 'lucide-react';
+import {
+  AlertCircle,
+  Archive,
+  CheckCircle,
+  FileQuestion,
+  MousePointerClick,
+  XCircle,
+} from 'lucide-react';
 
 import { ExportButton } from '@/components/common/export-button';
 import { HeadingWithInfo } from '@/components/common/header-with-info';
@@ -82,16 +89,6 @@ function OverviewCard({
                   <div>
                     <div className="flex items-center gap-1.5">
                       <p className="text-sm font-medium text-muted-foreground">{title}</p>
-                      {tooltip && (
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger>
-                              <AlertCircle className="h-4 w-4 text-muted-foreground/50 hover:text-muted-foreground" />
-                            </TooltipTrigger>
-                            <TooltipContent>{tooltip}</TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                      )}
                     </div>
                     <div className="flex flex-col gap-1">
                       <h3 className="text-3xl font-bold">{value}</h3>
@@ -113,8 +110,14 @@ function OverviewCard({
             </div>
           </div>
         </TooltipTrigger>
-        <TooltipContent>
-          {id === 'unlisted' ? 'Click to view unlisted packages' : `Click to filter ${id} packages`}
+        <TooltipContent className="w-60 sm:w-72">
+          <p className="text-slate-200">{tooltip}</p>
+          <p className="text-slate-200 text-sm mt-1 flex items-center gap-1.5">
+            <MousePointerClick className="h-4 w-4" />
+            {id === 'unlisted'
+              ? 'Click to view unlisted packages'
+              : `Click to filter ${id} packages`}
+          </p>
         </TooltipContent>
       </Tooltip>
     </TooltipProvider>
@@ -137,7 +140,7 @@ export function Overview({ data = {} }: OverviewProps) {
         ).length,
         icon: <CheckCircle className="h-5 w-5 text-green-600" />,
         color: 'green',
-        tooltip: 'Packages that have confirmed support for the New Architecture',
+        tooltip: 'These packages fully support the New Architecture',
         total: totalResultCounts,
       },
       {
@@ -148,7 +151,7 @@ export function Overview({ data = {} }: OverviewProps) {
         ).length,
         icon: <XCircle className="h-5 w-5 text-red-600" />,
         color: 'red',
-        tooltip: 'Packages that are known to not support the New Architecture',
+        tooltip: 'These packages do not support the New Architecture yet',
         total: totalResultCounts,
       },
       {
@@ -159,7 +162,7 @@ export function Overview({ data = {} }: OverviewProps) {
         ).length,
         icon: <AlertCircle className="h-5 w-5 text-yellow-600" />,
         color: 'yellow',
-        tooltip: 'Packages that have not been tested with the New Architecture',
+        tooltip: 'These packages have not been tested with the New Architecture',
         total: totalResultCounts,
       },
       {
@@ -168,7 +171,7 @@ export function Overview({ data = {} }: OverviewProps) {
         value: Object.values(data).filter(pkg => pkg.notInDirectory).length,
         icon: <FileQuestion className="h-5 w-5 text-gray-600" />,
         color: 'gray',
-        tooltip: 'Packages not listed in the official directory',
+        tooltip: 'These packages have not been listed in the official directory',
         total: totalResultCounts,
       },
       {
@@ -177,7 +180,7 @@ export function Overview({ data = {} }: OverviewProps) {
         value: Object.values(data).filter(pkg => pkg.unmaintained).length,
         icon: <Archive className="h-5 w-5 text-amber-600" />,
         color: 'amber',
-        tooltip: 'Packages that are no longer actively maintained',
+        tooltip: 'These packages are no longer actively maintained',
         total: totalResultCounts,
       },
     ],

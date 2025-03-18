@@ -47,7 +47,6 @@ export const prepareFileExportData = (packages: Record<string, PackageInfo>): Fi
         npm: info.npmUrl,
       },
       metrics: {
-        score: info.score,
         stars: info.github?.stargazers_count,
         forks: info.github?.forks_count,
         issues: info.github?.open_issues_count,
@@ -141,7 +140,6 @@ export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}
         'Package',
         'New Architecture',
         'Maintenance',
-        'Score',
         'Stars',
         'Last Updated',
         'Platforms',
@@ -151,7 +149,6 @@ export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}
     ],
     body: data.packages
       .sort((a, b) => {
-        // Handle unlisted packages to be at the end
         if (a.notInDirectory !== b.notInDirectory) {
           return a.notInDirectory ? 1 : -1;
         }
@@ -188,7 +185,6 @@ export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}
           : pkg.status.newArchitecture.charAt(0).toUpperCase() +
             pkg.status.newArchitecture.slice(1).toLowerCase(),
         pkg.status.maintenance,
-        pkg.metrics?.score?.toString() || 'N/A',
         pkg.metrics?.stars?.toLocaleString() || 'N/A',
         pkg.metrics?.lastUpdated ? new Date(pkg.metrics.lastUpdated).toLocaleDateString() : 'N/A',
         pkg.support?.platforms.join(', ') || 'N/A',
@@ -217,23 +213,32 @@ export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}
     },
     columnStyles: {
       0: { cellWidth: 10 }, // #
-      1: { cellWidth: 45 }, // Package
+      1: { cellWidth: 50 }, // Package
       2: { cellWidth: 30 }, // New Architecture
       3: { cellWidth: 25 }, // Maintenance
-      4: { cellWidth: 15 }, // Score
-      5: { cellWidth: 15 }, // Stars
-      6: { cellWidth: 25 }, // Last Updated
-      7: { cellWidth: 30 }, // Platforms
-      8: { cellWidth: 45 }, // Links
-      9: { cellWidth: 30 }, // Alternatives
+      4: { cellWidth: 15 }, // Stars
+      5: { cellWidth: 25 }, // Last Updated
+      6: { cellWidth: 40 }, // Platforms
+      7: { cellWidth: 55 }, // Links
+      8: { cellWidth: 30 }, // Alternatives
     },
   });
+
+  doc.setFontSize(8);
+  doc.setFont('', 'italic');
+  doc.setTextColor(113, 113, 122);
+  doc.text(
+    `* GitHub statistics (stars and last updated) might be slightly outdated. Visit GitHub for real-time numbers.\n\n* New Architecture support status shows latest data from React Native Directory.`,
+    14,
+    (doc as any)?.lastAutoTable?.finalY + 10
+  );
 
   if (includeFooter) {
     const pageCount = doc.getNumberOfPages();
     for (let i = 1; i <= pageCount; i++) {
       doc.setPage(i);
-      doc.setFontSize(8);
+      doc.setFontSize(9);
+      doc.setTextColor(51, 51, 51);
       doc.text(
         `Generated on ${data.generatedAt} | Page ${i} of ${pageCount}`,
         doc.internal.pageSize.width - 14,
@@ -243,7 +248,6 @@ export const generatePDF = (data: FileExportData, options: PDFExportOptions = {}
     }
   }
 
-  // Save the PDF
   doc.save(fileName);
 };
 
@@ -254,7 +258,6 @@ export const generateCSV = (data: FileExportData) => {
     'Package',
     'New Architecture',
     'Maintenance',
-    'Score',
     'Stars',
     'Last Updated',
     'Platforms',
@@ -264,7 +267,6 @@ export const generateCSV = (data: FileExportData) => {
 
   const rows = data.packages
     .sort((a, b) => {
-      // Handle unlisted packages to be at the end
       if (a.notInDirectory !== b.notInDirectory) {
         return a.notInDirectory ? 1 : -1;
       }
@@ -295,7 +297,6 @@ export const generateCSV = (data: FileExportData) => {
         : pkg.status.newArchitecture.charAt(0).toUpperCase() +
           pkg.status.newArchitecture.slice(1).toLowerCase(),
       pkg.status.maintenance,
-      pkg.metrics?.score?.toString() || 'N/A',
       pkg.metrics?.stars?.toLocaleString() || 'N/A',
       pkg.metrics?.lastUpdated ? new Date(pkg.metrics.lastUpdated).toLocaleDateString() : 'N/A',
       pkg.support?.platforms.join(', ') || 'N/A',

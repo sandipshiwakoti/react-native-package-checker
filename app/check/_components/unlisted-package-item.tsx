@@ -44,14 +44,21 @@ const UnlistedPackageItem = ({ name, packageInfo }: UnlistedPackageItemProps) =>
                 </a>
               )}
               {packageInfo.npmUrl && (
-                <a
-                  href={packageInfo.npmUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-muted-foreground hover:text-foreground"
-                >
-                  <NpmIcon className="h-8 w-8" />
-                </a>
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <a
+                        href={packageInfo.npmUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-muted-foreground hover:text-foreground"
+                      >
+                        <NpmIcon className="h-8 w-8" />
+                      </a>
+                    </TooltipTrigger>
+                    <TooltipContent className="w-45">View on npm registry</TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
               )}
             </div>
           </div>
@@ -65,12 +72,6 @@ const UnlistedPackageItem = ({ name, packageInfo }: UnlistedPackageItemProps) =>
               <span className="text-xs">{packageInfo.error}</span>
             </div>
           )}
-        </div>
-        <div className="flex flex-col items-end gap-2 shrink-0">
-          <div className="flex items-center gap-1.5 px-2.5 py-1.5 rounded-md bg-muted/30">
-            <AlertCircle className="h-4 w-4 text-yellow-500" />
-            <span className="text-sm">Not in Directory</span>
-          </div>
         </div>
       </div>
     </div>

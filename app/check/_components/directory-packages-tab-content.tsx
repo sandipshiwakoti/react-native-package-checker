@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import DebounceControl from 'debounce-control';
-import { ArrowUpDown, Trash2 } from 'lucide-react';
+import { Trash2 } from 'lucide-react';
 import { AlertCircle, Archive, CheckCircle, XCircle } from 'lucide-react';
 
 import { DirectoryPackageItem } from '@/app/check/_components/directory-package-item';
@@ -9,9 +9,10 @@ import { FilterButton } from '@/components/common/filter-button';
 import { HeadingWithInfo } from '@/components/common/header-with-info';
 import { Pagination } from '@/components/common/pagination';
 import { SearchBar } from '@/components/common/search-bar';
+import { SortControl } from '@/components/common/sort-control';
+import { ViewToggleButton } from '@/components/common/view-toggle-button';
 import { Button } from '@/components/ui/button';
 import { Chip } from '@/components/ui/chip';
-import { Select, SelectContent, SelectItem, SelectTrigger } from '@/components/ui/select';
 import { useFilter } from '@/contexts/filter-context';
 import { NewArchSupportStatus, PackageInfo } from '@/types';
 
@@ -33,6 +34,7 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
     activeMaintenanceFilter,
     setActiveMaintenanceFilter,
   } = useFilter();
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
 
   useEffect(() => {
     if (
@@ -185,33 +187,21 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
           />
           <div className="flex items-center gap-2">
             <FilterButton />
-            <Select
-              value={sortBy}
-              onValueChange={(value: 'name' | 'stars' | 'updated') => {
+            <SortControl
+              sortBy={sortBy}
+              sortOrder={sortOrder}
+              onSortByChange={value => {
                 setSortBy(value);
                 setCurrentPage(1);
               }}
-            >
-              <SelectTrigger className="w-[120px] sm:w-[160px]">
-                <span className="flex items-center gap-2">
-                  <ArrowUpDown className="h-4 w-4" />
-                  Sort by
-                </span>
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="name">Package Name</SelectItem>
-                <SelectItem value="stars">GitHub Stars</SelectItem>
-                <SelectItem value="updated">Last Updated</SelectItem>
-              </SelectContent>
-            </Select>
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={() => setSortOrder(order => (order === 'asc' ? 'desc' : 'asc'))}
+              onSortOrderChange={setSortOrder}
               className="text-muted-foreground hover:text-foreground"
-            >
-              {sortOrder === 'asc' ? '↑' : '↓'}
-            </Button>
+            />
+            <ViewToggleButton
+              viewMode={viewMode}
+              onChange={setViewMode}
+              className="text-muted-foreground hover:text-foreground hidden lg:flex"
+            />
           </div>
         </div>
       </div>
@@ -253,9 +243,11 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
       )}
       {totalCount > 0 ? (
         <div>
-          {paginatedResults.map(([name, packageInfo]) => (
-            <DirectoryPackageItem key={name} packageInfo={packageInfo} name={name} />
-          ))}
+          <div className={`grid grid-cols-1 ${viewMode === 'grid' ? 'lg:grid-cols-2' : ''} gap-5`}>
+            {paginatedResults.map(([name, packageInfo]) => (
+              <DirectoryPackageItem key={name} packageInfo={packageInfo} name={name} />
+            ))}
+          </div>
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}

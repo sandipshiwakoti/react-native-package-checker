@@ -5,6 +5,7 @@ import { UploadIcon } from 'lucide-react';
 import { PackageUploader } from '@/components/common/package-uploader';
 import { Button } from '@/components/ui/button';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 
 export const UploadButton = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -18,12 +19,21 @@ export const UploadButton = () => {
 
   return (
     <>
-      <Button variant="outline" onClick={() => setIsOpen(true)} className="font-normal">
-        <div className="flex flex-row gap-2 items-center">
-          <UploadIcon className="h-4 w-4" />
-          Upload
-        </div>
-      </Button>
+      <TooltipProvider>
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <Button variant="outline" onClick={() => setIsOpen(true)} className="font-normal">
+              <div className="flex flex-row gap-2 items-center">
+                <UploadIcon className="h-4 w-4" />
+                Upload
+              </div>
+            </Button>
+          </TooltipTrigger>
+          <TooltipContent>
+            <p>Upload package.json</p>
+          </TooltipContent>
+        </Tooltip>
+      </TooltipProvider>
       <Dialog open={isOpen} onOpenChange={setIsOpen} modal>
         <DialogContent className="max-w-2xl">
           <DialogHeader>

@@ -40,7 +40,7 @@ export default function CheckPage() {
 
   return (
     <div className="min-h-screen flex flex-col">
-      <div className="max-w-[1200px] mx-auto px-4 w-full flex-1 flex flex-col">
+      <div className="max-w-[1250px] mx-auto px-4 w-full flex-1 flex flex-col">
         <div className="pt-4 pb-2 border-b mb-2 w-full">
           <div className="flex flex-wrap gap-4">
             <Link href="/" className="shrink-0">

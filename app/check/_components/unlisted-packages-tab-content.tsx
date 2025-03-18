@@ -5,6 +5,7 @@ import UnlistedPackageItem from '@/app/check/_components/unlisted-package-item';
 import { EmptyListFallback } from '@/components/common/empy-list-fallback';
 import { HeadingWithInfo } from '@/components/common/header-with-info';
 import { SearchBar } from '@/components/common/search-bar';
+import { ViewToggleButton } from '@/components/common/view-toggle-button';
 import { PackageInfo } from '@/types';
 
 interface UnlistedPackagesTabContentProps {
@@ -13,6 +14,7 @@ interface UnlistedPackagesTabContentProps {
 
 const UnlistedPackagesTabContent = ({ data }: UnlistedPackagesTabContentProps) => {
   const [searchText, setSearchText] = useState('');
+  const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
 
   const unlistedPackages = useMemo(
     () =>
@@ -38,22 +40,29 @@ const UnlistedPackagesTabContent = ({ data }: UnlistedPackagesTabContentProps) =
             {unlistedPackages.length === 1 ? 'package' : 'packages'}
           </p>
         </div>
-        <DebounceControl
-          value={searchText}
-          onDebouncedChange={setSearchText}
-          delay={300}
-          render={({ value, onChange }) => (
-            <SearchBar
-              value={value}
-              onChange={onChange}
-              placeholder="Search packages"
-              className="w-full"
-            />
-          )}
-        />
+        <div className="flex justify-between gap-3">
+          <DebounceControl
+            value={searchText}
+            onDebouncedChange={setSearchText}
+            delay={300}
+            render={({ value, onChange }) => (
+              <SearchBar
+                value={value}
+                onChange={onChange}
+                placeholder="Search packages"
+                className="w-full flex-2"
+              />
+            )}
+          />
+          <ViewToggleButton
+            viewMode={viewMode}
+            onChange={setViewMode}
+            className="text-muted-foreground hover:text-foreground hidden sm:flex"
+          />
+        </div>
       </div>
       {unlistedPackages.length > 0 ? (
-        <div className="flex flex-col gap-6">
+        <div className={`grid grid-cols-1 ${viewMode === 'grid' ? 'sm:grid-cols-2' : ''} gap-5`}>
           {unlistedPackages.map(([name, packageInfo]) => (
             <UnlistedPackageItem key={name} packageInfo={packageInfo} name={name} />
           ))}
