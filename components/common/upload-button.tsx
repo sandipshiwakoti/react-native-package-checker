@@ -11,9 +11,8 @@ export const UploadButton = () => {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
 
-  const goToCheckPage = (packageNames: string[], rnVersion?: string) => {
-    const versionParam = rnVersion ? `&version=${rnVersion}` : '';
-    router.push(`/check?packages=${packageNames.join(',')}${versionParam}`);
+  const goToCheckPage = (packageNames: string[]) => {
+    router.push(`/check?packages=${packageNames.join(',')}`);
     setIsOpen(false);
   };
 

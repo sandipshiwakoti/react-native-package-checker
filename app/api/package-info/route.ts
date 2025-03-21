@@ -2,6 +2,7 @@ import { NextResponse } from 'next/server';
 import axios from 'axios';
 
 import { externalUrls } from '@/config/urls';
+import { cleanPackageName, extractPackageVersion } from '@/lib/helpers';
 import { delay } from '@/lib/utils';
 import { DirectoryPackage, PackageInfo } from '@/types';
 
@@ -9,24 +10,30 @@ export async function POST(request: Request) {
   try {
     const { packages } = await request.json();
     const results: Record<string, PackageInfo> = {};
+    const cleanedPackages = packages.map(cleanPackageName);
 
     const [directoryResponse, releaseResponse, checkResponse] = await Promise.all([
       axios.get(externalUrls.reactNativeDirectory.directoryData),
       axios.get(externalUrls.reactNativeDirectory.rnReleases),
-      axios.post(externalUrls.reactNativeDirectory.directoryCheck, { packages }),
+      axios.post(externalUrls.reactNativeDirectory.directoryCheck, { packages: cleanedPackages }),
     ]);
 
     const directoryData: { libraries: DirectoryPackage[] } = directoryResponse.data;
-    const versions = releaseResponse.data.split('\n').filter((v: string) => !v.includes('-rc'));
+    const versions = releaseResponse.data
+      .split('\n')
+      .filter((v: string) => !v.includes('-rc')) as string[];
     const checkData = checkResponse.data;
 
-    for (const pkg of packages) {
+    for (const packageName of packages) {
+      const pkg = cleanPackageName(packageName);
+      const version = extractPackageVersion(packageName);
       try {
         let packageData = directoryData.libraries.find(item => item.npmPkg === pkg);
         if (packageData) {
           const githubUrl = packageData.github.urls.repo;
           results[pkg] = {
             npmUrl: externalUrls.npm.package(pkg),
+            version,
             githubUrl,
             platforms: {
               ios: packageData.ios || false,
@@ -72,6 +79,7 @@ export async function POST(request: Request) {
             if (!searchData?.libraries || !Array.isArray(searchData.libraries)) {
               results[pkg] = {
                 npmUrl: externalUrls.npm.package(pkg),
+                version,
                 error: 'Invalid response from Directory API',
                 notInDirectory: true,
                 newArchitecture: checkData[pkg]?.newArchitecture || 'untested',
@@ -86,6 +94,7 @@ export async function POST(request: Request) {
               const githubUrl = exactMatch.githubUrl;
               results[pkg] = {
                 npmUrl: externalUrls.npm.package(pkg),
+                version,
                 githubUrl,
                 platforms: {
                   ios: exactMatch.ios || false,
@@ -124,6 +133,7 @@ export async function POST(request: Request) {
           } catch (searchError) {
             results[pkg] = {
               npmUrl: externalUrls.npm.package(pkg),
+              version,
               error: 'Failed to fetch package details',
               notInDirectory: true,
             };
@@ -131,6 +141,7 @@ export async function POST(request: Request) {
         } else {
           results[pkg] = {
             npmUrl: externalUrls.npm.package(pkg),
+            version,
             error: 'Package not found in React Native Directory',
             notInDirectory: true,
           };
@@ -138,6 +149,7 @@ export async function POST(request: Request) {
       } catch (pkgError) {
         results[pkg] = {
           npmUrl: externalUrls.npm.package(pkg),
+          version,
           error: 'Failed to process package information',
           notInDirectory: true,
         };

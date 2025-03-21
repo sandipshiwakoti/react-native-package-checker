@@ -25,7 +25,7 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
         <div className="flex flex-col gap-1 w-full">
           <div className="flex flex-wrap justify-between gap-3">
             <PackageNewArchStatus packageInfo={packageInfo} />
-            <MoreLinksButton packageInfo={packageInfo} />
+            <MoreLinksButton name={name} packageInfo={packageInfo} />
           </div>
           <div className="flex items-center gap-2">
             <h3 className="sm:text-lg font-medium relative group">

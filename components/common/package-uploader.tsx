@@ -3,8 +3,10 @@ import { useDropzone } from 'react-dropzone';
 import { FileJson } from 'lucide-react';
 import { toast } from 'sonner';
 
+import { formatDependency } from '@/lib/helpers';
+
 interface PackageUploaderProps {
-  onPackagesFound: (_packages: string[], _rnVersion: string) => void;
+  onPackagesFound: (_packages: string[]) => void;
   children?: React.ReactNode;
   isDragActive?: boolean;
 }
@@ -39,13 +41,14 @@ export function PackageUploader({
           toast.error('No dependencies found in package.json');
           return;
         }
-        const rnVersion = json.dependencies['react-native'];
-        const deps = Object.keys(json.dependencies);
+        const deps = Object.entries(json.dependencies).map(([name, version]) =>
+          formatDependency(name, version as string)
+        );
         if (deps.length === 0) {
           toast.error('No dependencies found in package.json');
           return;
         }
-        onPackagesFound(deps, rnVersion);
+        onPackagesFound(deps);
       } catch (e) {
         console.error('File upload error:', e);
         if (e instanceof SyntaxError) {

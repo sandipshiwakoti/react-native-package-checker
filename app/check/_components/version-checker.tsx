@@ -6,7 +6,7 @@ import { X } from 'lucide-react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Button } from '@/components/ui/button';
 import { externalUrls } from '@/config/urls';
-import { getNormalizedVersion } from '@/lib/helpers';
+import { extractPackageVersion, getNormalizedVersion } from '@/lib/helpers';
 
 interface VersionCheckerProps {
   versions: string[];
@@ -15,7 +15,13 @@ interface VersionCheckerProps {
 export function VersionChecker({ versions }: VersionCheckerProps) {
   const [isVisible, setIsVisible] = useState(true);
   const searchParams = useSearchParams();
-  const currentVersionParam = getNormalizedVersion(searchParams.get('version'));
+  const rnVersion = extractPackageVersion(
+    searchParams
+      .get('packages')
+      ?.split(',')
+      .find(pkg => pkg.toLowerCase().startsWith('react-native@')) ?? ''
+  );
+  const currentVersionParam = getNormalizedVersion(rnVersion ?? '');
   const currentVersion = versions?.includes(currentVersionParam ?? '') ? currentVersionParam : null;
   const latestVersion = versions[0];
 

@@ -8,12 +8,6 @@ import {
   NEW_ARCH_RELEASE_NOTES_QUERY,
 } from '@/constants';
 
-export const getNormalizedVersion = (version: string | null) => {
-  if (!version) return null;
-  const parts = version.split('.');
-  return parts.length === 2 ? `${version}.0` : version;
-};
-
 const createGithubUrl = (repoUrl: string, path: GITHUB_PATHS | string, query?: string) => {
   const baseUrl = `${repoUrl}/${path}`;
   return query ? `${baseUrl}?${new URLSearchParams({ q: query }).toString()}` : baseUrl;
@@ -43,3 +37,28 @@ export const getContributorsActivityUrl = (repoUrl: string) =>
   createGithubUrl(repoUrl, GITHUB_PATHS.CONTRIBUTORS_ACTIVITY);
 
 export const getActiveForksUrl = (repoUrl: string) => createGithubUrl(repoUrl, GITHUB_PATHS.FORKS);
+
+export const getNormalizedVersion = (version: string | null) => {
+  if (!version) return null;
+  const parts = version.split('.');
+  return parts.length === 2 ? `${version}.0` : version;
+};
+
+export function cleanPackageName(pkg: string): string {
+  const lastAtIndex = pkg.trim().lastIndexOf('@');
+  return lastAtIndex > 0 ? pkg.substring(0, lastAtIndex) : pkg;
+}
+
+export function formatDependency(name: string, version: string): string {
+  const cleanVersion = String(version).replace(/^\^|~/g, '');
+  return /^\d+(\.\d+)*$/.test(cleanVersion) ? `${name}@${cleanVersion}` : name;
+}
+
+export function extractPackageVersion(packageName: string): string | undefined {
+  const lastAtIndex = packageName.lastIndexOf('@');
+  if (lastAtIndex > 0) {
+    const version = packageName.substring(lastAtIndex + 1);
+    return /^\d+(\.\d+)*$/.test(version) ? version : undefined;
+  }
+  return undefined;
+}

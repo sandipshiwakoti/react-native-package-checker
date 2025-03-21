@@ -21,5 +21,9 @@ export const externalUrls = {
   tools: {
     upgradeHelper: (currentVersion: string, latestVersion: string) =>
       `https://react-native-community.github.io/upgrade-helper?from=${currentVersion}&to=${latestVersion}`,
+    bundlephobia: {
+      package: (name: string, version?: string) =>
+        `https://bundlephobia.com/package/${name}${version ? `@${version}` : ''}`,
+    },
   },
 } as const;

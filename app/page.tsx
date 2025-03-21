@@ -15,9 +15,8 @@ export default function HomePage() {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const goToCheckPage = (packageNames: string[], rnVersion?: string) => {
-    const versionParam = rnVersion ? `&version=${rnVersion}` : '';
-    router.push(`/check?packages=${packageNames.join(',')}${versionParam}`);
+  const goToCheckPage = (packageNames: string[]) => {
+    router.push(`/check?packages=${packageNames.join(',')}`);
   };
 
   const handleSearch = (value: string) => {

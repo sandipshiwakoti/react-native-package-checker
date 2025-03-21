@@ -1,6 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 
 import { checkPackages } from '@/lib/api';
+import { cleanPackageName } from '@/lib/helpers';
 import { queryKeys } from '@/lib/query-keys';
 import { PackageInfo } from '@/types';
 
@@ -13,8 +14,8 @@ export function usePackages(selectedPackages: string[]) {
 
       const { packageInfo } = data;
       const packages = packageInfo.packages;
-
-      const results = selectedPackages.reduce<Record<string, PackageInfo>>((acc, pkg) => {
+      const cleanedPackages = selectedPackages.map(item => cleanPackageName(item));
+      const results = cleanedPackages.reduce<Record<string, PackageInfo>>((acc, pkg) => {
         if (packages[pkg]) {
           acc[pkg] = {
             ...packages[pkg],

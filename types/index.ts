@@ -21,6 +21,7 @@ export interface PackageStatus {
   unmaintained?: boolean;
   error?: string;
   githubUrl?: string;
+  version?: string;
   npmUrl?: string;
   github?: {
     stargazers_count: number;
@@ -60,6 +61,7 @@ export interface Support {
 export interface PackageInfo {
   npmUrl: string;
   githubUrl?: string;
+  version?: string;
   alternatives?: string[];
   platforms?: {
     ios: boolean;
@@ -88,6 +90,7 @@ export interface PackageInfo {
 export interface DirectoryPackage {
   npmPkg: string;
   githubUrl: string;
+  version?: string;
   ios: boolean;
   android: boolean;
   web: boolean;
