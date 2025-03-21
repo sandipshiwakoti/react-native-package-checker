@@ -1,4 +1,6 @@
 import { expect, test } from '@playwright/test';
+import { readFileSync } from 'fs';
+import path from 'path';
 
 test.describe('Home Page', () => {
   test.beforeEach(async ({ page }) => {
@@ -15,12 +17,17 @@ test.describe('Home Page', () => {
 
   test('should handle package.json upload', async ({ page }) => {
     const fileInput = page.locator('input[type="file"]');
-    await fileInput.setInputFiles('tests/fixtures/package.json');
+    const fixturePath = path.join(process.cwd(), 'tests/fixtures/package.json');
+    const packageJson = JSON.parse(readFileSync(fixturePath, 'utf-8'));
 
-    await expect(page).toHaveURL(
-      /.*packages=react-native,react-native-reanimated,react-native-gesture-handler/
-    );
-    await expect(page).toHaveURL(/.*version=\^0.78.0/);
+    await fileInput.setInputFiles('tests/fixtures/package.json');
+    const expectedPackages = [
+      `react-native@${packageJson.dependencies['react-native'].replace(/[\^~]/g, '')}`,
+      `react-native-reanimated@${packageJson.dependencies['react-native-reanimated'].replace(/[\^~]/g, '')}`,
+      `react-native-gesture-handler@${packageJson.dependencies['react-native-gesture-handler'].replace(/[\^~]/g, '')}`,
+    ].join(',');
+
+    await expect(page).toHaveURL(new RegExp(`.*packages=${expectedPackages}`));
   });
 
   test('should handle invalid package.json upload', async ({ page }) => {
