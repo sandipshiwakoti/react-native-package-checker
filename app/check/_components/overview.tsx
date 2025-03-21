@@ -25,23 +25,12 @@ interface OverviewCard {
   value: number;
   icon: React.ReactElement<any>;
   color: string;
-  tooltip: string;
   total: number;
   isActive?: boolean;
   onClick?: () => void;
 }
 
-function OverviewCard({
-  id,
-  title,
-  value,
-  icon,
-  color,
-  tooltip,
-  total,
-  isActive,
-  onClick,
-}: OverviewCard) {
+function OverviewCard({ id, title, value, icon, color, total, isActive, onClick }: OverviewCard) {
   const colorClasses = {
     green: 'hover:bg-emerald-50/30 dark:hover:bg-emerald-900/20',
     red: 'hover:bg-red-50/30 dark:hover:bg-red-900/20',
@@ -110,10 +99,9 @@ function OverviewCard({
             </div>
           </div>
         </TooltipTrigger>
-        <TooltipContent className="w-60 sm:w-72">
-          <p className="text-slate-200">{tooltip}</p>
+        <TooltipContent className="w-60">
           <p className="text-slate-200 text-sm mt-1 flex items-center gap-1.5">
-            <MousePointerClick className="h-4 w-4" />
+            <MousePointerClick className="h-5 w-5" />
             {id === 'unlisted'
               ? 'Click to view unlisted packages'
               : `Click to filter ${id} packages`}
@@ -151,7 +139,6 @@ export function Overview({ data = {} }: OverviewProps) {
         ).length,
         icon: <XCircle className="h-5 w-5 text-red-600" />,
         color: 'red',
-        tooltip: 'These packages do not support the New Architecture yet',
         total: totalResultCounts,
       },
       {
@@ -162,7 +149,6 @@ export function Overview({ data = {} }: OverviewProps) {
         ).length,
         icon: <AlertCircle className="h-5 w-5 text-yellow-600" />,
         color: 'yellow',
-        tooltip: 'These packages have not been tested with the New Architecture',
         total: totalResultCounts,
       },
       {
@@ -171,7 +157,6 @@ export function Overview({ data = {} }: OverviewProps) {
         value: Object.values(data).filter(pkg => pkg.notInDirectory).length,
         icon: <FileQuestion className="h-5 w-5 text-gray-600" />,
         color: 'gray',
-        tooltip: 'These packages have not been listed in the official directory',
         total: totalResultCounts,
       },
       {
@@ -180,7 +165,6 @@ export function Overview({ data = {} }: OverviewProps) {
         value: Object.values(data).filter(pkg => pkg.unmaintained).length,
         icon: <Archive className="h-5 w-5 text-amber-600" />,
         color: 'amber',
-        tooltip: 'These packages are no longer actively maintained',
         total: totalResultCounts,
       },
     ],
@@ -220,7 +204,6 @@ export function Overview({ data = {} }: OverviewProps) {
             value={card.value}
             icon={card.icon}
             color={card.color}
-            tooltip={card.tooltip}
             total={card.total}
             isActive={activeFilter === card.id}
             onClick={() => handleCardClick(card.id)}
