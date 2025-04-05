@@ -6,6 +6,7 @@ import { Search } from 'lucide-react';
 
 import { Footer } from '@/components/common/footer';
 import { Logo } from '@/components/common/logo';
+import { PackageJsonPaster } from '@/components/common/package-json-paster';
 import { PackageUploader } from '@/components/common/package-uploader';
 import { RepositoryLink } from '@/components/common/repository-link';
 import { ThemeToggle } from '@/components/theme-toggle';
@@ -36,7 +37,7 @@ export default function HomePage() {
         <RepositoryLink />
       </div>
       <div className="flex-1 max-w-[900px] mx-auto flex items-center justify-center">
-        <div className="w-full px-4 py-10">
+        <div className="w-full px-4 py-6">
           <div className="text-center flex flex-col gap-6">
             <Logo variant="vertical" size="large" />
             <p className="sm:text-xl text-muted-foreground max-w-2xl mx-auto">
@@ -82,6 +83,17 @@ export default function HomePage() {
             </div>
 
             <PackageUploader onPackagesFound={goToCheckPage} />
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-background px-2 text-muted-foreground">OR</span>
+              </div>
+            </div>
+
+            <PackageJsonPaster onPackagesFound={goToCheckPage} />
           </div>
         </div>
       </div>
