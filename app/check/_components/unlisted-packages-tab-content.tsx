@@ -1,5 +1,6 @@
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 import DebounceControl from 'debounce-control';
+import { useQueryState } from 'nuqs';
 
 import UnlistedPackageItem from '@/app/check/_components/unlisted-package-item';
 import { EmptyListFallback } from '@/components/common/empy-list-fallback';
@@ -13,9 +14,13 @@ interface UnlistedPackagesTabContentProps {
 }
 
 const UnlistedPackagesTabContent = ({ data }: UnlistedPackagesTabContentProps) => {
-  const [searchText, setSearchText] = useState('');
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>('grid');
-
+  const [searchText, setSearchText] = useQueryState('unlisted_q', {
+    defaultValue: '',
+  });
+  const [viewMode, setViewMode] = useQueryState<'list' | 'grid'>('unlisted_view', {
+    defaultValue: 'grid',
+    parse: value => (value === 'list' ? 'list' : 'grid'),
+  });
   const unlistedPackages = useMemo(
     () =>
       Object.entries(data ?? []).filter(

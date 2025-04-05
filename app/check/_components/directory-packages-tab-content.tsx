@@ -1,7 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import DebounceControl from 'debounce-control';
 import { Trash2 } from 'lucide-react';
 import { AlertCircle, Archive, CheckCircle, XCircle } from 'lucide-react';
+import { useQueryState } from 'nuqs';
 
 import { DirectoryPackageItem } from '@/app/check/_components/directory-package-item';
 import { EmptyListFallback } from '@/components/common/empy-list-fallback';
@@ -34,25 +35,33 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
     activeMaintenanceFilter,
     setActiveMaintenanceFilter,
   } = useFilter();
-  const [viewMode, setViewMode] = useState<'list' | 'grid'>('list');
-
-  useEffect(() => {
-    if (
-      activeFilter === 'supported' ||
-      activeFilter === 'unsupported' ||
-      activeFilter === 'untested'
-    ) {
-      setActiveArchFilters([activeFilter]);
-    } else if (activeFilter === 'unmaintained') {
-      setActiveMaintenanceFilter(true);
-    }
-  }, [activeFilter, setActiveArchFilters, setActiveMaintenanceFilter]);
-
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortBy, setSortBy] = useState<'name' | 'stars' | 'updated'>('name');
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const [itemsPerPage, setItemsPerPage] = useState<number>(10);
-  const [searchText, setSearchText] = useState('');
+  const [searchText, setSearchText] = useQueryState('directory_q', {
+    defaultValue: '',
+  });
+  const [viewMode, setViewMode] = useQueryState<'list' | 'grid'>('directory_view', {
+    defaultValue: 'list',
+    parse: value => (value === 'grid' ? 'grid' : 'list'),
+  });
+  const [currentPage, setCurrentPage] = useQueryState('page', {
+    defaultValue: 1,
+    parse: Number,
+  });
+  const [sortBy, setSortBy] = useQueryState<'name' | 'stars' | 'updated'>('sort', {
+    defaultValue: 'name',
+    parse: value =>
+      ['name', 'stars', 'updated'].includes(value)
+        ? (value as 'name' | 'stars' | 'updated')
+        : 'name',
+  });
+  const [sortOrder, setSortOrder] = useQueryState<'asc' | 'desc'>('order', {
+    defaultValue: 'asc',
+    parse: value => (value === 'desc' ? 'desc' : 'asc'),
+  });
+  const [itemsPerPage, setItemsPerPage] = useQueryState('limit', {
+    defaultValue: 10,
+    parse: value => (value === 'all' ? -1 : Number(value) || 10),
+    serialize: value => (value === -1 ? 'all' : String(value)),
+  });
 
   const { paginatedResults, totalPages, totalCount } = useMemo(() => {
     if (!data) return { paginatedResults: [], totalPages: 0, totalCount: 0 };
@@ -153,6 +162,18 @@ const DirectoryPackagesTabContent = ({ data }: DirectoryPackagesTabContentProps)
     itemsPerPage,
     currentPage,
   ]);
+
+  useEffect(() => {
+    if (
+      activeFilter === 'supported' ||
+      activeFilter === 'unsupported' ||
+      activeFilter === 'untested'
+    ) {
+      setActiveArchFilters([activeFilter]);
+    } else if (activeFilter === 'unmaintained') {
+      setActiveMaintenanceFilter(true);
+    }
+  }, [activeFilter, setActiveArchFilters, setActiveMaintenanceFilter]);
 
   return (
     <>

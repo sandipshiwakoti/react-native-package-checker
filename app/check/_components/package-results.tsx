@@ -20,7 +20,11 @@ export function PackageResults({ data }: PackageResultsProps) {
           tooltip="Analysis results of React Native packages showing compatibility status and metrics"
         />
       </div>
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
+      <Tabs
+        value={activeTab}
+        onValueChange={value => setActiveTab(value as 'directory' | 'unlisted')}
+        className="w-full"
+      >
         <TabsList className="w-full justify-start mb-4">
           <TabsTrigger value="directory" className="flex items-center gap-1.5">
             Directory Packages
