@@ -2,6 +2,7 @@ import { Suspense } from 'react';
 import type { Metadata, Viewport } from 'next';
 import { Inter } from 'next/font/google';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+import { Analytics } from '@vercel/analytics/next';
 import { Toaster } from 'sonner';
 
 import { Providers } from '@/app/providers';
@@ -89,6 +90,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
             <Toaster />
             {process.env.NODE_ENV === 'development' && <ReactQueryDevtools />}
+            <Analytics />
           </Providers>
         </Suspense>
       </body>
