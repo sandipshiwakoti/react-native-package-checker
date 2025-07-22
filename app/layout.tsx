@@ -90,9 +90,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             {children}
             <Toaster />
             {process.env.NODE_ENV === 'development' && <ReactQueryDevtools />}
-            <Analytics />
           </Providers>
         </Suspense>
+        <Analytics />
       </body>
     </html>
   );
