@@ -4,6 +4,7 @@ import { useRef } from 'react';
 import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
 
+import { ExtensionPromoBanner } from '@/components/common/extension-promo-banner';
 import { Footer } from '@/components/common/footer';
 import { Logo } from '@/components/common/logo';
 import { PackageJsonPaster } from '@/components/common/package-json-paster';
@@ -39,7 +40,10 @@ export default function HomePage() {
       <div className="flex-1 max-w-[900px] mx-auto flex items-center justify-center">
         <div className="w-full px-4 py-6">
           <div className="text-center flex flex-col gap-6">
-            <Logo variant="vertical" size="large" />
+            <div className="relative">
+              <ExtensionPromoBanner />
+              <Logo variant="vertical" size="large" />
+            </div>
             <p className="sm:text-xl text-muted-foreground max-w-2xl mx-auto">
               Check your React Native packages for New Architecture compatibility in seconds ⚡️
             </p>
