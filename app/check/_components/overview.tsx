@@ -179,6 +179,16 @@ export function Overview({ data = {} }: OverviewProps) {
       setActiveTab('directory');
       setActiveFilter(activeFilter === id ? null : id);
     }
+
+    setTimeout(() => {
+      const resultsSection = document.querySelector('[data-results-section]');
+      if (resultsSection) {
+        resultsSection.scrollIntoView({
+          behavior: 'smooth',
+          block: 'start',
+        });
+      }
+    }, 100);
   };
 
   return (

@@ -13,7 +13,7 @@ export function PackageResults({ data }: PackageResultsProps) {
   const { activeTab, setActiveTab } = useFilter();
 
   return (
-    <div className="flex-1 py-2">
+    <div className="flex-1 py-2" data-results-section>
       <div className="flex flex-row justify-between">
         <HeadingWithInfo
           title="Results"
