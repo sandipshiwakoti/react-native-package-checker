@@ -4,7 +4,7 @@ import { ArrowUpRight, Download } from 'lucide-react';
 
 export function ExtensionPromoBanner() {
   return (
-    <div className="absolute -top-9 left-1/2 transform -translate-x-1/2 w-full max-w-xs sm:max-w-none sm:w-auto">
+    <div className="flex justify-center mt-2">
       <div className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1 sm:py-1.5 bg-purple-50 dark:bg-purple-950/30 rounded-full border border-purple-200/50 dark:border-purple-800/30">
         <span className="text-xs text-purple-700 dark:text-purple-300 truncate sm:whitespace-nowrap">
           🎉 <span className="font-medium hidden sm:inline">New Open Source VSCode Extension:</span>

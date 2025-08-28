@@ -10,6 +10,7 @@ import { Logo } from '@/components/common/logo';
 import { PackageJsonPaster } from '@/components/common/package-json-paster';
 import { PackageUploader } from '@/components/common/package-uploader';
 import { RepositoryLink } from '@/components/common/repository-link';
+import { VSCodeExtensionBanner } from '@/components/common/vscode-extension-banner';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Input } from '@/components/ui/input';
 
@@ -41,8 +42,13 @@ export default function HomePage() {
         <div className="w-full px-4 py-6">
           <div className="text-center flex flex-col gap-6">
             <div className="relative">
-              <ExtensionPromoBanner />
-              <Logo variant="vertical" size="large" />
+              <div className="mb-6 absolute -top-22 left-1/2 transform -translate-x-1/2 w-full max-w-[900px] mx-auto sm:max-w-none hidden sm:block">
+                <VSCodeExtensionBanner />
+              </div>
+              <div className="mt-3">
+                <Logo variant="vertical" size="large" />
+                <ExtensionPromoBanner />
+              </div>
             </div>
             <p className="sm:text-xl text-muted-foreground max-w-2xl mx-auto">
               Check your React Native packages for New Architecture compatibility in seconds ⚡️

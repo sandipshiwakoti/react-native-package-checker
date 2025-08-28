@@ -13,6 +13,7 @@ import { LoadingIndicator } from '@/components/common/loading-indicator';
 import { Logo } from '@/components/common/logo';
 import { RepositoryLink } from '@/components/common/repository-link';
 import { UploadButton } from '@/components/common/upload-button';
+import { VSCodeExtensionBanner } from '@/components/common/vscode-extension-banner';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { FilterProvider } from '@/contexts/filter-context';
@@ -51,6 +52,9 @@ export default function CheckPage() {
               <ThemeToggle />
               <RepositoryLink />
             </div>
+          </div>
+          <div className="mt-3 mb-1 w-full">
+            <VSCodeExtensionBanner />
           </div>
         </div>
         <div className="flex-1">
