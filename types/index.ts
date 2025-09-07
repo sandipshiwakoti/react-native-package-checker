@@ -56,6 +56,9 @@ export interface Support {
   hasTypes: boolean;
   license: string | null;
   licenseUrl?: string;
+  expoGo?: boolean;
+  dev?: boolean;
+  hasNativeCode?: boolean;
 }
 
 export interface PackageInfo {
@@ -71,13 +74,7 @@ export interface PackageInfo {
     macos: boolean;
     fireos: boolean;
   };
-  support?: {
-    hasTypes: boolean;
-    license: string | null;
-    licenseUrl?: string;
-    expoGo?: boolean;
-    dev?: boolean;
-  };
+  support?: Support;
   github?: GithubInfo;
   newArchitecture?: NewArchSupportStatus;
   newArchitectureNote?: string;
@@ -114,6 +111,7 @@ export interface DirectoryPackage {
       name: string;
       url: string;
     };
+    hasNativeCode: boolean;
     stats: {
       stars: number;
       forks: number;

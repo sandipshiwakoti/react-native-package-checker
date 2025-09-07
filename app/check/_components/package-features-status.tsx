@@ -1,6 +1,7 @@
 import React from 'react';
 import {
   Command,
+  FileCode,
   Laptop,
   MonitorSmartphone,
   Scale,
@@ -33,6 +34,9 @@ export const PackageFeaturesStatus = ({ packageInfo }: PackageFeaturesStatusProp
       {packageInfo.support?.expoGo && <Chip icon={Smartphone} label="Expo Go" variant="slate" />}
       {packageInfo.support?.hasTypes && (
         <Chip icon={TypeScriptIcon} label="TypeScript" variant="slate" />
+      )}
+      {packageInfo.support?.hasNativeCode && (
+        <Chip icon={FileCode} label="Native Code" variant="slate" />
       )}
       {packageInfo.support?.license && (
         <Chip
