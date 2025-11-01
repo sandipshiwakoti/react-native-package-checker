@@ -3,6 +3,7 @@ const { withSentryConfig } = require('@sentry/nextjs');
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   turbopack: {},
+  reactCompiler: true,
 };
 
 module.exports = withSentryConfig(nextConfig, {
