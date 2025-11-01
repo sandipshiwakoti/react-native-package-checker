@@ -1,7 +1,9 @@
 const { withSentryConfig } = require('@sentry/nextjs');
 
 /** @type {import('next').NextConfig} */
-const nextConfig = {};
+const nextConfig = {
+  turbopack: {},
+};
 
 module.exports = withSentryConfig(nextConfig, {
   org: process.env.SENTRY_ORG,

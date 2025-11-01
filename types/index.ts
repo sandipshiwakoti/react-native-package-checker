@@ -1,4 +1,3 @@
-/* eslint-disable unused-imports/no-unused-vars */
 export enum NewArchSupportStatus {
   Supported = 'supported',
   Unsupported = 'unsupported',
