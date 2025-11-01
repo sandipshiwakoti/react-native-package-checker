@@ -58,6 +58,7 @@ export interface Support {
   expoGo?: boolean;
   dev?: boolean;
   hasNativeCode?: boolean;
+  configPlugin?: boolean;
 }
 
 export interface PackageInfo {
@@ -115,6 +116,7 @@ export interface DirectoryPackage {
       url: string;
     };
     hasNativeCode: boolean;
+    configPlugin: boolean;
     stats: {
       stars: number;
       forks: number;

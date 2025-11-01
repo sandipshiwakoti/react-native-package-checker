@@ -1,6 +1,7 @@
 import {
   Command,
   FileCode,
+  FileCog,
   Infinity,
   Monitor,
   MonitorCog,
@@ -53,6 +54,9 @@ export const PackageFeaturesStatus = ({ packageInfo }: PackageFeaturesStatusProp
       )}
       {packageInfo.support?.hasNativeCode && (
         <Chip icon={FileCode} label="Native Code" variant="slate" />
+      )}
+      {packageInfo.support?.configPlugin && (
+        <Chip icon={FileCog} label="Config Plugin" variant="slate" />
       )}
       {packageInfo.support?.license && (
         <Chip
