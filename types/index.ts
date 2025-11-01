@@ -72,6 +72,7 @@ export interface PackageInfo {
     windows: boolean;
     macos: boolean;
     fireos: boolean;
+    vegaos: boolean | string;
   };
   support?: Support;
   github?: GithubInfo;
@@ -93,6 +94,7 @@ export interface DirectoryPackage {
   windows: boolean;
   macos: boolean;
   fireos: boolean;
+  vegaos: boolean | string;
   expoGo?: boolean;
   dev?: boolean;
   newArchitectureNote?: string;

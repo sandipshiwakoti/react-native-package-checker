@@ -1,8 +1,8 @@
-import React from 'react';
 import {
   Command,
   FileCode,
-  Laptop,
+  Monitor,
+  MonitorCog,
   MonitorSmartphone,
   Scale,
   Smartphone,
@@ -29,7 +29,19 @@ export const PackageFeaturesStatus = ({ packageInfo }: PackageFeaturesStatusProp
         <Chip icon={MonitorSmartphone} label="Windows" variant="slate" />
       )}
       {packageInfo.platforms?.macos && <Chip icon={Command} label="macOS" variant="slate" />}
-      {packageInfo.platforms?.fireos && <Chip icon={Laptop} label="Fire OS" variant="amber" />}
+      {packageInfo.platforms?.fireos && <Chip icon={Monitor} label="Fire OS" variant="amber" />}
+      {packageInfo.platforms?.vegaos && (
+        <Chip
+          icon={MonitorCog}
+          label="Vega OS"
+          variant="green"
+          href={
+            packageInfo.platforms?.vegaos && typeof packageInfo.platforms.vegaos === 'string'
+              ? `https://www.npmjs.com/package/${packageInfo.platforms.vegaos}`
+              : undefined
+          }
+        />
+      )}
       {packageInfo.support?.dev && <Chip icon={Wrench} label="Dev Tool" variant="slate" />}
       {packageInfo.support?.expoGo && <Chip icon={Smartphone} label="Expo Go" variant="slate" />}
       {packageInfo.support?.hasTypes && (
