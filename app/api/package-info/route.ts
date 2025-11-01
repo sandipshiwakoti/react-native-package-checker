@@ -42,6 +42,7 @@ export async function POST(request: Request) {
               windows: packageData.windows || false,
               macos: packageData.macos || false,
               fireos: packageData.fireos || false,
+              horizon: packageData.horizon || false,
               vegaos: packageData.vegaos || false,
             },
             support: {
@@ -105,6 +106,7 @@ export async function POST(request: Request) {
                   windows: exactMatch.windows || false,
                   macos: exactMatch.macos || false,
                   fireos: exactMatch.fireos || false,
+                  horizon: exactMatch.horizon || false,
                   vegaos: exactMatch.vegaos || false,
                 },
                 support: {

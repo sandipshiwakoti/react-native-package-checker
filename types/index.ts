@@ -72,6 +72,7 @@ export interface PackageInfo {
     windows: boolean;
     macos: boolean;
     fireos: boolean;
+    horizon: boolean;
     vegaos: boolean | string;
   };
   support?: Support;
@@ -94,6 +95,7 @@ export interface DirectoryPackage {
   windows: boolean;
   macos: boolean;
   fireos: boolean;
+  horizon: boolean;
   vegaos: boolean | string;
   expoGo?: boolean;
   dev?: boolean;

@@ -1,6 +1,7 @@
 import {
   Command,
   FileCode,
+  Infinity,
   Monitor,
   MonitorCog,
   MonitorSmartphone,
@@ -30,6 +31,9 @@ export const PackageFeaturesStatus = ({ packageInfo }: PackageFeaturesStatusProp
       )}
       {packageInfo.platforms?.macos && <Chip icon={Command} label="macOS" variant="slate" />}
       {packageInfo.platforms?.fireos && <Chip icon={Monitor} label="Fire OS" variant="amber" />}
+      {packageInfo.platforms?.horizon && (
+        <Chip icon={Infinity} label="Meta Horizon OS" variant="blue" />
+      )}
       {packageInfo.platforms?.vegaos && (
         <Chip
           icon={MonitorCog}
