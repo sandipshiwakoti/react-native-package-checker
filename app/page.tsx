@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef } from 'react';
+import dynamic from 'next/dynamic';
 import { useRouter } from 'next/navigation';
 import { Search } from 'lucide-react';
 
@@ -9,10 +10,11 @@ import { Footer } from '@/components/common/footer';
 import { Logo } from '@/components/common/logo';
 import { PackageJsonPaster } from '@/components/common/package-json-paster';
 import { PackageUploader } from '@/components/common/package-uploader';
-import { RepositoryLink } from '@/components/common/repository-link';
 import { VSCodeExtensionBanner } from '@/components/common/vscode-extension-banner';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Input } from '@/components/ui/input';
+
+const RepositoryLink = dynamic(() => import('@/components/common/repository-link'), { ssr: false });
 
 export default function HomePage() {
   const router = useRouter();

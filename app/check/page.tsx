@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 
@@ -11,13 +12,14 @@ import { EmptyListFallback } from '@/components/common/empy-list-fallback';
 import { Footer } from '@/components/common/footer';
 import { LoadingIndicator } from '@/components/common/loading-indicator';
 import { Logo } from '@/components/common/logo';
-import { RepositoryLink } from '@/components/common/repository-link';
 import { UploadButton } from '@/components/common/upload-button';
 import { VSCodeExtensionBanner } from '@/components/common/vscode-extension-banner';
 import { ThemeToggle } from '@/components/theme-toggle';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { FilterProvider } from '@/contexts/filter-context';
 import { usePackages } from '@/hooks/queries/use-packages';
+
+const RepositoryLink = dynamic(() => import('@/components/common/repository-link'), { ssr: false });
 
 export default function CheckPage() {
   const searchParams = useSearchParams();

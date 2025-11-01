@@ -6,7 +6,7 @@ import { GithubIcon } from '@/components/icons/github';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { externalUrls } from '@/config/urls';
 
-export function RepositoryLink() {
+export default function RepositoryLink() {
   return (
     <TooltipProvider>
       <Tooltip>
