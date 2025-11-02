@@ -55,7 +55,10 @@ export async function POST(request: Request) {
               configPlugin: packageData.github.configPlugin || false,
             },
             alternatives: packageData.alternatives,
-            newArchitecture: checkData[pkg]?.newArchitecture || 'untested',
+            newArchitecture:
+              checkData[pkg]?.newArchitecture === 'new-arch-only'
+                ? 'supported'
+                : checkData[pkg]?.newArchitecture || 'untested',
             newArchitectureNote: packageData.newArchitectureNote,
             unmaintained: checkData[pkg]?.unmaintained || false,
             github: {
@@ -86,7 +89,10 @@ export async function POST(request: Request) {
                 version,
                 error: 'Invalid response from Directory API',
                 notInDirectory: true,
-                newArchitecture: checkData[pkg]?.newArchitecture || 'untested',
+                newArchitecture:
+                  checkData[pkg]?.newArchitecture === 'new-arch-only'
+                    ? 'supported'
+                    : checkData[pkg]?.newArchitecture || 'untested',
                 newArchitectureNote: checkData[pkg]?.newArchitectureNote,
                 unmaintained: checkData[pkg]?.unmaintained || false,
               };
@@ -119,7 +125,10 @@ export async function POST(request: Request) {
                 },
                 alternatives: exactMatch.alternatives || [],
                 isRecent: true,
-                newArchitecture: checkData[pkg]?.newArchitecture || 'untested',
+                newArchitecture:
+                  checkData[pkg]?.newArchitecture === 'new-arch-only'
+                    ? 'supported'
+                    : checkData[pkg]?.newArchitecture || 'untested',
                 newArchitectureNote: exactMatch.newArchitectureNote,
                 unmaintained: checkData[pkg]?.unmaintained || false,
                 github: {
