@@ -5,6 +5,7 @@ import { MoreLinksButton } from '@/app/check/_components/more-links-button';
 import { PackageFeaturesStatus } from '@/app/check/_components/package-features-status';
 import { PackageNewArchStatus } from '@/app/check/_components/package-new-arch-status';
 import { NpmIcon } from '@/components/icons/npm';
+import { ReactNativeDirectoryIcon } from '@/components/icons/react-native-directory';
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import { externalUrls } from '@/config/urls';
 import { PackageInfo } from '@/types';
@@ -43,6 +44,21 @@ export const DirectoryPackageItem = ({ packageInfo, name }: DirectoryPackageItem
               )}
             </h3>
             <div className="flex items-center gap-1">
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <a
+                      href={externalUrls.reactNativeDirectory.package(name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-muted-foreground hover:text-foreground p-1"
+                    >
+                      <ReactNativeDirectoryIcon className="h-5 w-5" />
+                    </a>
+                  </TooltipTrigger>
+                  <TooltipContent className="w-45">View on React Native Directory</TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
               {packageInfo.npmUrl && (
                 <TooltipProvider>
                   <Tooltip>
