@@ -10,8 +10,7 @@ export const externalUrls = {
       'https://raw.githubusercontent.com/react-native-community/directory/main/assets/data.json',
     rnReleases:
       'https://raw.githubusercontent.com/react-native-community/rn-diff-purge/master/RELEASES',
-    package: (packageName: string) =>
-      `https://reactnative.directory/?search=${encodeURIComponent(packageName)}`,
+    package: (packageName: string) => `https://reactnative.directory/package/${packageName}`,
   },
   npm: {
     package: (packageName: string) => `https://www.npmjs.com/package/${packageName}`,
