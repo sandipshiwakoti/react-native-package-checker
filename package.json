@@ -40,7 +40,7 @@
     "jspdf": "^3.0.0",
     "jspdf-autotable": "^5.0.2",
     "lucide-react": "^0.482.0",
-    "next": "16.0.1",
+    "next": "16.0.10",
     "next-themes": "^0.4.6",
     "nuqs": "^2.4.1",
     "postcss": "^8.5.3",
